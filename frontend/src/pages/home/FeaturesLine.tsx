@@ -30,7 +30,6 @@ const data = [
 const FeaturesLine = () => {
   return (
     <section className="py-0 px-0 bg-[#EC72AF]">
-      {/* BODY */}
       <Marquee direction="left" className="testimonial_marquee">
         {data.map((data, index) => (
           <div
