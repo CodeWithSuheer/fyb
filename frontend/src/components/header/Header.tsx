@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Marquee from "react-fast-marquee";
 import { Link } from "react-router-dom";
 import { MdOutlineMenu } from "react-icons/md";
 
@@ -21,33 +20,17 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
-  const data = [
-    {
-      text: "Free Delivery In Pakistan",
-    },
-    {
-      text: "Free Delivery In Pakistan",
-    },
-    {
-      text: "Free Delivery In Pakistan",
-    },
-  ];
-
   return (
     <>
       {/* BANNER */}
-      <div className="w-full bg-[#FDEDF5] px-0">
-        <div className="mx-auto flex justify-between items-center flex-wrap flex-col sm:flex-row">
-          <Marquee direction="left" className="testimonial_marquee">
-            {data.map((data, index) => (
-              <div
-                key={index}
-                className="banner py-2 text-center text-[13px] xl:text-[16px] tracking-wide font-normal mx-60"
-              >
-                {data.text}
-              </div>
-            ))}
-          </Marquee>
+      <div className="w-full bg-[#FDEDF5] px-5">
+        <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto flex justify-between items-center flex-wrap flex-col sm:flex-row">
+          <div className="banner py-2 text-center text-[13px] xl:text-[16px] tracking-wide font-normal">
+            Free Delivery In Pakistan
+          </div>
+          <div className="banner py-2 hidden md:block text-center text-[13px] xl:text-[16px] tracking-wide font-normal">
+            Free Delivery In Pakistan
+          </div>
         </div>
       </div>
 
@@ -58,7 +41,7 @@ const Header = () => {
             to="/"
             className="lg:absolute max-lg:left-10 lg:top-2/4 lg:left-2/4 lg:-translate-x-1/2 lg:-translate-y-1/2"
           >
-            <div className="img_border p-1 bg-[#EB72AF] w-20 h-20 lg:w-[7.5rem] lg:h-[7.5rem] xl:w-[9.5rem] xl:h-[9.5rem] rounded-full overflow-hidden border-8 border-white">
+            <div className="img_border p-1 bg-[#EB72AF] w-16 h-16 lg:w-[7.5rem] lg:h-[7.5rem] xl:w-[9.5rem] xl:h-[9.5rem] rounded-full overflow-hidden border-8 border-white">
               <img
                 className=""
                 src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/WhatsApp_Image_2024-04-27_at_12.11.46_AM.jpg?v=1714497650"

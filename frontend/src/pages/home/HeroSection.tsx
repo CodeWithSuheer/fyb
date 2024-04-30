@@ -13,7 +13,7 @@ const HeroSection = () => {
           </div>
 
           {/* CONTENT SECTION */}
-          <div className="text_side min-w-[50%] h-full py-10 sm:py-12 px-5 sm:px-8">
+          <div className="text_side min-w-[50%] h-full py-20 sm:py-12 px-5 sm:px-8">
             <div className="content lg:max-w-lg mx-auto">
               <h1 className="playfair max-w-xs sm:max-w-full mb-6 text-4xl sm:text-5xl xl:text-6xl font-semibold">
                 A New <br /> Destination for <br /> Natural Cosmetics

@@ -1,7 +1,7 @@
 const AboutSection = () => {
   return (
     <>
-      <section className="py-14 sm:py-14 px-0">
+      <section className="py-10 px-0">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto bg-[#FFF3F9]">
           <div className=" flex justify-center items-center flex-wrap">
             <div className="content lg:w-[50%] px-5 sm:px-16 md:px-10 py-14">

@@ -4,3 +4,10 @@
   background-size: cover;
   background-position: center;
 }
+
+.second_cta_bg {
+  background-image: url("https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3950_1.png?v=1714515625");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}

@@ -1,14 +1,56 @@
 import { FaStar } from "react-icons/fa";
 
-const LatestProducts = () => {
+const HairCare = () => {
   return (
     <>
-      <section className="py-14 sm:py-16 px-5 sm:px-4 xl:px-0">
+      <section className="py-14 sm:py-16 px-3 sm:px-4 xl:px-0">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-          <h2 className="mb-2.5 playfair text-center text-4xl font-bold">
-            Latest Products
-          </h2>
-          <p className="mx-auto h-0.5 w-16 bg-[#EC72AF]"></p>
+          <div className="header flex justify-between items-center flex-wrap gap-6">
+            <div className="name">
+              <h2 className="mb-2.5 playfair text-center text-4xl sm:text-5xl font-bold">
+                Haircare
+              </h2>
+              <p className=" h-0.5 w-16 bg-[#EC72AF]"></p>
+            </div>
+
+            <div className="slider_button flex flex-row">
+              {/* left arrow */}
+              <button className="mx-1.5 inline-block rounded-full border text-[#EC72AF] hover:text-white border-[#EC72AF] hover:bg-[#EC72AF] p-2.5 focus:outline-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="lucide lucide-chevron-left "
+                >
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+
+              {/* right arrow */}
+              <button className="mx-1.5 inline-block rounded-full border text-[#EC72AF] hover:text-white border-[#EC72AF] hover:bg-[#EC72AF] p-2.5 focus:outline-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="lucide lucide-chevron-right "
+                >
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
 
           {/* DATA */}
           <div className="data">
@@ -148,4 +190,4 @@ const LatestProducts = () => {
   );
 };
 
-export default LatestProducts;
+export default HairCare;
