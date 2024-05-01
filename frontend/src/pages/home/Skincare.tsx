@@ -106,9 +106,9 @@ const Skincare = () => {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-chevron-left "
                 >
                   <path d="m15 18-6-6 6-6" />
@@ -127,9 +127,9 @@ const Skincare = () => {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-chevron-right "
                 >
                   <path d="m9 18 6-6-6-6" />
@@ -144,9 +144,9 @@ const Skincare = () => {
               <Slider ref={sliderRef} {...settings}>
                 {data.map((data, index) => (
                   <div key={index} className="mx-10 pb-7">
-                    <div className="mb-3 relative group w-60 pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+                    <div className="group mb-3 relative group w-60 pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                       <img
-                        className="object-cover w-full h-56"
+                        className="object-cover w-full h-56 transition duration-500 group-hover:scale-105"
                         src={data.img}
                         alt="products"
                       />

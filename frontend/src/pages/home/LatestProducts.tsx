@@ -14,11 +14,11 @@ const LatestProducts = () => {
           <div className="data">
             <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-2 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
               {/* CARD 1 */}
-              <div className="mb-3 relative group w-full pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+              <div className="group mb-3 relative group w-full pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                 <img
-                  className="object-cover w-full h-56"
+                  className="object-cover w-full h-56 transition duration-500 group-hover:scale-105"
                   src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393"
-                  alt="products"
+                  alt="products "
                 />
 
                 <div className="py-5 text-center">
@@ -46,11 +46,11 @@ const LatestProducts = () => {
               </div>
 
               {/* CARD 2 */}
-              <div className="mb-3 relative group w-full pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+              <div className="group mb-3 relative group w-full pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                 <img
-                  className="object-cover w-full h-56"
+                  className="object-cover w-full h-56 transition duration-500 group-hover:scale-105"
                   src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393"
-                  alt="products"
+                  alt="products "
                 />
 
                 <div className="py-5 text-center">
@@ -78,11 +78,11 @@ const LatestProducts = () => {
               </div>
 
               {/* CARD 3 */}
-              <div className="mb-3 relative group w-full pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+              <div className="group mb-3 relative group w-full pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                 <img
-                  className="object-cover w-full h-56"
+                  className="object-cover w-full h-56 transition duration-500 group-hover:scale-105"
                   src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393"
-                  alt="products"
+                  alt="products "
                 />
 
                 <div className="py-5 text-center">
@@ -110,11 +110,11 @@ const LatestProducts = () => {
               </div>
 
               {/* CARD 4 */}
-              <div className="mb-3 relative group w-full pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+              <div className="group mb-3 relative group w-full pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                 <img
-                  className="object-cover w-full h-56"
+                  className="object-cover w-full h-56 transition duration-500 group-hover:scale-105"
                   src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393"
-                  alt="products"
+                  alt="products "
                 />
 
                 <div className="py-5 text-center">

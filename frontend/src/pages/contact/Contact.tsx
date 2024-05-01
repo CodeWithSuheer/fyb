@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./Contact.css";
 import { FaLinkedin } from "react-icons/fa6";
-
 import { MdPhone } from "react-icons/md";
 import { IoMail } from "react-icons/io5";
 import { MdLocationPin } from "react-icons/md";
@@ -48,12 +47,12 @@ const Contact = () => {
       </section>
 
       {/* CONTACT SECTION */}
-      <section className="max-w-full bg-gray-100">
+      <section className="max-w-full bg-white">
         <div className="max-w-7xl px-3 sm:px-6 py-12 mx-auto min-h-screen">
           <div className="lg:flex gap-6 sm:gap-10">
             {/* FORMS */}
             <div className="mt-8 lg:w-1/2 lg:mx-6 ">
-              <div className="w-full px-4 sm:px-10 py-10 mx-auto overflow-hidden bg-white rounded-lg shadow-2xl lg:max-w-xl shadow-gray-300/50 ">
+              <div className="w-full px-4 sm:px-10 py-10 mx-auto overflow-hidden bg-white rounded-lg shadow-2xl lg:max-w-xl">
                 <h2 className="playfair mt-2 pb-2 text-4xl font-bold text-black">
                   Get in Touch
                 </h2>

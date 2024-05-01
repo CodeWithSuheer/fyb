@@ -1,3 +1,5 @@
+import Button from "../../components/Button";
+
 const HeroSection = () => {
   return (
     <>
@@ -22,9 +24,7 @@ const HeroSection = () => {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore
               </p>
-              <button className="px-6 py-2.5 rounded-full bg-[#EC72AF] text-white">
-                Shop Now
-              </button>
+              <Button name="Shop Now" />
             </div>
           </div>
         </div>

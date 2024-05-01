@@ -1,3 +1,4 @@
+import Button from "../../components/Button";
 import "./Home.css";
 
 const CtaSection = () => {
@@ -15,9 +16,7 @@ const CtaSection = () => {
               one click.
             </p>
 
-            <button className="px-6 py-2.5 rounded-full bg-[#EC72AF] text-white">
-              Explore Products
-            </button>
+            <Button name="Explore Products" />
           </div>
         </div>
       </section>

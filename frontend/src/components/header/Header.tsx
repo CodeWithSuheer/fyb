@@ -62,7 +62,7 @@ const Header = () => {
                 <li key={index} className="max-lg:border-b max-lg:py-3 mr-2">
                   <Link
                     to={`${data.path}`}
-                    className="crimson hover:underline hover:underline-offset-4 text-black block font-semibold text-[18px]"
+                    className="crimson hover:underline hover:underline-offset-4 text-gray-800 block font-semibold text-[18px]"
                     onClick={closeMenu}
                   >
                     {data.title}
