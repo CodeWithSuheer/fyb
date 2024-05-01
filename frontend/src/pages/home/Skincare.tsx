@@ -54,6 +54,7 @@ const Skincare = () => {
     autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -142,7 +143,7 @@ const Skincare = () => {
             <div className="mt-8 sm:mt-12">
               <Slider ref={sliderRef} {...settings}>
                 {data.map((data, index) => (
-                  <div key={index} className="mx-5 pb-7">
+                  <div key={index} className="mx-10 pb-7">
                     <div className="mb-3 relative group w-60 pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                       <img
                         className="object-cover w-full h-56"

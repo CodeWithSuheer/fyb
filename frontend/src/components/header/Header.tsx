@@ -6,10 +6,10 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigation = [
-    { title: "Home", path: "cart" },
-    { title: "About Us", path: "cart" },
-    { title: "Shop", path: "cart" },
-    { title: "Contact Us", path: "cart" },
+    { title: "Home", path: "" },
+    { title: "Shop", path: "products" },
+    { title: "About Us", path: "about" },
+    { title: "Contact Us", path: "contact" },
   ];
 
   const toggleMenu = () => {
