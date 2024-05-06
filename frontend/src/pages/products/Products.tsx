@@ -1,66 +1,81 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+// import { motion } from "framer-motion";
 import { FaStar } from "react-icons/fa";
+import productData from "../../Data/ProductData";
 import "./Products.css";
+import { useNavigate } from "react-router-dom";
 
-const data = [
-  {
-    id: "1",
-    img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-    name: " Basic Tee",
-    price: "200",
-  },
-  {
-    id: "2",
-    img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-    name: " Basic Tee",
-    price: "200",
-  },
-  {
-    id: "3",
-    img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-    name: " Basic Tee",
-    price: "200",
-  },
-  {
-    id: "3",
-    img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-    name: " Basic Tee",
-    price: "200",
-  },
-  {
-    id: "3",
-    img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-    name: " Basic Tee",
-    price: "200",
-  },
-  {
-    id: "3",
-    img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-    name: " Basic Tee",
-    price: "200",
-  },
-];
+// const data = [
+//   {
+//     id: "1",
+//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
+//     name: " Basic Tee",
+//     price: "200",
+//   },
+//   {
+//     id: "2",
+//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
+//     name: " Basic Tee",
+//     price: "200",
+//   },
+//   {
+//     id: "3",
+//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
+//     name: " Basic Tee",
+//     price: "200",
+//   },
+//   {
+//     id: "4",
+//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
+//     name: " Basic Tee",
+//     price: "200",
+//   },
+//   {
+//     id: "5",
+//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
+//     name: " Basic Tee",
+//     price: "200",
+//   },
+//   {
+//     id: "6",
+//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
+//     name: " Basic Tee",
+//     price: "200",
+//   },
+// ];
 
-const fadeInAnimationVariants = {
-  initial: {
-    opacity: 0,
-    y: 100,
-  },
-  animate: (index) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.15 * index,
-    },
-  }),
-};
+// const fadeInAnimationVariants = {
+//   initial: {
+//     opacity: 0,
+//     y: 100,
+//   },
+//   animate: (index: number) => ({
+//     opacity: 1,
+//     y: 0,
+//     transition: {
+//       delay: 0.15 * index,
+//     },
+//   }),
+// };
 
 const Products = () => {
+  const navigate = useNavigate();
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
+
+  useEffect(() => {
+    // Dummy animation to trigger the stagger effect on mount
+    const timer = setTimeout(() => {}, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const toggleCategory = () => {
     setIsCategoryVisible(!isCategoryVisible);
+  };
+
+  // HANDLE ITEM CLICK
+  const handleItemClick = (productId: string) => {
+    navigate(`/selectedItem/${productId}`);
+    window.scroll(0, 0);
   };
 
   return (
@@ -274,25 +289,21 @@ const Products = () => {
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
               <ul className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-                {data.map((data, index) => (
-                  <motion.li
-                    variants={fadeInAnimationVariants}
-                    initial="initial"
-                    whileInView="animate"
-                    viewport={{ once: true }}
-                    custom={index}
+                {productData.slice(0, 9).map((data, index) => (
+                  <li
                     key={index}
+                    onClick={() => handleItemClick(String(data.id))}
                   >
-                    <div className="group mb-5 relative group w-full pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+                    <div className="group mb-5 relative group w-full bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                       <img
-                        className="object-cover w-full h-56 transition duration-500 group-hover:scale-105"
-                        src={data.img}
-                        alt="products "
+                        className="object-cover w-full h-56"
+                        src={data.images[0]}
+                        alt="products"
                       />
 
                       <div className="py-5 text-center">
                         <h3 className="playfair mb-2 text-lg font-semibold text-gray-800">
-                          {data.name}
+                          {data.category.name}
                         </h3>
 
                         {/* STARS */}
@@ -315,7 +326,7 @@ const Products = () => {
                         </button>
                       </div>
                     </div>
-                  </motion.li>
+                  </li>
                 ))}
               </ul>
             </div>

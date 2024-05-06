@@ -1,30 +1,33 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { forgetuserAsync } from "../features/authSlice";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { verifyOtpAsync } from "../features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-const ForgetPass = () => {
+const OtpChecker = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { userId } = useSelector((state) => state.auth);
+
   const [formData, setFormData] = useState({
-    email: "",
+    otp: "",
+    userId: userId,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    dispatch(forgetuserAsync(formData)).then(() => {
-      navigate("/otp");
+    dispatch(verifyOtpAsync(formData)).then(() => {
+      navigate("/reset");
       setFormData({
-        email: "",
+        otp: "",
       });
     });
   };
 
   return (
     <>
-      <section className="py-10 sm:py-10 px-3 sm:px-4 md:px-14 bg-[#FDEDF5]">
+      <section className="py-10 sm:py-10 px-3 sm:px-4 xl:px-0 bg-[#FDEDF5]">
         <div className="max-w-5xl xl:max-w-4xl mx-auto">
           <div className="flex justify-center items-center flex-col-reverse sm:flex-row gap-10 md:gap-2 min-h-[80vh]">
             {/* IMAGE SIDE */}
@@ -39,7 +42,7 @@ const ForgetPass = () => {
             {/* FORM SIDE */}
             <div className="min-w-[60%] md:min-w-[50%]">
               <h1 className="playfair max-w-xs sm:max-w-full mb-5 text-4xl sm:text-4xl font-bold">
-                Forget Password
+                OTP Verification
               </h1>
 
               <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
@@ -47,13 +50,13 @@ const ForgetPass = () => {
                 <div>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full p-3"
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter Your Email"
-                    value={formData.email}
+                    type="number"
+                    id="otp"
+                    name="otp"
+                    placeholder=""
+                    value={formData.otp}
                     onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
+                      setFormData({ ...formData, otp: e.target.value })
                     }
                     required
                   />
@@ -65,19 +68,6 @@ const ForgetPass = () => {
                 >
                   SUBMIT NOW
                 </button>
-
-                <p className="text-sm font-light text-gray-800">
-                  Don’t have an account yet?{" "}
-                  <Link
-                    to="/signup"
-                    onClick={() =>
-                      window.scrollTo({ top: 400, behavior: "smooth" })
-                    }
-                    className="font-medium text-primary-600 hover:underline"
-                  >
-                    Sign up
-                  </Link>
-                </p>
               </form>
             </div>
           </div>
@@ -87,4 +77,4 @@ const ForgetPass = () => {
   );
 };
 
-export default ForgetPass;
+export default OtpChecker;

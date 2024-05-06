@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineMenu } from "react-icons/md";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { getCartTotal } from "../../features/ActionsSlice";
+import {
+  ArrowLeft,
+  MagnifyingGlass,
+  ShoppingCart,
+  UserCircle,
+} from "phosphor-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const { cart, totalQuantity } = useAppSelector((state) => state.actions);
+
+  useEffect(() => {
+    dispatch(getCartTotal());
+  }, [cart]);
 
   const navigation = [
     { title: "Home", path: "" },
@@ -25,10 +40,10 @@ const Header = () => {
       {/* BANNER */}
       <div className="w-full bg-[#FDEDF5] px-5">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto flex justify-between items-center flex-wrap flex-col sm:flex-row">
-          <div className="banner py-2 text-center text-[13px] xl:text-[16px] tracking-wide font-normal">
+          <div className="banner py-2 text-center hidden sm:block text-[13px] xl:text-[14px] tracking-wide font-normal">
             Free Delivery In Pakistan
           </div>
-          <div className="banner py-2 hidden md:block text-center text-[13px] xl:text-[16px] tracking-wide font-normal">
+          <div className="banner py-2 text-center text-[13px] xl:text-[14px] tracking-wide font-normal">
             Free Delivery In Pakistan
           </div>
         </div>
@@ -57,9 +72,18 @@ const Header = () => {
             id="collapseMenu"
           >
             {/* RIGHT SIDE MENU LINK */}
-            <ul className="lg:flex lg:gap-x-5 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
+            <ul className=" lg:flex lg:gap-x-5 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
+              {isMenuOpen ? (
+                <li
+                  onClick={closeMenu}
+                  className="crimson flex justify-end items-center gap-1 underline underline-offset-4 text-gray-800 font-semibold text-[18px]"
+                >
+                  <ArrowLeft size={20} />
+                </li>
+              ) : null}
+
               {navigation.map((data, index) => (
-                <li key={index} className="max-lg:border-b max-lg:py-3 mr-2">
+                <li key={index} className="max-lg:border-b max-lg:py-3 mr-2 ">
                   <Link
                     to={`${data.path}`}
                     className="crimson hover:underline hover:underline-offset-4 text-gray-800 block font-semibold text-[18px]"
@@ -73,28 +97,28 @@ const Header = () => {
           </div>
 
           {/* LEFT SIDE BUTTONS */}
-          <div className="flex items-center ml-auto space-x-6 sm:space-x-8">
-            <Link to="/cart" className="">
-              <img
-                className="w-6"
-                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/image_10.png?v=1714496772"
-                alt=""
-              />
+          <div className="flex items-center ml-auto space-x-6 sm:space-x-5">
+            {/* cart */}
+            {window.innerWidth > 425 ? (
+              <Link to="/cart" className="relative">
+                <span className="relative">
+                  <ShoppingCart size={26} className="text-gray-700" />
+                  <span className="absolute -right-1 -top-2.5 rounded-full bg-red-500 px-1 py-0 text-xs text-white">
+                    {totalQuantity}
+                  </span>
+                </span>
+              </Link>
+            ) : null}
+
+            {/* profile */}
+            <Link to="/profile" className="">
+              <UserCircle size={28} className="text-gray-700" />
             </Link>
-            <Link to="/cart" className="">
-              <img
-                className="w-6"
-                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/image_8.png?v=1714496771"
-                alt=""
-              />
-            </Link>
-            <Link to="/cart" className="">
-              <img
-                className="w-6"
-                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/image_9.png?v=1714496772"
-                alt=""
-              />
-            </Link>
+
+            {/* search */}
+            <button className="">
+              <MagnifyingGlass size={26} className="text-gray-700" />
+            </button>
 
             <button className="lg:hidden" id="toggleOpen" onClick={toggleMenu}>
               <MdOutlineMenu size={26} />

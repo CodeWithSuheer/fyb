@@ -1,10 +1,10 @@
-const PrivacyPolicy = () => {
+const Terms = () => {
   return (
     <>
       <section className="bg-[#ebecf5]">
         <div className="max-w-5xl px-4 sm:px-6 py-28 mx-auto min-h-screen">
           <h2 className="poppin text-3xl lg:text-4xl font-bold tracking-wide">
-            Privacy Policy - For Your Beauty
+            Term & Condition - For Your Beauty
           </h2>
 
           <p className="mb-4 mt-3">
@@ -117,4 +117,4 @@ const PrivacyPolicy = () => {
   );
 };
 
-export default PrivacyPolicy;
+export default Terms;

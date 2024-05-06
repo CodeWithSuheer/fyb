@@ -1,6 +1,30 @@
+import { useEffect } from "react";
+import { IoAddOutline } from "react-icons/io5";
+import { FiMinus } from "react-icons/fi";
+import { BsTrash3 } from "react-icons/bs";
+// import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
+import {
+  decreaseQuantity,
+  getCartTotal,
+  increaseQuantity,
+  removeFromCart,
+} from "../../features/ActionsSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-const Cart = () => {
+const Cart: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  // getting data from store
+  const { cart, totalPrice } = useAppSelector(
+    (state: RootState) => state.actions
+  );
+
+  useEffect(() => {
+    dispatch(getCartTotal());
+  }, [cart, dispatch]);
+
   return (
     <>
       <section className="w-full py-14 sm:py-14 px-5 sm:px-8 lg:px-10 xl:px-0">
@@ -8,7 +32,9 @@ const Cart = () => {
           {/* HEADER */}
           <div className="header">
             <div className="flex justify-between items-center">
-              <div className="playfair text-5xl font-semibold ">Cart</div>
+              <div className="playfair text-3xl lg:text-5xl font-semibold">
+                Cart
+              </div>
               <div className="text-md font-semibold text-[#EC72AF] underline underline-offset-4">
                 <Link to="/products">Return to Shop</Link>
               </div>
@@ -16,186 +42,160 @@ const Cart = () => {
           </div>
 
           <div className="">
-            <div className=" py-6">
-              <div className=" bg-white divide-y">
-                {/* First Product Row */}
-                <div className="grid md:grid-cols-4 items-center gap-8 py-6">
-                  <div className="md:col-span-2 flex items-center gap-6">
-                    <div className="w-32 h-22 shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-4">
-                      <img
-                        className="w-full h-full object-contain rounded-md"
-                        src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="playfair text-lg tracking-wide font-bold text-[#333]">
-                        VelvetGlide Boots
-                      </h3>
-                      <h6 className="text-md text-gray-500 mt-2">
-                        Category: <strong className="ml-2">Skincare</strong>
-                      </h6>
-                    </div>
-                  </div>
+            {cart && cart.length > 0 ? (
+              <div className=" py-6">
+                <div className=" bg-white">
+                  {/* First Product Row */}
+                  {cart.map((product) => (
+                    <div
+                      key={product.id}
+                      className="grid md:grid-cols-4 items-center gap-8 px-2 py-6 border-b border-gray-400"
+                    >
+                      <div className="md:col-span-2 flex items-center gap-6">
+                        <div className="w-32 h-22 shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-0">
+                          <img
+                            className="w-full h-full object-contain rounded-md"
+                            src={product.images[0]}
+                            alt={product.title}
+                          />
+                        </div>
+                        <div>
+                          <h3 className="playfair text-lg tracking-wide font-bold text-[#333]">
+                            VelvetGlide Boots
+                          </h3>
+                          <h6 className="text-md text-gray-500 mt-2">
+                            Category: <strong className="ml-2">Skincare</strong>
+                          </h6>
+                          <h6 className="text-md text-gray-500 mt-2">
+                            Price:{" "}
+                            <strong className="ml-2">
+                              Rs. {product.price}
+                            </strong>
+                          </h6>
+                        </div>
+                      </div>
 
-                  <div className="flex">
-                    <button
-                      className="bg-transparent py-2 font-semibold text-[#333]"
-                      type="button"
-                    >
-                      <svg
-                        className="w-3 fill-current"
-                        viewBox="0 0 124 124"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z"
-                          data-original="#000000"
-                        />
-                      </svg>
-                    </button>
-                    <button
-                      className="bg-transparent mx-4 px-4 py-2 font-semibold text-[#333] text-md shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)]"
-                      type="button"
-                    >
-                      1
-                    </button>
-                    <button
-                      className="bg-transparent py-2 font-semibold text-[#333]"
-                      type="button"
-                    >
-                      <svg
-                        className="w-3 fill-current"
-                        viewBox="0 0 42 42"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z"
-                          data-original="#000000"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+                      <div className="flex">
+                        <button
+                          onClick={() => dispatch(decreaseQuantity(product.id))}
+                          className="bg-transparent py-2 font-semibold text-[#333]"
+                          type="button"
+                        >
+                          <FiMinus size={22} />
+                        </button>
 
-                  <div className="flex items-center">
-                    <h4 className="text-lg font-bold text-[#333]">$20.00</h4>
-                    <svg
-                      className="w-3 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 ml-auto"
-                      viewBox="0 0 320.591 320.591"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
-                        data-original="#000000"
-                      />
-                      <path
-                        d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
-                        data-original="#000000"
-                      />
-                    </svg>
-                  </div>
+                        <input
+                          type="text"
+                          className="mx-1 h-8 w-10 rounded-md border border-gray-400 text-center bg-transparent text-black"
+                          value={product.quantity}
+                        />
+
+                        <button
+                          onClick={() => dispatch(increaseQuantity(product.id))}
+                          className="bg-transparent py-2 font-semibold text-[#333]"
+                          type="button"
+                        >
+                          <IoAddOutline size={22} />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center">
+                        <h4 className="text-lg font-bold text-[#333]">
+                          Rs.{product.price * product.quantity}
+                        </h4>
+
+                        <div
+                          onClick={() => dispatch(removeFromCart(product.id))}
+                          className="w-3 mr-4 cursor-pointer shrink-0 ml-auto"
+                        >
+                          <BsTrash3 size={20} className="hover:text-red-700" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
-                {/* Second Product Row */}
-                <div className="grid md:grid-cols-4 items-center gap-8 py-6">
-                  <div className="md:col-span-2 flex items-center gap-6">
-                    <div className="w-32 h-22 shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-4">
-                      <img
-                        className="w-full h-full object-contain rounded-md"
-                        src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393"
+                <div className="flex justify-end items-center">
+                  {/* APPLY COUPN CODE */}
+                  {/* <div className="mt-3">
+                    <h3 className="text-xl font-semibold text-[#333] mb-3">
+                      Apply coupon code
+                    </h3>
+                    <div className="flex border border-[#EC72AF] overflow-hidden max-w-md rounded">
+                      <input
+                        type="text"
+                        placeholder="Coupon code"
+                        className="w-full outline-none bg-white text-gray-600 text-md px-4 py-2.5"
                       />
-                    </div>
-                    <div>
-                      <h3 className="playfair text-lg tracking-wide font-bold text-[#333]">
-                        VelvetGlide Boots
-                      </h3>
-                      <h6 className="text-md text-gray-500 mt-2">
-                        Category: <strong className="ml-2">Skincare</strong>
-                      </h6>
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <button
-                      className="bg-transparent py-2 font-semibold text-[#333]"
-                      type="button"
-                    >
-                      <svg
-                        className="w-3 fill-current"
-                        viewBox="0 0 124 124"
-                        xmlns="http://www.w3.org/2000/svg"
+                      <button
+                        type="button"
+                        className="flex items-center justify-center bg-[#EC72AF] hover:bg-[#e47aaf] px-6 text-md text-white"
                       >
-                        <path
-                          d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z"
-                          data-original="#000000"
-                        />
-                      </svg>
-                    </button>
-                    <button
-                      className="bg-transparent mx-4 px-4 py-2 font-semibold text-[#333] text-md shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)]"
-                      type="button"
-                    >
-                      1
-                    </button>
-                    <button
-                      className="bg-transparent py-2 font-semibold text-[#333]"
-                      type="button"
-                    >
-                      <svg
-                        className="w-3 fill-current"
-                        viewBox="0 0 42 42"
-                        xmlns="http://www.w3.org/2000/svg"
+                        Apply
+                      </button>
+                    </div>
+                  </div> */}
+
+                  {/* APPLY COUPN CODE */}
+                  <div className="total">
+                    <div className="mt-8 space-y-1 text-right text-lg">
+                      <p>
+                        Total amount:
+                        <span className="font-semibold">
+                          {" "}
+                          Rs. {totalPrice.toFixed(2)}
+                        </span>
+                      </p>
+
+                      <p className="text-sm py-1">
+                        Taxes and shipping calculated at checkout
+                      </p>
+                    </div>
+
+                    <div className="mt-4 flex justify-end space-x-4">
+                      <Link
+                        to="/products"
+                        onClick={() => window.scroll(0, 0)}
+                        type="button"
+                        className="rounded-md border border-black px-3 py-2 text-sm tracking-wide font-semibold text-black shadow-sm hover:bg-[#EC72AF] hover:border-[#EC72AF] hover:text-white"
                       >
-                        <path
-                          d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z"
-                          data-original="#000000"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div className="flex items-center">
-                    <h4 className="text-lg font-bold text-[#333]">$24.00</h4>
-                    <svg
-                      className="w-3 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 ml-auto"
-                      viewBox="0 0 320.591 320.591"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
-                        data-original="#000000"
-                      />
-                      <path
-                        d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
-                        data-original="#000000"
-                      />
-                    </svg>
+                        Back to shop
+                      </Link>
+                      <Link
+                        to="/checkout"
+                        onClick={() => window.scroll(0, 0)}
+                        type="button"
+                        className="rounded-md border px-3 py-2 text-sm tracking-wide font-semibold shadow-sm bg-[#EC72AF] border-[#EC72AF] text-white"
+                      >
+                        Checkout
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div className="mt-5 space-y-1 text-right text-lg">
-                <p>
-                  Total amount:
-                  <span className="font-semibold"> Rs. 48,967</span>
-                </p>
+            ) : (
+              // IF THERE IS NOTHING IN THE CART
+              <div className="container text-gray-800">
+                <div className="mx-0 text-center">
+                  <div className="py-5">
+                    <img
+                      className="w-64 mx-auto"
+                      src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/pngwing.com.png?v=1715031022"
+                      alt=""
+                    />
+                    <h3 className="mt-5 text-xl font-medium">
+                      No Item In Cart
+                    </h3>
+                    <Link
+                      to="/products"
+                      className="mt-2 text-xl font-medium text-[#EC72AF] underline underline-offset-2"
+                    >
+                      Shop Now
+                    </Link>
+                  </div>
+                </div>
               </div>
-              <div className="mt-4 flex justify-end space-x-4">
-                <Link
-                  to="/products"
-                  onClick={() => window.scroll(0, 0)}
-                  type="button"
-                  className="rounded-md border border-black px-3 py-2 text-sm tracking-wide font-semibold text-black shadow-sm hover:bg-[#EC72AF] hover:border-[#EC72AF] hover:text-white"
-                >
-                  Back to shop
-                </Link>
-                <Link
-                  to="/checkout"
-                  onClick={() => window.scroll(0, 0)}
-                  type="button"
-                  className="rounded-md border px-3 py-2 text-sm tracking-wide font-semibold shadow-sm bg-[#EC72AF] border-[#EC72AF] text-white"
-                >
-                  Checkout
-                </Link>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>

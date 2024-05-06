@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import { Toaster } from "react-hot-toast";
 import HomePage from "./pages/home/HomePage";
 import Header from "./components/header/Header";
 import ResetPass from "./auth/ResetPass";
@@ -13,6 +14,10 @@ import About from "./pages/about/About";
 import Products from "./pages/products/Products";
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/Checkout";
+import SelectedItem from "./pages/selectedItem/SelectedItem";
+import OtpChecker from "./auth/OtpChecker";
+import Terms from "./components/Terms";
+import UserProfile from "./pages/user/UserProfile";
 // import Footer from "./components/footer/Footer";
 
 function App() {
@@ -26,6 +31,7 @@ function App() {
 
           {/* ---------- MAIN ROUTES ---------- */}
           <Route path="/products" element={<Products />} />
+          <Route path="/selectedItem/:id" element={<SelectedItem />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
 
@@ -34,14 +40,18 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/reset" element={<ResetPass />} />
           <Route path="/forget" element={<ForgetPass />} />
+          <Route path="/otp" element={<OtpChecker />} />
+          <Route path="/profile" element={<UserProfile />} />
 
           {/* ---------- OTHER ROUTES ---------- */}
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>
+      <Toaster />
     </>
   );
 }
