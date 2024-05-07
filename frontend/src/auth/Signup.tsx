@@ -1,31 +1,39 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useState, FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { createuserAsync } from "../features/authSlice";
+import { useAppDispatch } from "../app/hooks";
 
-const Signup = () => {
-  const dispatch = useDispatch();
-  const [showPassword, setShowPassword] = useState(false);
+export interface SignupFormData {
+  name: string;
+  email: string;
+  password: string;
+}
 
-  const [formData, setFormData] = useState({
+const Signup: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [formData, setFormData] = useState<SignupFormData>({
     name: "",
     email: "",
     password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log(formData);
-    dispatch(createuserAsync(formData)).then(() => {
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-      });
+    dispatch(createuserAsync(formData)).then((res) => {
+      if (res.payload.success) {
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+        });
+        navigate('/login')
+      }
     });
   };
 
-  const togglePasswordVisibility = () => {
+  const togglePasswordVisibility = (): void => {
     setShowPassword(!showPassword);
   };
 
@@ -125,7 +133,7 @@ const Signup = () => {
                 </div>
 
                 <button
-                  // type="submit"
+                  type="submit"
                   // onClick={handleHomePage}
                   className="w-full py-2.5 mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide"
                 >

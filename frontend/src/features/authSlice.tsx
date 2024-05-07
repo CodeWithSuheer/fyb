@@ -1,42 +1,43 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
+import { SignupFormData } from '../auth/Signup'; // Update the path
+import { LoginFormData } from "../auth/Login";
+
+// Rest of your code
+
 
 // API URLs
 const signupUrl = "http://localhost:8000/api/users/signup";
 const loginUrl = "http://localhost:8000/api/users/login";
+const userSessionUrl = "http://localhost:8000/api/users/persistUserSession";
 const forgetPassUrl = "http://localhost:8000/api/users/sendResetPasswordOTP";
 const verifyOtpPassUrl = "http://localhost:8000/api/users/verifyOtp";
 const resetPassUrl = "http://localhost:8000/api/users/updatePassword";
-const getUsersForBranch = "http://localhost:8000/api/users/getUsersForBranch";
+
 
 // Interfaces
 interface User {
-  userId: string;
-  // Add other properties as needed
-}
-
-interface ResetPasswordData {
-  id: string;
-  resetPassword: string;
-}
-
-interface BranchData {
-  // Define the shape of branch data
+  login:boolean
+  user: {
+    name:string
+    email:string
+    phone:string
+    address:string
+    id:string
+  }
 }
 
 // CREATE ASYNC THUNK
 export const createuserAsync = createAsyncThunk(
   "user/create",
-  async (formData: FormData) => {
+  async (formData: SignupFormData) => {
     try {
-      const response = await axios.post<User>(signupUrl, formData);
-      // toast.success(response.data.message);
+      const response = await axios.post(signupUrl, formData);
+      toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data.error);
       toast.error(error.response.data.error);
-      throw error.response.data.error;
     }
   }
 );
@@ -44,25 +45,35 @@ export const createuserAsync = createAsyncThunk(
 // LOGIN ASYNC THUNK
 export const loginuserAsync = createAsyncThunk(
   "user/login",
-  async (formData: FormData) => {
+  async (formData: LoginFormData) => {
     try {
-      const response = await axios.post<User>(loginUrl, formData);
-      // toast.success(response.data.message);
+      const response = await axios.post(loginUrl, formData);
+      toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data.error);
       toast.error(error.response.data.error);
-      throw error.response.data.error;
     }
   }
 );
 
+// LOGIN ASYNC THUNK
+export const userSessionAsync = createAsyncThunk(
+  "user/session",
+  async () => {
+    try {
+      const response = await axios.get(userSessionUrl);
+      return response.data;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+);
 // FORGET ASYNC THUNK
 export const forgetuserAsync = createAsyncThunk(
   "user/forget",
   async (formData: FormData) => {
     try {
-      const response = await axios.post<User>(forgetPassUrl, formData);
+      const response = await axios.post(forgetPassUrl, formData);
       // toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
@@ -92,7 +103,7 @@ export const verifyOtpAsync = createAsyncThunk(
 // RESET ASYNC THUNK
 export const resetPassAsync = createAsyncThunk(
   "user/reset",
-  async (resetPasswordData: ResetPasswordData) => {
+  async (resetPasswordData:any) => {
     const { id, resetPassword } = resetPasswordData;
     try {
       const response = await axios.post<User>(resetPassUrl, {
@@ -109,42 +120,23 @@ export const resetPassAsync = createAsyncThunk(
   }
 );
 
-export const GetUserBYBranch = createAsyncThunk(
-  "user/GetUserBYBranch",
-  async (branchData: BranchData) => {
-    try {
-      const response = await axios.post(getUsersForBranch, branchData);
-      // toast.success(response.data.message);
-      return response.data;
-    } catch (error: any) {
-      console.log(error.response.data.error);
-      toast.error(error.response.data.error);
-      throw error.response.data.error;
-    }
-  }
-);
 
 // INITIAL STATE
 interface AuthState {
-  createUser: User | null;
   user: User | null;
   loading: boolean;
-  userId: string | null;
   forgetPasswordEmail: string | null;
   resetPassword: string | null;
   validateToken: string | null;
-  getUsersForBranch: BranchData[];
 }
 
 const initialState: AuthState = {
-  createUser: null,
   user: null,
   loading: false,
-  userId: null,
   forgetPasswordEmail: null,
   resetPassword: null,
   validateToken: null,
-  getUsersForBranch: [],
+
 };
 
 const authSlice = createSlice({
@@ -159,11 +151,7 @@ const authSlice = createSlice({
       .addCase(createuserAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(createuserAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.createUser = action.payload;
-      })
-      .addCase(createuserAsync.rejected, (state) => {
+      .addCase(createuserAsync.fulfilled, (state, _action) => {
         state.loading = false;
       })
 
@@ -175,32 +163,27 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
       })
-      .addCase(loginuserAsync.rejected, (state) => {
-        state.loading = false;
+
+       // Session ADD CASE
+       .addCase(userSessionAsync.pending, (state) => {
+        state.loading = true;
       })
+      .addCase(userSessionAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+    
 
       // FORGET PASSWORD ADD CASE
       .addCase(forgetuserAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(forgetuserAsync.fulfilled, (state, action) => {
+      .addCase(forgetuserAsync.fulfilled, (state) => {
         state.loading = false;
-        state.userId = action.payload.userId;
       })
       .addCase(forgetuserAsync.rejected, (state) => {
         state.loading = false;
       })
-
-      .addCase(GetUserBYBranch.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(GetUserBYBranch.fulfilled, (state, action) => {
-        state.loading = false;
-        state.getUsersForBranch = action.payload;
-      })
-      .addCase(GetUserBYBranch.rejected, (state) => {
-        state.loading = false;
-      });
   },
 });
 

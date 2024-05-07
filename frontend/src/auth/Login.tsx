@@ -1,35 +1,35 @@
-import { useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { loginuserAsync } from "../features/authSlice";
-// import { useDispatch } from "react-redux";
+import { loginuserAsync } from "../features/authSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
 const Login = () => {
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
-  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useAppDispatch();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const user = useAppSelector(state => state.auth.user)
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
   });
 
-  const handleHomePage = () => {
-    navigate("/dashboard");
+  useEffect(()=>{
+    if(user?.login){
+      navigate("/")
+    }
+  })
+
+  const handleSubmit = (e:FormEvent<HTMLFormElement>):void => {
+    e.preventDefault();
+    dispatch(loginuserAsync(formData))
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log("formData", formData);
-  //   dispatch(loginuserAsync(formData)).then(() => {
-  //     navigate("/dashboard");
-  //     setFormData({
-  //       email: "",
-  //       password: "",
-  //     });
-  //   });
-  // };
-
-  const togglePasswordVisibility = () => {
+  const togglePasswordVisibility = ():void => {
     setShowPassword(!showPassword);
   };
 
@@ -57,7 +57,7 @@ const Login = () => {
                 Lorem ipsum dolor sit amet consectetur.
               </p>
               <form
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
                 className="space-y-4 md:space-y-6"
               >
                 {/* EMAIL */}
@@ -122,8 +122,8 @@ const Login = () => {
                 </div>
 
                 <button
-                  // type="submit"
-                  onClick={handleHomePage}
+                  type="submit"
+                
                   className="w-full py-2.5 mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide"
                 >
                   LOGIN NOW

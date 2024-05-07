@@ -18,9 +18,16 @@ import SelectedItem from "./pages/selectedItem/SelectedItem";
 import OtpChecker from "./auth/OtpChecker";
 import Terms from "./components/Terms";
 import UserProfile from "./pages/user/UserProfile";
+import { useEffect } from "react";
+import { useAppDispatch } from "./app/hooks";
+import { userSessionAsync } from "./features/authSlice";
 // import Footer from "./components/footer/Footer";
 
 function App() {
+  const dispatch = useAppDispatch();
+  useEffect(()=>{
+    dispatch(userSessionAsync())
+  });
   return (
     <>
       <BrowserRouter>

@@ -15,6 +15,7 @@ const Header = () => {
   const dispatch = useAppDispatch();
 
   const { cart, totalQuantity } = useAppSelector((state) => state.actions);
+  const { user, login } = useAppSelector(state => state.auth.user ?? {user:null,login:false});
 
   useEffect(() => {
     dispatch(getCartTotal());
@@ -112,7 +113,7 @@ const Header = () => {
 
             {/* profile */}
             <Link to="/profile" className="">
-              <UserCircle size={28} className="text-gray-700" />
+           { login && user  ? user?.name :  <UserCircle size={28} className="text-gray-700" />}
             </Link>
 
             {/* search */}
