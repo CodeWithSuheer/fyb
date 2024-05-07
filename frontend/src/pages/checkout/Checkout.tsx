@@ -22,7 +22,7 @@ const Checkout = () => {
   }, [cart, navigate]);
 
   return (
-    <section className="w-full bg-[#FFF3F9] py-14 sm:py-12 px-5 sm:px-8 lg:px-10 xl:px-0">
+    <section className="w-full bg-[#FFF3F9] py-14 sm:py-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
       <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
         <div className="overflow-hidden rounded-xl shadow border border-gray-300">
           <div className="grid grid-cols-1 md:grid-cols-2">
