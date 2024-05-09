@@ -14,19 +14,23 @@ export const createReview = async (req,res,next) => {
   }
 };
 
+
 export const updateReview = async (req,res,next) => {
   try {
     const { id, review, rating } = req.body;
     if(!id) throw new Error(`Review Id required`);
     let updateQuery = {};
-    if (rating && rating.length >= 1) {
-        updateQuery = { ...updateQuery, review };
+
+    if (rating === 0) {
+      throw new Error(`Review must have at least one star rating`);
       } else{
-        throw new Error(`Review must have at least one star rating`);
-      }
-      if (review) {
         updateQuery = { ...updateQuery, rating };
-      }
+      };
+
+      if (review) {
+        updateQuery = { ...updateQuery, review };
+      };
+      
       if(Object.keys(updateQuery).length === 0) throw new Error("No Fields To Update");
      await reviewsAndRatings.findByIdAndUpdate({_id:id},updateQuery);
     return res.status(201).json({ message: "Review updated successfully" });
