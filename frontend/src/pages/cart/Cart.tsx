@@ -27,7 +27,7 @@ const Cart: React.FC = () => {
 
   return (
     <>
-      <section className="w-full py-14 sm:py-14 px-5 sm:px-8 lg:px-10 xl:px-0">
+      <section className="w-full py-14 sm:py-14 px-5 sm:px-8 lg:px-10 xl:px-0 bg-[#FFF3F9] min-h-[90vh]">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           {/* HEADER */}
           <div className="header">
@@ -44,19 +44,19 @@ const Cart: React.FC = () => {
           <div className="">
             {cart && cart.length > 0 ? (
               <div className=" py-6">
-                <div className=" bg-white">
+                <div className="rounded-xl">
                   {/* First Product Row */}
                   {cart.map((product) => (
                     <div
                       key={product.id}
-                      className="grid md:grid-cols-4 items-center gap-8 px-2 py-6 border-b border-gray-400"
+                      className="grid md:grid-cols-4 items-center gap-8 px-4 py-6 mb-4 bg-white border-b border-gray-400 rounded-xl"
                     >
                       <div className="md:col-span-2 flex items-center gap-6">
                         <div className="w-32 h-22 shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-0">
                           <img
                             className="w-full h-full object-contain rounded-md"
-                            src={product.images[0]}
-                            alt={product.title}
+                            src={product?.image.downloadURL}
+                            alt={product?.name}
                           />
                         </div>
                         <div>

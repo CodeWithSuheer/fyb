@@ -1,6 +1,14 @@
 import { IoIosArrowRoundForward } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 const OurCategory = () => {
+  const navigate = useNavigate();
+
+  const handleProducts = (categoryName: string) => {
+    navigate(`/products?category=${categoryName}`);
+    window.scroll(0, 0);
+  };
+
   return (
     <>
       <section className="py-14 sm:py-16 px-4 sm:px-4 xl:px-0">
@@ -12,10 +20,13 @@ const OurCategory = () => {
 
           {/* CONTENT */}
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-4 xl:gap-6">
-            <article className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer">
+            <article
+              onClick={() => handleProducts("Skincare")}
+              className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
+            >
               <img
                 alt=""
-                src="https://cdn.shopify.com/s/files/1/0704/6378/2946/files/Rectangle_3946_2896c00c-2b5d-47b5-b575-200a6f7bcaf4.png?v=1714421689"
+                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Skincare.jpg?v=1715290815"
                 className="absolute inset-0 h-full w-full object-cover"
               />
 
@@ -34,10 +45,13 @@ const OurCategory = () => {
               </div>
             </article>
 
-            <article className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer">
+            <article
+              onClick={() => handleProducts("Body Care")}
+              className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
+            >
               <img
                 alt=""
-                src="https://cdn.shopify.com/s/files/1/0704/6378/2946/files/Rectangle_3947.png?v=1714424364"
+                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Body_care.jpg?v=1715290815"
                 className="absolute inset-0 h-full w-full object-cover"
               />
 
@@ -45,7 +59,7 @@ const OurCategory = () => {
                 <div className="p-4 sm:p-6">
                   <a href="#">
                     <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
-                      Skincare
+                      Bodycare
                     </h3>
 
                     <p className="text-white text-sm tracking-wider flex items-center gap-1">
@@ -56,10 +70,13 @@ const OurCategory = () => {
               </div>
             </article>
 
-            <article className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer">
+            <article
+              onClick={() => handleProducts("Haircare")}
+              className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
+            >
               <img
                 alt=""
-                src="https://cdn.shopify.com/s/files/1/0704/6378/2946/files/Rectangle_3948.png?v=1714424361"
+                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Haircare.jpg?v=1715290815"
                 className="absolute inset-0 h-full w-full object-cover"
               />
 
@@ -67,7 +84,7 @@ const OurCategory = () => {
                 <div className="p-4 sm:p-6">
                   <a href="#">
                     <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
-                      Skincare
+                      Haircare
                     </h3>
 
                     <p className="text-white text-sm tracking-wider flex items-center gap-1">
@@ -78,10 +95,13 @@ const OurCategory = () => {
               </div>
             </article>
 
-            <article className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer">
+            <article
+              onClick={() => handleProducts("Cosmetics")}
+              className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
+            >
               <img
                 alt=""
-                src="https://cdn.shopify.com/s/files/1/0704/6378/2946/files/Group_1211.png?v=1714424373"
+                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Cosmetics.jpg?v=1715290815"
                 className="absolute inset-0 h-full w-full object-cover"
               />
 
@@ -89,7 +109,7 @@ const OurCategory = () => {
                 <div className="p-4 sm:p-6">
                   <a href="#">
                     <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
-                      Skincare
+                      Cosmetics
                     </h3>
 
                     <p className="text-white text-sm tracking-wider flex items-center gap-1">

@@ -4,11 +4,9 @@ import toast from "react-hot-toast";
 import { ReviewFormData } from "../pages/selectedItem/SelectedItem";
 
 // API URLs
-const createReviewUrl = "http://localhost:8000/api/reviews/createReview";
-const updateReviewUrl = "http://localhost:8000/api/reviews/updateReview";
-const deleteReviewUrl = "http://localhost:8000/api/reviews/deleteReview";
-const getAllReviewsByProductUrl =
-  "http://localhost:8000/api/reviews/getAllReviewsByProduct";
+const createOrderUrl = "http://localhost:8000/api/orders/createOrder";
+const getAllOrderUrl = "http://localhost:8000/api/orders/getAllOrdersForUser";
+const updateOrderUrl = "http://localhost:8000/api/orders/updateOrder";
 
 // Interfaces
 // interface User {
@@ -16,42 +14,11 @@ const getAllReviewsByProductUrl =
 // }
 
 // CREATE REVIEWS ASYNC THUNK
-export const createreviewsAsync = createAsyncThunk(
+export const createOrderAsync = createAsyncThunk(
   "reviews/create",
-  async (formData: ReviewFormData) => {
+  async (formData) => {
     try {
-      const response = await axios.post(createReviewUrl, formData);
-      toast.success(response.data.message);
-      console.log(response.data);
-      return response.data;
-    } catch (error: any) {
-      toast.error(error.response.data.error);
-      console.error("Error submitting review:", error);
-    }
-  }
-);
-
-// GET ALL REVIEWS BY PRODUCT ASYNC THUNK
-export const getallreviewsAsync = createAsyncThunk(
-  "reviews/getall",
-  async (id) => {
-    try {
-      const response = await axios.post(getAllReviewsByProductUrl, { id });
-      toast.success(response.data.message);
-      console.log(response.data);
-      return response.data;
-    } catch (error: any) {
-      toast.error(error.response.data.error);
-      console.error("Error submitting review:", error);
-    }
-  }
-);
-
-export const updatereviewsAsync = createAsyncThunk(
-  "reviews/update",
-  async (formData: ReviewFormData) => {
-    try {
-      const response = await axios.post(updateReviewUrl, formData);
+      const response = await axios.post(createOrderUrl, formData);
       // toast.success(response.data.message);
       console.log(response.data);
       return response.data;
@@ -62,13 +29,28 @@ export const updatereviewsAsync = createAsyncThunk(
   }
 );
 
-// DELETE REVIEWS PRODUCT ASYNC THUNK
-export const deletereviewsAsync = createAsyncThunk(
-  "reviews/delete",
+// GET ALL REVIEWS BY PRODUCT ASYNC THUNK
+export const getallOrderAsync = createAsyncThunk(
+  "reviews/getall",
   async (id) => {
     try {
-      const response = await axios.post(deleteReviewUrl, { id });
+      const response = await axios.post(getAllOrderUrl, { id });
       toast.success(response.data.message);
+      console.log(response.data);
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+      console.error("Error submitting review:", error);
+    }
+  }
+);
+
+export const updateOrderAsync = createAsyncThunk(
+  "reviews/update",
+  async (formData: ReviewFormData) => {
+    try {
+      const response = await axios.post(updateOrderUrl, formData);
+      // toast.success(response.data.message);
       console.log(response.data);
       return response.data;
     } catch (error: any) {
@@ -89,22 +71,22 @@ const initialState: ReviewsState = {
   allReviews: [],
 };
 
-const reviewsSlice = createSlice({
-  name: "reviewsSlice",
+const orderSlice = createSlice({
+  name: "orderSlice",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
 
       // GET ALL REVIEWS ADD CASE
-      .addCase(getallreviewsAsync.pending, (state) => {
+      .addCase(getallOrderAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getallreviewsAsync.fulfilled, (state, action) => {
+      .addCase(getallOrderAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.allReviews = action.payload;
       });
   },
 });
 
-export default reviewsSlice.reducer;
+export default orderSlice.reducer;

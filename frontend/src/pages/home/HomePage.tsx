@@ -1,3 +1,4 @@
+import { useAppSelector } from "../../app/hooks";
 import AboutSection from "./AboutSection";
 import CtaSection from "./CtaSection";
 import FeaturesLine from "./FeaturesLine";
@@ -10,6 +11,8 @@ import SecondCta from "./SecondCta";
 import Skincare from "./Skincare";
 
 const HomePage = () => {
+  const allproducts = useAppSelector((state) => state.products.products);
+
   return (
     <>
       <HeroSection />
@@ -20,7 +23,7 @@ const HomePage = () => {
 
       <CtaSection />
 
-      <LatestProducts />
+      <LatestProducts allproducts={allproducts} />
 
       <AboutSection />
 

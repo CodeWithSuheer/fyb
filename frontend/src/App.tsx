@@ -21,17 +21,20 @@ import UserProfile from "./pages/user/UserProfile";
 import { useEffect } from "react";
 import { useAppDispatch } from "./app/hooks";
 import { userSessionAsync } from "./features/authSlice";
-import { getAllProductsAsync, getLatestProductsAsync } from "./features/productSlice";
+import {
+  getAllProductsAsync,
+  getLatestProductsAsync,
+} from "./features/productSlice";
+import Footer from "./components/footer/Footer";
 // import Footer from "./components/footer/Footer";
 
 function App() {
   const dispatch = useAppDispatch();
-  useEffect(()=>{
-    dispatch(userSessionAsync())
-    dispatch(getAllProductsAsync())
-    dispatch(getLatestProductsAsync())
+  useEffect(() => {
+    dispatch(userSessionAsync());
+    dispatch(getAllProductsAsync());
+    dispatch(getLatestProductsAsync());
   });
-
 
   return (
     <>
@@ -61,7 +64,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
         </Routes>
-        {/* <Footer /> */}
+        <Footer />
       </BrowserRouter>
       <Toaster />
     </>

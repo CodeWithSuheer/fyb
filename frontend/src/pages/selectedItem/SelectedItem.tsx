@@ -40,17 +40,20 @@ const SelectedItem: React.FC = () => {
   const dispatch = useDispatch();
 
   const [reviewId, setReviewId] = useState();
+  const [deleteReviewId, setDeleteReviewId] = useState();
   const [activeTab, setActiveTab] = useState<string>("Description");
 
   const allproducts = useAppSelector(
     (state) => state.products.products.products
   );
   const { id } = useParams<RouteParams>();
+  const productId = id;
 
   // DELETE MODAL
   const [isOpen, setIsOpen] = useState(false);
 
-  const openModal = () => {
+  const openModal = (id) => {
+    setDeleteReviewId(id);
     setIsOpen(true);
   };
 
@@ -85,6 +88,9 @@ const SelectedItem: React.FC = () => {
 
   // selected review
   const selectedReview = allreviews.filter((item: any) => item.id === reviewId);
+  const deleteReview = allreviews.filter(
+    (item: any) => item.id === deleteReviewId
+  );
 
   const user = useAppSelector((state) => state.auth.user);
   const userID = user?.user?.id;
@@ -136,7 +142,7 @@ const SelectedItem: React.FC = () => {
     const productID = id;
 
     if (!formData.review || formData.rating === 0) {
-      alert("Please enter a review and rating.");
+      toast.error("Please leave a review or rate with at least one star.");
       return;
     }
     console.log({ productID, userID, ...formData });
@@ -163,24 +169,24 @@ const SelectedItem: React.FC = () => {
   const handleDeleteReview = (id) => {
     dispatch(deletereviewsAsync(id)).then(() => {
       closeModal();
-      dispatch(getallreviewsAsync(id));
+      dispatch(getallreviewsAsync(productId));
     });
   };
 
   return (
     <>
       <div className="pt-4">
-        <div className="p-6 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
+        <div className="px-4 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           {selectedItem.map((product, index) => (
             <div key={index}>
-              <p className="mb-4">Home / Shop / {product.title}</p>
+              <p className="mt-5 mb-4">Home / Shop / {product.name}</p>
               <div
                 key={index}
                 className="grid items-start grid-cols-1 lg:grid-cols-2 gap-5"
               >
                 <div className="w-full lg:sticky top-0 sm:flex gap-2">
                   {/* 5 IMAGES SIDEBAR */}
-                  <div className="mt-1 sm:space-y-3 w-16 max-sm:flex max-sm:mb-4 max-sm:gap-4">
+                  {/* <div className="mt-1 sm:space-y-3 w-16 max-sm:flex max-sm:mb-4 max-sm:gap-4">
                     <img
                       alt="Product1"
                       className="w-full cursor-pointer"
@@ -201,27 +207,18 @@ const SelectedItem: React.FC = () => {
                       className="w-full cursor-pointer"
                       src="https://readymadeui.com/images/product3.webp"
                     />
-                  </div>
+                  </div> */}
 
                   {/* MAIN DISPLAYER IMAGE */}
                   <img
                     alt="Product"
-                    className="w-4/5 rounded object-cover"
+                    className="w-full pr-0 lg:pr-10 rounded object-cover"
                     src={product?.image.downloadURL}
                   />
                 </div>
 
                 {/* CONTENT SIDE */}
-                <div>
-                  {/* REVIEWS STARS */}
-                  <div className="flex space-x-2 mb-4">
-                    <IoStar size={22} className="text-[#FFC209]" />
-                    <IoStar size={22} className="text-[#FFC209]" />
-                    <IoStar size={22} className="text-[#FFC209]" />
-                    <IoStar size={22} className="text-[#FFC209]" />
-                    <IoStar size={22} className="text-[#FFC209]" />
-                  </div>
-
+                <div className="content_side">
                   <h2 className="text-3xl font-extrabold text-gray-800">
                     {product?.name}
                   </h2>
@@ -247,10 +244,21 @@ const SelectedItem: React.FC = () => {
                   </div>
 
                   {/* PRICE SECTION */}
-                  <div className="flex flex-wrap gap-4 mt-4">
-                    <p className="text-gray-800 text-2xl font-bold">
-                      Rs. {product?.price}
-                    </p>
+                  <div className="flex flex-wrap items-center gap-4 mt-4">
+                    {product.price !== product.sale_price ? (
+                      <>
+                        <p className="text-gray-500 text-lg line-through">
+                          Rs. {product.price}
+                        </p>
+                        <p className="text-gray-800 text-2xl font-bold">
+                          Rs. {product.sale_price}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-gray-800 text-2xl font-bold">
+                        Rs. {product.price}
+                      </p>
+                    )}
                   </div>
 
                   {/* CART BUTTON */}
@@ -337,7 +345,7 @@ const SelectedItem: React.FC = () => {
                       </p>
                       <textarea
                         id="OrderNotes"
-                        className="w-full resize-y border border-gray-500 rounded-xl align-top focus:ring-0 focus:border-gray-300 sm:text-sm p-4"
+                        className="w-full resize-y border border-gray-800 rounded-xl align-top focus:ring-0 focus:outline-none focus:border-pink-500 sm:text-sm p-4"
                         rows={4}
                         placeholder="Write a comment..."
                         value={formData.review}
@@ -395,24 +403,21 @@ const SelectedItem: React.FC = () => {
                 key={index}
                 className="mt-3 px-6 py-4 rounded-xl border border-gray-300 bg-[#FFF3F9] all_reviews"
               >
-                <div className="flex justify-between items-center gap-2">
+                <div className="flex justify-between flex-wrap items-center gap-2">
                   <div className="left flex items-center gap-2">
                     <h2>Username</h2>{" "}
                     <p className="w-24">
                       <StarRating rating={data?.rating} />
                     </p>
-                    {userID === data.userID ? (
-                      <p className="text-sm">(Your Review)</p>
-                    ) : null}
                   </div>
                   <div className="right">
                     <p>{new Date(data?.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
-                <div className="mt-2 flex justify-between items-center gap-2">
+                <div className="mt-2 flex justify-between flex-wrap items-center gap-2">
                   <p className="my-1">{data?.review}</p>
 
-                  <div className="edit flex items-center gap-3">
+                  <div className="edit flex items-center  gap-3">
                     {userID === data.userID ? (
                       <>
                         <FiEdit
@@ -421,7 +426,7 @@ const SelectedItem: React.FC = () => {
                           size={20}
                         />
                         <IoTrashOutline
-                          onClick={openModal}
+                          onClick={() => openModal(data?.id)}
                           className="cursor-pointer"
                           size={20}
                         />
@@ -631,7 +636,7 @@ const SelectedItem: React.FC = () => {
               <div className="!mb-6">
                 <textarea
                   id="OrderNotes"
-                  className="w-full resize-y border border-gray-500 rounded-xl align-top focus:ring-0 focus:border-gray-300 sm:text-sm p-4"
+                  className="w-full resize-y border border-gray-800 rounded-xl align-top focus:ring-0 focus:outline-none focus:border-pink-500 sm:text-sm p-4"
                   rows={4}
                   placeholder="Write a comment..."
                   value={updateReviewData.review || data.review}
@@ -675,7 +680,7 @@ const SelectedItem: React.FC = () => {
               <Button
                 onClick={() => handleUpdateReview(data?.id)}
                 size="sm"
-                className="bg-blue-600 hover:bg-blue-500"
+                className="bg-[#EC72AF] hover:bg-[#f181b9]"
               >
                 Update Review
               </Button>
@@ -685,7 +690,7 @@ const SelectedItem: React.FC = () => {
       ))}
 
       {/* DELETE MODAL */}
-      {selectedItem.map((data, index) => (
+      {deleteReview.map((data, index) => (
         <Modal key={index} isOpen={isOpen} onClose={closeModal}>
           <Modal.Body className="space-y-3">
             <Modal.Icon>
