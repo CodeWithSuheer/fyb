@@ -39,7 +39,7 @@ export const deleteReview = async (req,res,next) => {
     try {
         const { id } = req.body;
         await reviewsAndRatings.findByIdAndDelete(id);
-        return res.status(201).json({ message: "Review updated successfully" });
+        return res.status(201).json({ message: "Review deleted successfully" });
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -48,8 +48,8 @@ export const deleteReview = async (req,res,next) => {
 export const getAllReviewsByProduct = async (req, res, next) => {
     try {
         const { id } = req.body;
-        if(id) throw new Error('Id not recieved');
-        const productReviews = await reviewsAndRatings.findById(id).sort({createdAt:-1});
+        if(!id) throw new Error('Id not recieved');
+        const productReviews = await reviewsAndRatings.find({productID:id}).sort({createdAt:-1});
         setMongoose();
         return res.status(200).json(productReviews);
     } catch (error) {

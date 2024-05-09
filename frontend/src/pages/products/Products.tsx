@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-// import { motion } from "framer-motion";
 import { FaStar } from "react-icons/fa";
-import productData from "../../Data/ProductData";
-import "./Products.css";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import "./Products.css";
 
 // const data = [
 //   {
@@ -61,6 +60,9 @@ import { useNavigate } from "react-router-dom";
 const Products = () => {
   const navigate = useNavigate();
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
+
+  const allproducts = useAppSelector((state) => state.products.products);
+  console.log("allproducts", allproducts.products);
 
   useEffect(() => {
     // Dummy animation to trigger the stagger effect on mount
@@ -289,7 +291,7 @@ const Products = () => {
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
               <ul className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-                {productData.slice(0, 9).map((data, index) => (
+                {allproducts?.products?.map((data, index) => (
                   <li
                     key={index}
                     onClick={() => handleItemClick(String(data.id))}
@@ -297,13 +299,13 @@ const Products = () => {
                     <div className="group mb-5 relative group w-full bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                       <img
                         className="object-cover w-full h-56"
-                        src={data.images[0]}
+                        src={data?.image.downloadURL}
                         alt="products"
                       />
 
                       <div className="py-5 text-center">
                         <h3 className="playfair mb-2 text-lg font-semibold text-gray-800">
-                          {data.category.name}
+                          {data?.name}
                         </h3>
 
                         {/* STARS */}
@@ -318,7 +320,7 @@ const Products = () => {
                         <p className="mb-3 text-md text-gray-500">(Skincare)</p>
 
                         <p className="mb-3 text-xl font-semibold text-black">
-                          ${data.price}
+                          ${data?.price}
                         </p>
 
                         <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">

@@ -57,9 +57,9 @@ export const loginuserAsync = createAsyncThunk(
 // GET ALL PRODUCT ASYNC THUNK
 export const getAllProductsAsync = createAsyncThunk(
   "products/get ",
-  async () => {
+  async (id) => {
     try {
-      const response = await axios.post(getAllProductUrl);
+      const response = await axios.post(getAllProductUrl, id);
       //   toast.success(response.data.message);
       console.log("All", response.data);
       return response.data;
@@ -149,7 +149,7 @@ const productSlice = createSlice({
       })
       .addCase(getLatestProductsAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.latestProducts = action.payload;
+        state.allReviews = action.payload;
       })
 
       // Session ADD CASE
