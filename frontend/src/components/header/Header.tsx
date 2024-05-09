@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineMenu } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { Avatar, Dropdown, Button } from "keep-react";
 import { getCartTotal } from "../../features/ActionsSlice";
 import {
   ArrowLeft,
@@ -9,13 +10,16 @@ import {
   ShoppingCart,
   UserCircle,
 } from "phosphor-react";
+import { logoutUserAsync } from "../../features/authSlice";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useAppDispatch();
 
   const { cart, totalQuantity } = useAppSelector((state) => state.actions);
-  const { user, login } = useAppSelector(state => state.auth.user ?? {user:null,login:false});
+  const data = useAppSelector((state) => state.auth.user);
+  const user = data?.user;
+  const login = data?.login;
 
   useEffect(() => {
     dispatch(getCartTotal());
@@ -36,6 +40,10 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    dispatch(logoutUserAsync());
+  };
+
   return (
     <>
       {/* BANNER */}
@@ -51,7 +59,7 @@ const Header = () => {
       </div>
 
       {/* NAVBAR */}
-      <header className="flex py-1 lg:py-5 px-4 sm:px-7 bg-[#fff] md:min-h-[70px] tracking-wide relative z-50">
+      <header className="flex py-1 lg:py-3 px-4 sm:px-7 bg-[#fff] md:min-h-[70px] tracking-wide relative z-50">
         <div className="flex flex-wrap items-center justify-center sm:justify-between gap-4 w-full">
           <Link
             to="/"
@@ -98,7 +106,7 @@ const Header = () => {
           </div>
 
           {/* LEFT SIDE BUTTONS */}
-          <div className="flex items-center ml-auto space-x-6 sm:space-x-5">
+          <div className="flex items-center ml-auto space-x-6 sm:space-x-7">
             {/* cart */}
             {window.innerWidth > 425 ? (
               <Link to="/cart" className="relative">
@@ -111,15 +119,59 @@ const Header = () => {
               </Link>
             ) : null}
 
-            {/* profile */}
-            <Link to="/profile" className="">
-           { login && user  ? user?.name :  <UserCircle size={28} className="text-gray-700" />}
-            </Link>
-
             {/* search */}
             <button className="">
-              <MagnifyingGlass size={26} className="text-gray-700" />
+              <MagnifyingGlass size={26} className="text-gray-700 -mr-2" />
             </button>
+
+            {/* profile */}
+            {/* <Link to="/profile" className="">
+              {login && user ? (
+                user?.name
+              ) : (
+                <UserCircle size={28} className="text-gray-700" />
+              )}
+            </Link> */}
+
+            {/* DROPDOWN */}
+            {login && user ? (
+              <Dropdown
+                showArrow
+                action={
+                  <Button className="-py-0 px-1 bg-white text-black hover:bg-white hover:text-black hover:underline hover:underline-offset-2 text-lg font-normal ">
+                    {user?.name}
+                  </Button>
+                }
+                actionClassName="border-none"
+              >
+                <Dropdown.List className="">
+                  <Dropdown.Item className="p-0 flex flex-col hover:bg-white">
+                    <Link
+                      to="/profile"
+                      className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
+                    >
+                      User Profile
+                    </Link>
+                    <Link
+                      to="/profile"
+                      className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
+                    >
+                      Order Tracking
+                    </Link>
+                    <p
+                      onClick={handleLogout}
+                      className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
+                    >
+                      Sign out
+                    </p>
+                  </Dropdown.Item>
+                </Dropdown.List>
+              </Dropdown>
+            ) : (
+              <Link to="/login">
+                <UserCircle size={28} className="text-gray-700" />
+              </Link>
+            )}
 
             <button className="lg:hidden" id="toggleOpen" onClick={toggleMenu}>
               <MdOutlineMenu size={26} />
