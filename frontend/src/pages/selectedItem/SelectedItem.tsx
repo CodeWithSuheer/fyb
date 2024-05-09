@@ -98,13 +98,13 @@ const SelectedItem: React.FC = () => {
   // FORMDATA
   const [formData, setFormData] = useState<ReviewFormData>({
     review: "",
-    rating: 0,
+    rating: 1,
   });
 
   // UPDATE REVIEW DATA
   const [updateReviewData, setUpdateReviewData] = useState<ReviewFormData>({
     review: "",
-    rating: 0,
+    rating: 1,
   });
 
   // CALLING API TO GET ALL REVIEWS
@@ -155,12 +155,15 @@ const SelectedItem: React.FC = () => {
   };
 
   // HANDLE UPDATE REVIEW
-  const handleUpdateReview = () => {
-    // const productID = id;
+  const handleUpdateReview = (review_Id) => {
+    const id = review_Id;
 
-    console.log({ id, ...updateReviewData });
+    delete updateReviewData.rating;
+    console.log("ajsbciajkcbnklaj", { id, ...updateReviewData });
+
     dispatch(updatereviewsAsync({ id, ...updateReviewData })).then(() => {
-      dispatch(getallreviewsAsync(id));
+      dispatch(getallreviewsAsync(productId));
+      closeUpdateModal();
     });
     setUpdateReviewData({ review: "", rating: 0 });
   };
