@@ -3,13 +3,15 @@ import authSlice from "../features/authSlice";
 import ActionsSlice from "../features/ActionsSlice";
 import productSlice from "../features/productSlice";
 import reviewsSlice from "../features/reviewsSlice";
+import orderSlice from "../features/orderSlice";
 
 export const store = configureStore({
   reducer: {
     actions: ActionsSlice,
     auth: authSlice,
     products: productSlice,
-    reviews: reviewsSlice
+    reviews: reviewsSlice,
+    orders: orderSlice,
   },
 });
 

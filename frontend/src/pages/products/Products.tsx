@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import "./Products.css";
 
@@ -61,14 +61,24 @@ const Products = () => {
   const navigate = useNavigate();
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
-  const allproducts = useAppSelector((state) => state.products.products);
+  const allproducts = useAppSelector((state) => state.products.products || []);
   console.log("allproducts", allproducts.products);
 
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
+  console.log("category", category);
+
   useEffect(() => {
-    // Dummy animation to trigger the stagger effect on mount
-    const timer = setTimeout(() => {}, 100);
-    return () => clearTimeout(timer);
-  }, []);
+    if (category) {
+      const filtered = allproducts.products.filter((product) => product?.category === category);
+      console.log('filtered', filtered);
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(allproducts.products);
+    }
+  }, [category, allproducts]);
 
   const toggleCategory = () => {
     setIsCategoryVisible(!isCategoryVisible);
@@ -290,8 +300,8 @@ const Products = () => {
 
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
-              <ul className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-                {allproducts?.products?.map((data, index) => (
+              <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
+                {filteredProducts?.map((data, index) => (
                   <li
                     key={index}
                     onClick={() => handleItemClick(String(data.id))}
@@ -304,7 +314,7 @@ const Products = () => {
                       />
 
                       <div className="py-5 text-center">
-                        <h3 className="playfair mb-2 text-lg font-semibold text-gray-800">
+                        <h3 className="playfair mb-2 text-md sm:text-lg font-semibold text-gray-800">
                           {data?.name}
                         </h3>
 

@@ -19,7 +19,7 @@ export const signUp = async (req, res, next) => {
       password: hashedPassword,
       name,
     });
-    res.status(201).json({success:true, message: "Sign Up Successful!" });
+    res.status(201).json({ success: true, message: "Sign Up Successful!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -151,33 +151,29 @@ export const verifyOtp = async (req, res, next) => {
   }
 };
 
-export const updateUserInformation = async (req,res,next) => {
+export const updateUserInformation = async (req, res, next) => {
   try {
-    const { id, name, email, address, phone} =
-    req.body;
-    if(!id) throw new Error("User ID Required")
-  let updateQuery = {
-    name,
-    address,
-    phone,
-    email,
-  };
-  if(name){
-    updateQuery = {...updateQuery,name}
-  };
-  if(address){
-    updateQuery = {...updateQuery,address}
-  };
-  if(phone){
-    updateQuery = {...updateQuery,phone}
-  };
-  if(email){
-    const isEmailExist = await UserModel.findOne({email});
-    if(isEmailExist) throw new Error('This Email Is Already Exists')
-    else{updateQuery = {...updateQuery,email}}
-  };
-  await UserModel.findByIdAndDelete(id,updateQuery)
-  return res.status(500).json({ message:"Update Successfull"});
+    const { id, name, email, address, phone } = req.body;
+    if (!id) throw new Error("User ID Required");
+    let updateQuery = {};
+    if (name) {
+      updateQuery = { ...updateQuery, name };
+    }
+    if (address) {
+      updateQuery = { ...updateQuery, address };
+    }
+    if (phone) {
+      updateQuery = { ...updateQuery, phone };
+    }
+    if (email) {
+      const isEmailExist = await UserModel.findOne({ email });
+      if (isEmailExist) throw new Error("This Email Is Already Exists");
+      else {
+        updateQuery = { ...updateQuery, email };
+      }
+    }
+    await UserModel.findByIdAndUpdate(id, updateQuery);
+    return res.status(200).json({ message: "Update Successfull" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

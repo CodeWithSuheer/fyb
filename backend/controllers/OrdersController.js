@@ -3,7 +3,8 @@ import { setMongoose } from "../utils/Mongoose.js";
 
 export const createOrder = async (req, res, next) => {
   try {
-    const { items, name, userID, address, phone, totalAmount , couponUsed} =
+    const { items, name, userID, address, phone, totalAmount ,orderProgress, couponUsed} =
+
       req.body;
     if (items.length === 0) {
       throw new Error("No Items In Cart");
@@ -11,18 +12,20 @@ export const createOrder = async (req, res, next) => {
     if (!userID || !address || !phone || !totalAmount || !name) {
       throw new Error("Please provide All Fields");
     }
-    const order = await OrdersModel.create({
+    await OrdersModel.create({
       items,
       userID,
       name,
       address,
       phone,
       totalAmount,
+
       couponUsed
     });
     return res
       .status(201)
       .json({ message: "Order PLaced Succcessfully", OrderTrackingID: order.OrderID });
+
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -63,7 +66,7 @@ export const getAllOrdersForUser = async (req, res, next) => {
   try {
     const { id } = req.body;
     if (!id) throw new Error("You must provide an Id");
-    const orders = await OrdersModel.find({ id }).sort({ createdAt: -1 });
+    const orders = await OrdersModel.find({ userID :id }).sort({ createdAt: -1 });
     setMongoose();
     return res.status(200).json(orders);
   } catch (error) {
