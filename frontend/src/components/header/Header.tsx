@@ -4,6 +4,7 @@ import { MdOutlineMenu } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Dropdown, Button } from "keep-react";
 import { getCartTotal } from "../../features/ActionsSlice";
+import { IoIosArrowDown } from "react-icons/io";
 import {
   ArrowLeft,
   MagnifyingGlass,
@@ -145,8 +146,9 @@ const Header = () => {
                 <Dropdown
                   showArrow
                   action={
-                    <Button className="-py-0 px-1 bg-white text-black hover:bg-white hover:text-black hover:underline hover:underline-offset-2 text-lg font-normal">
-                      {user?.name}
+                    <Button className="-py-0 px-1 bg-white text-black capitalize hover:bg-white hover:text-black hover:underline hover:underline-offset-2 text-lg font-normal">
+                      <span className="pr-1">{user?.name}</span>{" "}
+                      <IoIosArrowDown />
                     </Button>
                   }
                   actionClassName="border-none"

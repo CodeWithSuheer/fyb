@@ -14,89 +14,126 @@ const MyOrders = () => {
   useEffect(() => {
     if (userID) {
       const id = userID;
-      // dispatch(getallOrderAsync(id));
+      dispatch(getallOrderAsync(id));
     }
   }, [userID, dispatch]);
 
+  const products = [
+    {
+      id: 1,
+      name: "Nike Air Force 1 07 LV8",
+      imageSrc:
+        "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/54a510de-a406-41b2-8d62-7f8c587c9a7e/air-force-1-07-lv8-shoes-9KwrSk.png",
+      href: "#",
+      price: "₹61,999",
+      color: "Orange",
+      imageAlt: "Nike Air Force 1 07 LV8",
+      quantity: 1,
+    },
+    {
+      id: 2,
+      name: "Nike Run Division, Airmax Pro Ultra Mens Runnig Shoes",
+      imageSrc:
+        "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/e48d6035-bd8a-4747-9fa1-04ea596bb074/blazer-low-77-se-shoes-0w2HHV.png",
+      href: "#",
+      price: "₹22,500",
+      color: "White",
+      imageAlt:
+        "APPLE Airpods Pro with MagSafe Charging Case Bluetooth Headset",
+      quantity: 1,
+    },
+  ];
+
   return (
     <>
-      <div className="min-h-screen bg-[#FDEDF5] w-full overflow-hidden">
-        <main className="flex-1 p-4 md:p-6">
-          <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-            <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold">Order History</h1>
-              <button
-                className="inline-flex bg-white items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
-                type="button"
-                id="radix-:r2p:"
-                aria-haspopup="menu"
-                aria-expanded="false"
-                data-state="closed"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  className="h-4 w-4 mr-2"
-                >
-                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-                Filter
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
-              {allOrder.map((data, index) => (
-                <div className="rounded-lg bg-white border bg-card text-card-foreground shadow-sm"
-                  data-v0-t="card"
-                >
-                  <div className="flex flex-col space-y-1.5 p-6">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">#1234</span>
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
-                        June 15, 2023
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="space-y-2">
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Items Ordered
-                        </p>
-                        <p>2 x Acme Widgets</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Total Amount
-                        </p>
-                        <p className="font-medium">$99.98</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Order Status
-                        </p>
-                        <p className="text-green-500 font-medium">Delivered</p>
+      <section className="w-full bg-[#FFF3F9] py-14 sm:py-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
+        <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
+          <h2 className="playfair text-3xl font-bold">Order Details</h2>
+          <div className="mt-3 text-sm">
+            Check the status of recent and old orders & discover more products
+          </div>
+          {allOrder.map((data, index) => (
+            <div
+              key={index}
+              className="mt-8 flex flex-col overflow-hidden rounded-lg border border-gray-300 md:flex-row"
+            >
+              <div className="w-full border-r border-gray-300 bg-gray-100 md:max-w-xs">
+                <div className="p-8">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-1">
+                    <div className="mb-4">
+                      <div className="text-sm font-semibold">Order ID</div>
+                      <div className="text-sm font-medium text-gray-700">
+                        {data?.OrderID}
                       </div>
                     </div>
-                  </div>
-                  <div className="items-center p-6 flex justify-end">
-                    <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                      View Order
-                    </button>
+                    <div className="mb-4">
+                      <div className="text-sm font-semibold">Date</div>
+                      <div className="text-sm font-medium text-gray-700">
+                        {new Date(data?.createdAt).toLocaleDateString()}
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <div className="text-sm font-semibold">Total Amount</div>
+                      <div className="text-sm font-medium text-gray-700">
+                        {data?.totalAmount}
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <div className="text-sm font-semibold">Order Status</div>
+                      <div className="text-sm font-medium text-gray-700">
+                        Pending
+                      </div>
+                    </div>
                   </div>
                 </div>
-              ))}
+              </div>
+              <div className="flex-1 bg-white">
+                <div className="p-8">
+                  <ul className="-my-7 divide-y divide-gray-200">
+                    {data.items.map((product) => (
+                      <li
+                        key={product.id}
+                        className="flex flex-col justify-between space-x-5 py-7 md:flex-row"
+                      >
+                        <div className="flex flex-1 items-stretch">
+                          <div className="flex-shrink-0">
+                            <img
+                              className="h-20 w-20 rounded-lg border border-gray-200 object-contain"
+                              src={product?.image.downloadURL}
+                              alt="order_img"
+                            />
+                          </div>
+
+                          <div className="ml-5 flex flex-col justify-between">
+                            <div className="flex-1">
+                              <p className="text-sm font-bold text-gray-900">
+                                {product.name}
+                              </p>
+                              <p className="mt-1.5 text-sm font-medium text-gray-500">
+                                {product.category}
+                              </p>
+                            </div>
+
+                            <p className="mt-4 text-sm font-medium text-gray-500">
+                              x {product.quantity}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="ml-auto flex flex-col items-end justify-between">
+                          <p className="text-right text-sm font-bold text-gray-900">
+                            Rs. {product.price}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
-        </main>
-      </div>
+          ))}
+        </div>
+      </section>
     </>
   );
 };

@@ -12,6 +12,13 @@ const Footer = () => {
     });
   };
 
+  const handleMoveTop = () => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <footer className="bg-[#EC72AF] text-white">
@@ -30,44 +37,47 @@ const Footer = () => {
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:col-span-3">
               {/* MENU */}
               <div className="text-center sm:text-left">
-                <p className="text-xl font-medium text-white">About Us</p>
+                <p className="text-xl font-medium text-white">Menu</p>
 
                 <ul className="mt-5 space-y-4 text-sm">
                   <li>
-                    <a
+                    <Link
+                      to="/"
+                      onClick={handleMoveTop}
                       className="text-white transition hover:text-white"
-                      href="#"
                     >
-                      Company History
-                    </a>
+                      Home
+                    </Link>
                   </li>
 
                   <li>
-                    <a
+                    <Link
+                      to="/products"
+                      onClick={handleMoveTop}
                       className="text-white transition hover:text-white"
-                      href="#"
                     >
-                      Meet the Team
-                    </a>
+                      Shop
+                    </Link>
                   </li>
 
                   <li>
-                    <a
+                    <Link
+                      to="/about"
+                      onClick={handleMoveTop}
                       className="text-white transition hover:text-white"
-                      href="#"
                     >
-                      Employee Handbook
-                    </a>
+                      About Us
+                    </Link>
                   </li>
 
                   <li>
-                    <a
+                    <Link
+                      to="/contact"
+                      onClick={handleMoveTop}
                       className="text-white transition hover:text-white"
-                      href="#"
                     >
-                      {" "}
-                      Careers{" "}
-                    </a>
+                      Contact Us
+                    </Link>
                   </li>
                 </ul>
               </div>

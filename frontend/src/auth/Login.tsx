@@ -133,7 +133,7 @@ const Login = () => {
                   <Link
                     to="/signup"
                     onClick={() =>
-                      window.scrollTo({ top: 400, behavior: "smooth" })
+                      window.scrollTo({ top: 0, behavior: "smooth" })
                     }
                     className="font-medium text-primary-600 hover:underline"
                   >

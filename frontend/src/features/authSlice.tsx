@@ -1,10 +1,8 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import { SignupFormData } from "../auth/Signup"; // Update the path
+import { SignupFormData } from "../auth/Signup";
 import { LoginFormData } from "../auth/Login";
-
-// Rest of your code
 
 // API URLs
 const signupUrl = "http://localhost:8000/api/users/signup";
@@ -62,7 +60,7 @@ export const updateuserAsync = createAsyncThunk(
   async (formData: LoginFormData) => {
     try {
       const response = await axios.post(updateUrl, formData);
-      toast.success(response.data.message);
+      // toast.success(response.data.message);
       console.log(response.data);
       return response.data;
     } catch (error: any) {

@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import { updateuserAsync, userSessionAsync } from "../../features/authSlice";
+import { createOrderAsync, getallOrderAsync } from "../../features/orderSlice";
 import { useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
-import { createOrderAsync } from "../../features/orderSlice";
+import { Button, Modal } from "keep-react";
 import { useDispatch } from "react-redux";
 import { Check } from "phosphor-react";
-import { Button, Modal } from "keep-react";
-import { updateuserAsync, userSessionAsync } from "../../features/authSlice";
+import { clearCart } from "../../features/ActionsSlice";
+import { getallreviewsAsync } from "../../features/reviewsSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -20,6 +22,8 @@ const Checkout = () => {
 
   const closeModal = () => {
     setIsOpen(false);
+    navigate("/");
+    window.scroll(0, 0);
   };
 
   const user = useAppSelector((state) => state.auth.user);
@@ -52,46 +56,53 @@ const Checkout = () => {
     }
   }, [cart, navigate, user]);
 
+  // const handleSaveDetails = (e) => {
+  //   e.preventDefault();
 
-
-  const handleSaveDetails = (e) => {
-    e.preventDefault();
-
-    const id = userID;
-    console.log({ id, ...formData });
-    dispatch(updateuserAsync({ id, ...formData })).then((res) => {
-      // dispatch(userSessionAsync());
-    });
-  };
+  //   const id = userID;
+  //   console.log({ id, ...formData });
+  //   dispatch(updateuserAsync({ id, ...formData })).then((res) => {
+  //     dispatch(userSessionAsync());
+  //   });
+  // };
 
   // HANDLE SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, phone, address } = formData;
-    const items = cart;
-    const totalAmount = totalPrice + shippingCharges;
+    const id = userID;
 
-    const requestData = {
-      name,
-      phone,
-      address,
-      items,
-      userID,
-      totalAmount,
-    };
-
-    dispatch(createOrderAsync(requestData)).then((res) => {
+    dispatch(updateuserAsync({ id, ...formData })).then((res) => {
       console.log("res", res);
-      if (res.payload.message === "Order PLaced Succcessfully") {
-        openModal();
-      }
+      dispatch(userSessionAsync());
 
-      setFormData({
-        name: "",
-        phone: "",
-        address: "",
-      });
+      if (res.payload.message === "Update Successfull") {
+        const { name, phone, address } = formData;
+        const items = cart;
+        const totalAmount = totalPrice + shippingCharges;
+        const requestData = {
+          name,
+          phone,
+          address,
+          items,
+          userID,
+          totalAmount,
+        };
+
+        dispatch(createOrderAsync(requestData)).then((res) => {
+          console.log("res", res);
+          if (res.payload.message === "Order PLaced Succcessfully") {
+            openModal();
+            dispatch(clearCart());
+            dispatch(getallOrderAsync(id));
+          }
+          setFormData({
+            name: "",
+            phone: "",
+            address: "",
+          });
+        });
+      }
     });
   };
 
@@ -156,14 +167,14 @@ const Checkout = () => {
                           </div>
 
                           <div className="flex justify-end pt-3">
-                            {user?.address ? (
-                              <button
-                                type="submit"
-                                className="rounded-md bg-[#EC72AF] px-4 py-2.5 tracking-wide text-sm font-semibold text-white shadow-sm"
-                              >
-                                ORDER NOW
-                              </button>
-                            ) : (
+                            {/* {user?.address ? ( */}
+                            <button
+                              type="submit"
+                              className="rounded-md bg-[#EC72AF] hover:bg-[#f181b9] px-4 py-2.5 tracking-wide text-sm font-semibold text-white shadow-sm"
+                            >
+                              ORDER NOW
+                            </button>
+                            {/* ) : (
                               <button
                                 type="button"
                                 onClick={handleSaveDetails}
@@ -171,7 +182,7 @@ const Checkout = () => {
                               >
                                 Save Details
                               </button>
-                            )}
+                            )} */}
                           </div>
                         </div>
                       </form>
@@ -228,7 +239,7 @@ const Checkout = () => {
                   </ul>
                 </div>
                 <hr className="mt-6 border-gray-200" />
-                <div className="mt-6">
+                {/* <div className="mt-6">
                   <div className="button_coupn flex justify-end">
                     <button
                       onClick={handleCouponButtonClick}
@@ -248,7 +259,6 @@ const Checkout = () => {
                         />
                       </div>
 
-                      {/* APPLY COUPON CODE */}
                       <div className="mt-4 sm:mt-0 md:mt-4 lg:mt-0">
                         <button
                           type="button"
@@ -259,7 +269,7 @@ const Checkout = () => {
                       </div>
                     </div>
                   )}
-                </div>
+                </div> */}
                 <ul className="mt-6 space-y-3">
                   <li className="flex items-center justify-between text-gray-600">
                     <p className="text-md font-medium">Sub total</p>

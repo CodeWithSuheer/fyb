@@ -153,7 +153,7 @@ const Signup: React.FC = () => {
                   <Link
                     to="/privacy-policy"
                     onClick={() =>
-                      window.scrollTo({ top: 400, behavior: "smooth" })
+                      window.scrollTo({ top: 0, behavior: "smooth" })
                     }
                     className="underline underline-offset-2 font-medium cursor-pointer"
                   >
