@@ -160,7 +160,7 @@ const Header = () => {
                         User Profile
                       </Link>
                       <Link
-                        to="/profile"
+                        to="/orders"
                         className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
                       >
                         Order Tracking

@@ -63,12 +63,12 @@ export const updateOrderAsync = createAsyncThunk(
 // INITIAL STATE
 interface ReviewsState {
   loading: boolean;
-  allReviews: [];
+  allOrders: [];
 }
 
 const initialState: ReviewsState = {
   loading: false,
-  allReviews: [],
+  allOrders: [],
 };
 
 const orderSlice = createSlice({
@@ -84,7 +84,7 @@ const orderSlice = createSlice({
       })
       .addCase(getallOrderAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.allReviews = action.payload;
+        state.allOrders = action.payload;
       });
   },
 });

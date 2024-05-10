@@ -5,6 +5,7 @@ import { createOrderAsync } from "../../features/orderSlice";
 import { useDispatch } from "react-redux";
 import { Check } from "phosphor-react";
 import { Button, Modal } from "keep-react";
+import { updateuserAsync, userSessionAsync } from "../../features/authSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Checkout = () => {
   const openModal = () => {
     setIsOpen(true);
   };
+
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -24,17 +26,14 @@ const Checkout = () => {
   const userID = user?.user?.id;
 
   const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    address: "",
+    name: user?.user?.name || "",
+    phone: user?.user?.phone || "",
+    address: user?.user?.address || "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const shippingCharges = 300;
@@ -51,9 +50,19 @@ const Checkout = () => {
     if (!user) {
       navigate("/login");
     }
-  }, [cart, navigate]);
+  }, [cart, navigate, user]);
 
-  // const { items, name, userID, address, phone, totalAmount, OrderID , couponUsed}
+
+
+  const handleSaveDetails = (e) => {
+    e.preventDefault();
+
+    const id = userID;
+    console.log({ id, ...formData });
+    dispatch(updateuserAsync({ id, ...formData })).then((res) => {
+      // dispatch(userSessionAsync());
+    });
+  };
 
   // HANDLE SUBMIT
   const handleSubmit = async (e) => {
@@ -73,6 +82,7 @@ const Checkout = () => {
     };
 
     dispatch(createOrderAsync(requestData)).then((res) => {
+      console.log("res", res);
       if (res.payload.message === "Order PLaced Succcessfully") {
         openModal();
       }
@@ -146,12 +156,22 @@ const Checkout = () => {
                           </div>
 
                           <div className="flex justify-end pt-3">
-                            <button
-                              type="submit"
-                              className="rounded-md bg-[#EC72AF] px-4 py-2.5 tracking-wide text-sm font-semibold text-white shadow-sm"
-                            >
-                              ORDER NOW
-                            </button>
+                            {user?.address ? (
+                              <button
+                                type="submit"
+                                className="rounded-md bg-[#EC72AF] px-4 py-2.5 tracking-wide text-sm font-semibold text-white shadow-sm"
+                              >
+                                ORDER NOW
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={handleSaveDetails}
+                                className="rounded-md bg-[#EC72AF] px-4 py-2.5 tracking-wide text-sm font-semibold text-white shadow-sm"
+                              >
+                                Save Details
+                              </button>
+                            )}
                           </div>
                         </div>
                       </form>
@@ -180,13 +200,13 @@ const Checkout = () => {
                           <div className="ml-5 flex flex-col justify-between">
                             <div className="flex-1">
                               <p className="text-sm font-bold">
-                                {product?.title}
-                              </p>
-                              <p className="mt-1.5 text-sm font-medium text-gray-500">
                                 {product?.name}
                               </p>
+                              <p className="mt-1.5 text-sm font-medium text-gray-500">
+                                {product?.category}
+                              </p>
                             </div>
-                            <p className="mt-4 text-sm font-medium ">
+                            <p className="mt-3 text-sm font-medium ">
                               x {product?.quantity}
                             </p>
                           </div>
@@ -269,20 +289,13 @@ const Checkout = () => {
           </Modal.Icon>
           <Modal.Content className="my-4 text-center">
             <h3 className="mb-2 text-body-1 font-bold text-metal-900">
-              Order Placed Successfully
+              Order Successfully Placed
             </h3>
             <p className="mx-auto max-w-xs text-body-4 font-normal text-metal-600">
-              Thanks for creating this order we would to serve you.
+              Thanks for choosing us! We're excited to provide outstanding
+              service.
             </p>
           </Modal.Content>
-          <Modal.Footer>
-            <Button
-              onClick={closeModal}
-              className="px-6 py-2 text-white bg-[#EC72AF] hover:text-white hover:bg-[#EC72AF]"
-            >
-              Close
-            </Button>
-          </Modal.Footer>
         </Modal.Body>
       </Modal>
     </>

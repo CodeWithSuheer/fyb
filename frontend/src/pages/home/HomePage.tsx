@@ -1,4 +1,5 @@
-import { useAppSelector } from "../../app/hooks";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import AboutSection from "./AboutSection";
 import CtaSection from "./CtaSection";
 import FeaturesLine from "./FeaturesLine";
@@ -9,9 +10,22 @@ import OurCategory from "./OurCategory";
 import Review from "./Review";
 import SecondCta from "./SecondCta";
 import Skincare from "./Skincare";
+import { getallOrderAsync } from "../../features/orderSlice";
 
 const HomePage = () => {
+  const dispatch = useAppDispatch();
+
   const allproducts = useAppSelector((state) => state.products.products);
+  const user = useAppSelector((state) => state.auth.user);
+  const userID = user?.user?.id;
+
+  useEffect(() => {
+    if (userID) {
+      const id = userID;
+      dispatch(getallOrderAsync(id));
+    }
+  }, [userID, dispatch]);
+
 
   return (
     <>
@@ -27,11 +41,11 @@ const HomePage = () => {
 
       <AboutSection />
 
-      <Skincare />
+      <Skincare allproducts={allproducts} />
 
       <SecondCta />
 
-      <HairCare />
+      <HairCare allproducts={allproducts} />
 
       <Review />
     </>

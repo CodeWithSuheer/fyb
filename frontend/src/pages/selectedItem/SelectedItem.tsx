@@ -41,6 +41,7 @@ const SelectedItem: React.FC = () => {
 
   const [reviewId, setReviewId] = useState();
   const [deleteReviewId, setDeleteReviewId] = useState();
+  const [isReviewVisible, setIsReviewVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("Description");
 
   const allproducts = useAppSelector(
@@ -59,6 +60,10 @@ const SelectedItem: React.FC = () => {
 
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  const toggleReviewVisibility = () => {
+    setIsReviewVisible((prevVisibility) => !prevVisibility);
   };
 
   // UPDATE MODAL
@@ -80,11 +85,9 @@ const SelectedItem: React.FC = () => {
 
   // filter product based on id
   const selectedItem = allproducts.filter((item: any) => item.id === id);
-  console.log("selectedItem", selectedItem);
 
   // filter review based on id
   const allreviews = useAppSelector((state) => state.reviews.allReviews);
-  console.log("allreviews", allreviews);
 
   // selected review
   const selectedReview = allreviews.filter((item: any) => item.id === reviewId);
@@ -124,8 +127,11 @@ const SelectedItem: React.FC = () => {
     setFormData((prevData) => ({ ...prevData, rating: starValue }));
   };
 
+  const [selectedRating, setSelectedRating] = useState();
+
   const handleUpdateStarClick = (starValue: number) => {
-    setUpdateReviewData((prevData) => ({ ...prevData, rating: starValue }));
+    setSelectedRating(starValue);
+    console.log(selectedRating);
   };
 
   // HANDLE ADD TO CART
@@ -151,21 +157,30 @@ const SelectedItem: React.FC = () => {
         dispatch(getallreviewsAsync(id));
       }
     );
-    setFormData({ review: "", rating: 0 });
+    setFormData({ review: "", rating: 1 });
   };
 
   // HANDLE UPDATE REVIEW
-  const handleUpdateReview = (review_Id) => {
+  const handleUpdateReview = (review_Id, rating) => {
     const id = review_Id;
 
-    delete updateReviewData.rating;
-    console.log("ajsbciajkcbnklaj", { id, ...updateReviewData });
+    if (selectedRating !== rating) {
+      console.log(selectedRating);
+      delete updateReviewData.rating;
 
-    dispatch(updatereviewsAsync({ id, ...updateReviewData })).then(() => {
-      dispatch(getallreviewsAsync(productId));
-      closeUpdateModal();
-    });
-    setUpdateReviewData({ review: "", rating: 0 });
+      dispatch(
+        updatereviewsAsync({ id, rating: selectedRating, ...updateReviewData })
+      ).then(() => {
+        dispatch(getallreviewsAsync(productId));
+        closeUpdateModal();
+      });
+    } else {
+      dispatch(updatereviewsAsync({ id, ...updateReviewData })).then(() => {
+        dispatch(getallreviewsAsync(productId));
+        closeUpdateModal();
+      });
+      setUpdateReviewData({ review: "", rating: 1 });
+    }
   };
 
   // HANDLE DELETE REVIEW
@@ -215,7 +230,7 @@ const SelectedItem: React.FC = () => {
                   {/* MAIN DISPLAYER IMAGE */}
                   <img
                     alt="Product"
-                    className="w-full pr-0 lg:pr-10 rounded object-cover"
+                    className="w-full pr-0 lg:pr-10 object-cover border border-gray-300 rounded-lg"
                     src={product?.image.downloadURL}
                   />
                 </div>
@@ -274,171 +289,173 @@ const SelectedItem: React.FC = () => {
                   </button>
                 </div>
               </div>
-
-              {/* DESCRIPTION SECTION */}
-              <div className="mt-16 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-                <ul className="flex border-b">
-                  {/* Description */}
-                  <li
-                    className={`${
-                      activeTab === "Description"
-                        ? "text-gray-800 font-bold text-sm bg-gray-100"
-                        : "text-gray-400 font-bold text-sm hover:bg-gray-100"
-                    } py-3 px-8 border-b-2 border-gray-800 cursor-pointer transition-all`}
-                    onClick={() => handleTabClick("Description")}
-                  >
-                    Description
-                  </li>
-
-                  {/* Reviews */}
-                  <li
-                    className={`${
-                      activeTab === "Reviews"
-                        ? "text-gray-800 font-bold text-sm bg-gray-100"
-                        : "text-gray-400 font-bold text-sm hover:bg-gray-100"
-                    } py-3 px-8 cursor-pointer transition-all`}
-                    onClick={() => handleTabClick("Reviews")}
-                  >
-                    Reviews
-                  </li>
-                </ul>
-
-                <div className="mt-8">
-                  {/* DESCRIPTION CONTENT */}
-                  {activeTab === "Description" && (
-                    <>
-                      <h3 className="text-lg font-bold text-gray-800">
-                        Product Description
-                      </h3>
-                      <p className="text-sm text-gray-800 mt-4">
-                        Elevate your casual style with our premium men's
-                        t-shirt. Crafted for comfort and designed with a modern
-                        fit, this versatile shirt is an essential addition to
-                        your wardrobe. The soft and breathable fabric ensures
-                        all-day comfort, making it perfect for everyday wear.
-                        Its classic crew neck and short sleeves offer a timeless
-                        look.
-                      </p>
-                      <ul className="space-y-3 list-disc mt-6 pl-4 text-sm text-gray-800">
-                        <li>
-                          A gray t-shirt is a wardrobe essential because it is
-                          so versatile.
-                        </li>
-                        <li>
-                          Available in a wide range of sizes, from extra small
-                          to extra large, and even in tall and petite sizes.
-                        </li>
-                        <li>
-                          This is easy to care for. They can usually be
-                          machine-washed and dried on low heat.
-                        </li>
-                        <li>
-                          You can add your own designs, paintings, or embroidery
-                          to make it your own.
-                        </li>
-                      </ul>
-                    </>
-                  )}
-
-                  {/* REVIEWS FORMS */}
-                  {activeTab === "Reviews" && (
-                    <div>
-                      <p className="mb-1 ml-1 text-gray-700 font-medium">
-                        Your Comment*
-                      </p>
-                      <textarea
-                        id="OrderNotes"
-                        className="w-full resize-y border border-gray-800 rounded-xl align-top focus:ring-0 focus:outline-none focus:border-pink-500 sm:text-sm p-4"
-                        rows={4}
-                        placeholder="Write a comment..."
-                        value={formData.review}
-                        onChange={(e) =>
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            review: e.target.value,
-                          }))
-                        }
-                      ></textarea>
-
-                      {/* Star rating section */}
-                      <div className="mt-4 mb-2 flex items-center justify-start gap-1">
-                        <p className="mr-1 text-gray-700 font-medium text-sm">
-                          Give your rating:
-                        </p>
-                        {[1, 2, 3, 4, 5].map((starValue) => (
-                          <FaStar
-                            key={starValue}
-                            style={{
-                              color:
-                                starValue <= formData.rating
-                                  ? "#FFC107"
-                                  : "#D1D5DB",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => handleStarClick(starValue)}
-                          />
-                        ))}
-                      </div>
-
-                      <button
-                        className="mt-1 text-white py-2 px-4 rounded-md bg-[#EC72AF] hover:bg-[#f181b9]"
-                        onClick={handleSubmitReview}
-                      >
-                        Submit Review
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
             </div>
           ))}
-        </div>
 
-        {/*  ALL REVIEWS */}
-        <div className="px-5 xl:px-0 reviews max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-          <div className="mt-10 all_reviews">
-            <h2 className="text-2xl text-gray-800 font-semibold">
-              ALL REVIEWS
-            </h2>
-
-            {allreviews.map((data, index) => (
-              <div
-                key={index}
-                className="mt-3 px-6 py-4 rounded-xl border border-gray-300 bg-[#FFF3F9] all_reviews"
+          {/* DESCRIPTION & REVIEW SECTION */}
+          <div className="mt-16 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
+            <ul className="flex border-b">
+              {/* Description */}
+              <li
+                className={`${
+                  activeTab === "Description"
+                    ? "text-gray-800 font-bold text-sm bg-gray-100"
+                    : "text-gray-400 font-bold text-sm hover:bg-gray-100"
+                } py-3 px-8 border-b-2 border-gray-800 cursor-pointer transition-all`}
+                onClick={() => handleTabClick("Description")}
               >
-                <div className="flex justify-between flex-wrap items-center gap-2">
-                  <div className="left flex items-center gap-2">
-                    <h2>Username</h2>{" "}
-                    <p className="w-24">
-                      <StarRating rating={data?.rating} />
-                    </p>
-                  </div>
-                  <div className="right">
-                    <p>{new Date(data?.createdAt).toLocaleDateString()}</p>
-                  </div>
-                </div>
-                <div className="mt-2 flex justify-between flex-wrap items-center gap-2">
-                  <p className="my-1">{data?.review}</p>
+                Description
+              </li>
 
-                  <div className="edit flex items-center  gap-3">
-                    {userID === data.userID ? (
-                      <>
-                        <FiEdit
-                          onClick={() => openUpdateModal(data?.id)}
-                          className="cursor-pointer"
-                          size={20}
-                        />
-                        <IoTrashOutline
-                          onClick={() => openModal(data?.id)}
-                          className="cursor-pointer"
-                          size={20}
-                        />
-                      </>
-                    ) : null}
+              {/* Reviews */}
+              <li
+                className={`${
+                  activeTab === "Reviews"
+                    ? "text-gray-800 font-bold text-sm bg-gray-100"
+                    : "text-gray-400 font-bold text-sm hover:bg-gray-100"
+                } py-3 px-8 cursor-pointer transition-all`}
+                onClick={() => handleTabClick("Reviews")}
+              >
+                Reviews
+              </li>
+            </ul>
+
+            <div className="mt-8">
+              {/* DESCRIPTION CONTENT */}
+              {activeTab === "Description" && (
+                <>
+                  <h3 className="text-lg font-bold text-gray-800">
+                    Product Description
+                  </h3>
+                  <p className="text-sm text-gray-800 mt-4">
+                    Elevate your casual style with our premium men's t-shirt.
+                    Crafted for comfort and designed with a modern fit, this
+                    versatile shirt is an essential addition to your wardrobe.
+                    The soft and breathable fabric ensures all-day comfort,
+                    making it perfect for everyday wear. Its classic crew neck
+                    and short sleeves offer a timeless look.
+                  </p>
+                  <ul className="space-y-3 list-disc mt-6 pl-4 text-sm text-gray-800">
+                    <li>
+                      A gray t-shirt is a wardrobe essential because it is so
+                      versatile.
+                    </li>
+                    <li>
+                      Available in a wide range of sizes, from extra small to
+                      extra large, and even in tall and petite sizes.
+                    </li>
+                    <li>
+                      This is easy to care for. They can usually be
+                      machine-washed and dried on low heat.
+                    </li>
+                    <li>
+                      You can add your own designs, paintings, or embroidery to
+                      make it your own.
+                    </li>
+                  </ul>
+                </>
+              )}
+
+              {/* REVIEWS FORMS */}
+              {activeTab === "Reviews" && (
+                <>
+                  <div className="mb-8 reviews max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
+                    <div className="mt-10 all_reviews">
+                      <h2 className="text-2xl text-gray-800 font-semibold">
+                        ALL REVIEWS
+                      </h2>
+
+                      {allreviews.map((data, index) => (
+                        <div
+                          key={index}
+                          className="mt-3 px-6 py-4 rounded-xl border border-gray-300 bg-[#FFF3F9] all_reviews"
+                        >
+                          <div className="flex justify-between flex-wrap items-center gap-2">
+                            <div className="left flex items-center gap-2">
+                              <h2>Username</h2>{" "}
+                              <p className="w-24">
+                                <StarRating rating={data?.rating} />
+                              </p>
+                            </div>
+                            <div className="right">
+                              <p>
+                                {new Date(data?.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="mt-2 flex justify-between flex-wrap items-center gap-2">
+                            <p className="my-1">{data?.review}</p>
+
+                            <div className="edit flex items-center  gap-3">
+                              {userID === data.userID ? (
+                                <>
+                                  <FiEdit
+                                    onClick={() => openUpdateModal(data?.id)}
+                                    className="cursor-pointer"
+                                    size={20}
+                                  />
+                                  <IoTrashOutline
+                                    onClick={() => openModal(data?.id)}
+                                    className="cursor-pointer"
+                                    size={20}
+                                  />
+                                </>
+                              ) : null}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+
+                  <div>
+                    <p className="mb-1 ml-1 text-gray-700 font-medium">
+                      Your Comment*
+                    </p>
+                    <textarea
+                      id="OrderNotes"
+                      className="w-full resize-y border border-gray-800 rounded-xl align-top focus:ring-0 focus:outline-none focus:border-pink-500 sm:text-sm p-4"
+                      rows={4}
+                      placeholder="Write a comment..."
+                      value={formData.review}
+                      onChange={(e) =>
+                        setFormData((prevData) => ({
+                          ...prevData,
+                          review: e.target.value,
+                        }))
+                      }
+                    ></textarea>
+
+                    {/* Star rating section */}
+                    <div className="mt-4 mb-2 flex items-center justify-start gap-1">
+                      <p className="mr-1 text-gray-700 font-medium text-sm">
+                        Give your rating:
+                      </p>
+                      {[1, 2, 3, 4, 5].map((starValue) => (
+                        <FaStar
+                          key={starValue}
+                          style={{
+                            color:
+                              starValue <= formData.rating
+                                ? "#FFC107"
+                                : "#D1D5DB",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleStarClick(starValue)}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      className="mt-1 text-white py-2 px-4 rounded-md bg-[#EC72AF] hover:bg-[#f181b9]"
+                      onClick={handleSubmitReview}
+                    >
+                      Submit Review
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -660,7 +677,7 @@ const SelectedItem: React.FC = () => {
                       key={starValue}
                       style={{
                         color:
-                          starValue <= (updateReviewData.rating || data.rating)
+                          starValue <= (selectedRating || data.rating)
                             ? "#FFC107"
                             : "#D1D5DB",
                         cursor: "pointer",
@@ -681,7 +698,7 @@ const SelectedItem: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                onClick={() => handleUpdateReview(data?.id)}
+                onClick={() => handleUpdateReview(data?.id, data.rating)}
                 size="sm"
                 className="bg-[#EC72AF] hover:bg-[#f181b9]"
               >

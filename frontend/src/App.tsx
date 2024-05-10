@@ -19,22 +19,26 @@ import OtpChecker from "./auth/OtpChecker";
 import Terms from "./components/Terms";
 import UserProfile from "./pages/user/UserProfile";
 import { useEffect } from "react";
-import { useAppDispatch } from "./app/hooks";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { userSessionAsync } from "./features/authSlice";
 import {
   getAllProductsAsync,
   getLatestProductsAsync,
 } from "./features/productSlice";
 import Footer from "./components/footer/Footer";
+import MyOrders from "./pages/myOrders/MyOrders";
 // import Footer from "./components/footer/Footer";
 
 function App() {
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(userSessionAsync());
     dispatch(getAllProductsAsync());
     dispatch(getLatestProductsAsync());
   });
+
+
 
   return (
     <>
@@ -49,6 +53,7 @@ function App() {
           <Route path="/selectedItem/:id" element={<SelectedItem />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/orders" element={<MyOrders />} />
 
           {/* ---------- AUTH ROUTES ---------- */}
           <Route path="/signup" element={<Signup />} />

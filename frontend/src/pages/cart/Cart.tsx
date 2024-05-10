@@ -16,6 +16,8 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
 
+  const user = useAppSelector((state) => state.auth.user);
+
   // getting data from store
   const { cart, totalPrice } = useAppSelector(
     (state: RootState) => state.actions
@@ -88,6 +90,7 @@ const Cart: React.FC = () => {
                           type="text"
                           className="mx-1 h-8 w-10 rounded-md border border-gray-400 text-center bg-transparent text-black"
                           value={product.quantity}
+                          readOnly
                         />
 
                         <button
@@ -161,14 +164,26 @@ const Cart: React.FC = () => {
                       >
                         Back to shop
                       </Link>
-                      <Link
-                        to="/checkout"
-                        onClick={() => window.scroll(0, 0)}
-                        type="button"
-                        className="rounded-md border px-3 py-2 text-sm tracking-wide font-semibold shadow-sm bg-[#EC72AF] border-[#EC72AF] text-white"
-                      >
-                        Checkout
-                      </Link>
+
+                      {user ? (
+                        <Link
+                          to="/checkout"
+                          onClick={() => window.scroll(0, 0)}
+                          type="button"
+                          className="rounded-md border px-3 py-2 text-sm tracking-wide font-semibold shadow-sm bg-[#EC72AF] border-[#EC72AF] text-white"
+                        >
+                          Checkout
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/login?from=cart"
+                          onClick={() => window.scroll(0, 0)}
+                          type="button"
+                          className="rounded-md border px-3 py-2 text-sm tracking-wide font-semibold shadow-sm bg-[#EC72AF] border-[#EC72AF] text-white"
+                        >
+                          Checkout
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>

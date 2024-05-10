@@ -9,6 +9,7 @@ import { LoginFormData } from "../auth/Login";
 // API URLs
 const signupUrl = "http://localhost:8000/api/users/signup";
 const loginUrl = "http://localhost:8000/api/users/login";
+const updateUrl = "http://localhost:8000/api/users/updateUserInformation";
 const logoutUrl = "http://localhost:8000/api/users/logout";
 const userSessionUrl = "http://localhost:8000/api/users/persistUserSession";
 const forgetPassUrl = "http://localhost:8000/api/users/sendResetPasswordOTP";
@@ -48,6 +49,21 @@ export const loginuserAsync = createAsyncThunk(
     try {
       const response = await axios.post(loginUrl, formData);
       toast.success(response.data.message);
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+    }
+  }
+);
+
+// UPDATE ASYNC THUNK
+export const updateuserAsync = createAsyncThunk(
+  "user/update",
+  async (formData: LoginFormData) => {
+    try {
+      const response = await axios.post(updateUrl, formData);
+      toast.success(response.data.message);
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.error);
