@@ -5,7 +5,7 @@ async function generateUniqueOrderId() {
   const randomSuffix = Math.floor(100000 + Math.random() * 900000);
   const candidateCustomerId = `${prefix}${randomSuffix}`;
   const existingUser = await OrdersModel.findOne({
-    OrderID: OrderID,
+    OrderID: candidateCustomerId,
   });
   if (existingUser) {
     return generateUniqueOrderId();
