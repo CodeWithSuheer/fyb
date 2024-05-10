@@ -4,6 +4,7 @@ import { setMongoose } from "../utils/Mongoose.js";
 export const createOrder = async (req, res, next) => {
   try {
     const { items, name, userID, address, phone, totalAmount ,orderProgress, couponUsed} =
+
       req.body;
     if (items.length === 0) {
       throw new Error("No Items In Cart");
@@ -18,12 +19,13 @@ export const createOrder = async (req, res, next) => {
       address,
       phone,
       totalAmount,
-      couponUsed,
-      orderProgress
+
+      couponUsed
     });
     return res
       .status(201)
-      .json({ message: "Order PLaced Succcessfully", });
+      .json({ message: "Order PLaced Succcessfully", OrderTrackingID: order.OrderID });
+
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
