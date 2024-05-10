@@ -17,6 +17,7 @@ import {
   updatereviewsAsync,
 } from "../../features/reviewsSlice";
 import RelatedProducts from "./RelatedProducts";
+import { getAllProductsAsync } from "../../features/productSlice";
 
 interface RouteParams {
   id: string;
@@ -50,6 +51,10 @@ const SelectedItem: React.FC = () => {
   );
   const { id } = useParams<RouteParams>();
   const productId = id;
+
+  useEffect(() => {
+    dispatch(getAllProductsAsync());
+  }, [dispatch]);
 
   // DELETE MODAL
   const [isOpen, setIsOpen] = useState(false);
@@ -85,14 +90,16 @@ const SelectedItem: React.FC = () => {
   };
 
   // filter product based on id
-  const selectedItem = allproducts.filter((item: any) => item.id === id);
+  const selectedItem = allproducts?.filter((item: any) => item.id === id);
 
   // filter review based on id
   const allreviews = useAppSelector((state) => state.reviews.allReviews);
 
   // selected review
-  const selectedReview = allreviews.filter((item: any) => item.id === reviewId);
-  const deleteReview = allreviews.filter(
+  const selectedReview = allreviews?.filter(
+    (item: any) => item.id === reviewId
+  );
+  const deleteReview = allreviews?.filter(
     (item: any) => item.id === deleteReviewId
   );
 
@@ -264,7 +271,7 @@ const SelectedItem: React.FC = () => {
 
                   {/* PRICE SECTION */}
                   <div className="flex flex-wrap items-center gap-4 mt-4">
-                    {product.price !== product.sale_price ? (
+                    {/* {product.price !== product.sale_price ? (
                       <>
                         <p className="text-gray-500 text-lg line-through">
                           Rs. {product.price}
@@ -273,11 +280,11 @@ const SelectedItem: React.FC = () => {
                           Rs. {product.sale_price}
                         </p>
                       </>
-                    ) : (
-                      <p className="text-gray-800 text-2xl font-bold">
-                        Rs. {product.price}
-                      </p>
-                    )}
+                    ) : ( */}
+                    <p className="text-gray-800 text-2xl font-bold">
+                      Rs. {product.price}
+                    </p>
+                    {/* )} */}
                   </div>
 
                   {/* CART BUTTON */}

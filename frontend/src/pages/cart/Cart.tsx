@@ -53,7 +53,7 @@ const Cart: React.FC = () => {
                       key={product.id}
                       className="grid md:grid-cols-4 items-center gap-8 px-4 py-6 mb-4 bg-white border-b border-gray-400 rounded-xl"
                     >
-                      <div className="md:col-span-2 flex items-center gap-6">
+                      <div className="md:col-span-2 flex flex-wrap items-center gap-6">
                         <div className="w-32 h-22 shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-0">
                           <img
                             className="w-full h-full object-contain rounded-md"
@@ -61,6 +61,7 @@ const Cart: React.FC = () => {
                             alt={product?.name}
                           />
                         </div>
+
                         <div>
                           <h3 className="playfair text-lg tracking-wide font-bold text-[#333]">
                             VelvetGlide Boots

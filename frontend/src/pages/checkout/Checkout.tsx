@@ -108,12 +108,12 @@ const Checkout = () => {
 
   return (
     <>
-      <section className="w-full bg-[#FFF3F9] py-14 sm:py-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
+      <section className="w-full bg-[#FFF3F9] py-14 sm:py-12 px-0 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           <div className="overflow-hidden rounded-xl shadow border border-gray-300">
             <div className="grid grid-cols-1 md:grid-cols-2">
               {/* Contact Info */}
-              <div className="px-5 py-10 bg-white text-gray-900 md:px-8">
+              <div className="px-2 py-10 bg-white text-gray-900 md:px-8">
                 <div className="flow-root">
                   <div className="-my-6 divide-y divide-gray-200">
                     <div className="py-6">

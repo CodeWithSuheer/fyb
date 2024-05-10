@@ -118,7 +118,7 @@ const Header = () => {
           <div className="flex items-center ml-auto space-x-6 sm:space-x-7">
             {/* cart */}
             <Link to="/cart" className="relative">
-              <span className="relative">
+              <span className="relative -z-50">
                 <ShoppingCart size={26} className="text-gray-700" />
                 <span className="absolute -right-1 -top-2.5 rounded-full bg-red-500 px-1 py-0 text-xs text-white">
                   {totalQuantity}
@@ -127,9 +127,9 @@ const Header = () => {
             </Link>
 
             {/* search */}
-            <button className="">
+            {/* <button className="">
               <MagnifyingGlass size={26} className="text-gray-700 -mr-2" />
-            </button>
+            </button> */}
 
             {/* profile */}
             {/* <Link to="/profile" className="">

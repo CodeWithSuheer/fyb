@@ -94,7 +94,7 @@ const RelatedProducts = ({ allproducts }) => {
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           <div className="header px-0 sm:px-5 flex justify-between items-center flex-wrap gap-6">
             <div className="name">
-              <h2 className="mb-2.5 playfair text-center text-4xl sm:text-4xl font-bold">
+              <h2 className="mb-2.5 playfair text-4xl sm:text-4xl font-bold">
                 Related Products
               </h2>
               <p className="h-0.5 w-16 bg-[#EC72AF]"></p>
