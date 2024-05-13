@@ -4,7 +4,6 @@ import { addToCart } from "../../features/ActionsSlice";
 import { IoTrashOutline } from "react-icons/io5";
 import { useAppSelector } from "../../app/hooks";
 import { useDispatch } from "react-redux";
-import { IoStar } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
 import { CloudArrowUp } from "phosphor-react";
 import { Button, Modal } from "keep-react";
@@ -18,6 +17,7 @@ import {
 } from "../../features/reviewsSlice";
 import RelatedProducts from "./RelatedProducts";
 import { getAllProductsAsync } from "../../features/productSlice";
+
 
 interface RouteParams {
   id: string;
@@ -41,6 +41,7 @@ const SelectedItem: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+ 
   const [reviewId, setReviewId] = useState();
   const [deleteReviewId, setDeleteReviewId] = useState();
   const [isReviewVisible, setIsReviewVisible] = useState(false);
@@ -49,13 +50,15 @@ const SelectedItem: React.FC = () => {
   const allproducts = useAppSelector(
     (state) => state.products.products.products
   );
-  const { id } = useParams<RouteParams>();
-  const productId = id;
 
   useEffect(() => {
     dispatch(getAllProductsAsync());
-  }, [dispatch]);
+  }, []);
 
+  const { id } = useParams<RouteParams>();
+  const productId = id;
+
+  
   // DELETE MODAL
   const [isOpen, setIsOpen] = useState(false);
 
@@ -139,7 +142,6 @@ const SelectedItem: React.FC = () => {
 
   const handleUpdateStarClick = (starValue: number) => {
     setSelectedRating(starValue);
-    console.log(selectedRating);
   };
 
   // HANDLE ADD TO CART
@@ -159,7 +161,7 @@ const SelectedItem: React.FC = () => {
       toast.error("Please leave a review or rate with at least one star.");
       return;
     }
-    console.log({ productID, userID, ...formData });
+    
     dispatch(createreviewsAsync({ productID, userID, ...formData })).then(
       () => {
         dispatch(getallreviewsAsync(id));
@@ -173,7 +175,6 @@ const SelectedItem: React.FC = () => {
     const id = review_Id;
 
     if (selectedRating !== rating) {
-      console.log(selectedRating);
       delete updateReviewData.rating;
 
       dispatch(
@@ -203,7 +204,7 @@ const SelectedItem: React.FC = () => {
     <>
       <div className="pt-4">
         <div className="px-4 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-          {selectedItem.map((product, index) => (
+          {selectedItem?.map((product, index) => (
             <div key={index}>
               <p className="mt-5 mb-4">Home / Shop / {product.name}</p>
               <div
@@ -211,29 +212,7 @@ const SelectedItem: React.FC = () => {
                 className="grid items-start grid-cols-1 lg:grid-cols-2 gap-5"
               >
                 <div className="w-full lg:sticky top-0 sm:flex gap-2">
-                  {/* 5 IMAGES SIDEBAR */}
-                  {/* <div className="mt-1 sm:space-y-3 w-16 max-sm:flex max-sm:mb-4 max-sm:gap-4">
-                    <img
-                      alt="Product1"
-                      className="w-full cursor-pointer"
-                      src="https://readymadeui.com/images/product1.webp"
-                    />
-                    <img
-                      alt="Product2"
-                      className="w-full cursor-pointer"
-                      src="https://readymadeui.com/images/product6.webp"
-                    />
-                    <img
-                      alt="Product3"
-                      className="w-full cursor-pointer"
-                      src="https://readymadeui.com/images/product7.webp"
-                    />
-                    <img
-                      alt="Product4"
-                      className="w-full cursor-pointer"
-                      src="https://readymadeui.com/images/product3.webp"
-                    />
-                  </div> */}
+                 
 
                   {/* MAIN DISPLAYER IMAGE */}
                   <img
