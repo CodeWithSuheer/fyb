@@ -4,7 +4,7 @@ interface CartItem {
   id: string;
   quantity: number;
   price: number;
-  // Add other properties as needed
+  sale_price: number;
 }
 
 interface ActionsState {
@@ -23,7 +23,6 @@ const ActionsSlice = createSlice({
   name: "actions",
   initialState,
   reducers: {
-
     clearCart: (state) => {
       state.cart = [];
       state.totalQuantity = null;
@@ -53,9 +52,12 @@ const ActionsSlice = createSlice({
     },
 
     getCartTotal: (state) => {
-      const { totalPrice, totalQuantity } = state.cart.reduce((cartTotal, cartItem) => {
-          const { price, quantity } = cartItem;
-          const itemTotal = price * quantity;
+      const { totalPrice, totalQuantity } = state.cart.reduce(
+        (cartTotal, cartItem) => {
+          const { sale_price, price, quantity } = cartItem;
+          const itemTotal = sale_price
+            ? sale_price * quantity
+            : price * quantity;
           cartTotal.totalPrice += itemTotal;
           cartTotal.totalQuantity += quantity;
           return cartTotal;
@@ -112,7 +114,7 @@ export const {
   increaseQuantity,
   decreaseQuantity,
   getCartTotal,
-  clearCart
+  clearCart,
 } = ActionsSlice.actions;
 
 export default ActionsSlice.reducer;

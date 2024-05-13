@@ -224,7 +224,18 @@ const Checkout = () => {
                         </div>
                         <div className="ml-auto flex flex-col items-end justify-between">
                           <p className="text-right text-sm font-bold text-gray-900">
-                            Rs. {product?.price * product.quantity}
+                            {/* Rs. {product?.price * product.quantity} */}
+                            {product?.price !== product?.sale_price ? (
+                              <>
+                                <p className="">
+                                  Rs. {product.sale_price * product.quantity}
+                                </p>
+                              </>
+                            ) : (
+                              <p className="">
+                                Rs. {product.price * product.quantity}
+                              </p>
+                            )}
                           </p>
                           <button
                             type="button"
