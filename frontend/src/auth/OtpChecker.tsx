@@ -1,27 +1,31 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { verifyOtpAsync } from "../features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const OtpChecker = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const params = useParams();
 
-  const { userId } = useSelector((state) => state.auth);
-
+  const {id} = params;
   const [formData, setFormData] = useState({
     otp: "",
-    userId: userId,
+    userId: id,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    dispatch(verifyOtpAsync(formData)).then(() => {
-      navigate("/reset");
-      setFormData({
+    dispatch(verifyOtpAsync(formData)).then((res) => {
+      console.log(res);
+      if(res.payload.OtpVerified){
+        navigate(`/reset/${id}/${res.payload.OtpVerified.toString()}`);
+        setFormData({
         otp: "",
       });
+      }
+      
     });
   };
 
