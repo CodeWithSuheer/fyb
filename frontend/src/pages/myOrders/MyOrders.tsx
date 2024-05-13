@@ -18,32 +18,6 @@ const MyOrders = () => {
     }
   }, [userID, dispatch]);
 
-  const products = [
-    {
-      id: 1,
-      name: "Nike Air Force 1 07 LV8",
-      imageSrc:
-        "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/54a510de-a406-41b2-8d62-7f8c587c9a7e/air-force-1-07-lv8-shoes-9KwrSk.png",
-      href: "#",
-      price: "₹61,999",
-      color: "Orange",
-      imageAlt: "Nike Air Force 1 07 LV8",
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: "Nike Run Division, Airmax Pro Ultra Mens Runnig Shoes",
-      imageSrc:
-        "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/e48d6035-bd8a-4747-9fa1-04ea596bb074/blazer-low-77-se-shoes-0w2HHV.png",
-      href: "#",
-      price: "₹22,500",
-      color: "White",
-      imageAlt:
-        "APPLE Airpods Pro with MagSafe Charging Case Bluetooth Headset",
-      quantity: 1,
-    },
-  ];
-
   return (
     <>
       <section className="w-full bg-[#FFF3F9] py-14 sm:py-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
@@ -75,7 +49,7 @@ const MyOrders = () => {
                     <div className="mb-4">
                       <div className="text-sm font-semibold">Total Amount</div>
                       <div className="text-sm font-medium text-gray-700">
-                        {data?.totalAmount}
+                        Rs. {data?.totalAmount}
                       </div>
                     </div>
                     <div className="mb-4">
@@ -122,7 +96,13 @@ const MyOrders = () => {
 
                         <div className="ml-auto flex flex-col items-end justify-between">
                           <p className="text-right text-sm font-bold text-gray-900">
-                            Rs. {product.price}
+                            {product.price !== product.sale_price ? (
+                              <>
+                                <p className="">Rs. {product.sale_price}</p>
+                              </>
+                            ) : (
+                              <p className="">Rs. {product.price}</p>
+                            )}
                           </p>
                         </div>
                       </li>

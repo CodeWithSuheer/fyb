@@ -4,7 +4,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import "./Products.css";
 
-
 const Products = () => {
   const navigate = useNavigate();
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
@@ -18,7 +17,9 @@ const Products = () => {
 
   useEffect(() => {
     if (category) {
-      const filtered = allproducts.products.filter((product) => product?.category === category);
+      const filtered = allproducts.products.filter(
+        (product) => product?.category === category
+      );
       setFilteredProducts(filtered);
     } else {
       setFilteredProducts(allproducts.products);
@@ -36,13 +37,14 @@ const Products = () => {
   };
 
   const handleCategoryFiltering = (category) => {
-    const filtered = allproducts.products.filter((product) => product?.category === category);
+    const filtered = allproducts.products.filter(
+      (product) => product?.category === category
+    );
     setFilteredProducts(filtered);
-  }
+  };
 
   return (
     <>
-
       {/* BANNER IMAGE */}
       <section className="product_banner">
         <div className="py-12 sm:py-28 about_cont px-2.5 flex justify-center items-center flex-col">
@@ -55,7 +57,6 @@ const Products = () => {
         </div>
       </section>
 
-     
       <section>
         <div className="mx-auto max-w-5xl xl:max-w-6xl xxl:max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-5 xl:px-0">
           <div className="mt-8 block lg:hidden">
@@ -98,7 +99,12 @@ const Products = () => {
                 <div className="mt-1">
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span onClick={()=>handleCategoryFiltering('Skincare')} className="text-lg font-normal">Skincare</span>
+                      <span
+                        onClick={() => handleCategoryFiltering("Skincare")}
+                        className="text-lg font-normal"
+                      >
+                        Skincare
+                      </span>
 
                       {/* <span className="transition group-open:-rotate-180">
                         <svg
@@ -146,7 +152,12 @@ const Products = () => {
 
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span onClick={()=>handleCategoryFiltering('Body Care')}  className="text-lg font-normal">Body Care</span>
+                      <span
+                        onClick={() => handleCategoryFiltering("Body Care")}
+                        className="text-lg font-normal"
+                      >
+                        Body Care
+                      </span>
 
                       {/* <span className="transition group-open:-rotate-180">
                         <svg
@@ -194,7 +205,12 @@ const Products = () => {
 
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span onClick={()=>handleCategoryFiltering('Haircare')} className="text-lg font-normal">Haircare</span>
+                      <span
+                        onClick={() => handleCategoryFiltering("Haircare")}
+                        className="text-lg font-normal"
+                      >
+                        Haircare
+                      </span>
 
                       {/* <span className="transition group-open:-rotate-180">
                         <svg
@@ -252,7 +268,12 @@ const Products = () => {
 
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span onClick={()=>handleCategoryFiltering('Cosmetics')} className="text-lg font-normal">Cosmetics</span>
+                      <span
+                        onClick={() => handleCategoryFiltering("Cosmetics")}
+                        className="text-lg font-normal"
+                      >
+                        Cosmetics
+                      </span>
                     </summary>
                   </details>
                 </div>
@@ -261,60 +282,66 @@ const Products = () => {
 
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
-              {filteredProducts?.length === 0 ? <div className="playfair text-3xl text-center font-medium uppercase">
-no products
-              </div> : <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
-                {filteredProducts?.map((data, index) => (
-                  <li
-                    key={index}
-                    onClick={() => handleItemClick(String(data.id))}
-                  >
-                    <div className="group mb-5 relative group w-full bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
-                      <img
-                        className="object-cover w-full h-56"
-                        src={data?.image.downloadURL}
-                        alt="products"
-                      />
+              {filteredProducts?.length === 0 ? (
+                <div className="playfair text-3xl text-center font-medium uppercase">
+                  no products
+                </div>
+              ) : (
+                <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
+                  {filteredProducts?.map((data, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleItemClick(String(data.id))}
+                    >
+                      <div className="group mb-5 relative group w-full bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+                        <img
+                          className="object-cover w-full h-56"
+                          src={data?.image.downloadURL}
+                          alt="products"
+                        />
 
-                      <div className="py-5 text-center">
-                        <h3 className="playfair mb-2 text-md sm:text-lg font-semibold text-gray-800">
-                          {data?.name}
-                        </h3>
+                        <div className="py-5 text-center">
+                          <h3 className="playfair mb-2 text-md sm:text-lg font-semibold text-gray-800">
+                            {data?.name}
+                          </h3>
 
-                        {/* STARS */}
-                        <div className="mb-2 flex items-center justify-center gap-1">
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                        </div>
+                          {/* STARS */}
+                          <div className="mb-2 flex items-center justify-center gap-1">
+                            <FaStar className="text-[#FFC107]" />
+                            <FaStar className="text-[#FFC107]" />
+                            <FaStar className="text-[#FFC107]" />
+                            <FaStar className="text-[#FFC107]" />
+                            <FaStar className="text-[#FFC107]" />
+                          </div>
 
-                        <p className="mb-3 text-md text-gray-500">(Skincare)</p>
+                          <p className="mb-3 text-md text-gray-500">
+                            (Skincare)
+                          </p>
 
-                        {data.price !== data.sale_price ? (
-                          <>
-                            <p className="mb-1 text-xl font-semibold text-black">
-                              Rs. {data.sale_price}
-                            </p>
-                            <p className="mb-3 text-md font-semibold text-gray-500 line-through">
+                          {data.price !== data.sale_price ? (
+                            <>
+                              <p className="mb-1 text-xl font-semibold text-black">
+                                Rs. {data.sale_price}
+                              </p>
+                              <p className="mb-3 text-md font-semibold text-gray-500 line-through">
+                                Rs. {data.price}
+                              </p>
+                            </>
+                          ) : (
+                            <p className="mb-3 text-xl font-semibold text-black">
                               Rs. {data.price}
                             </p>
-                          </>
-                        ) : (
-                          <p className="mb-3 text-xl font-semibold text-black">
-                            Rs. {data.price}
-                          </p>
-                        )}
+                          )}
 
-                        <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
-                          Shop Now
-                        </button>
+                          <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
+                            Shop Now
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>

@@ -22,8 +22,10 @@ const Checkout = () => {
 
   const closeModal = () => {
     setIsOpen(false);
-    navigate("/");
-    window.scroll(0, 0);
+    setTimeout(() => {
+      handleMoveTop();
+      navigate("/");
+    }, 100);
   };
 
   const user = useAppSelector((state) => state.auth.user);
@@ -65,6 +67,10 @@ const Checkout = () => {
   //     dispatch(userSessionAsync());
   //   });
   // };
+
+  const handleMoveTop = () => {
+    window.scroll(0, 0);
+  };
 
   // HANDLE SUBMIT
   const handleSubmit = async (e) => {
