@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginuserAsync } from "../features/authSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { Spinner } from "keep-react";
 
 export interface LoginFormData {
   email: string;
@@ -12,7 +13,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const user = useAppSelector((state) => state.auth.user);
+  const { user, loginLoading } = useAppSelector((state) => state.auth);
 
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
@@ -121,12 +122,18 @@ const Login = () => {
                   </Link>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-2.5 mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide"
-                >
-                  LOGIN NOW
-                </button>
+                {loginLoading ? (
+                  <button className="w-full h-11 items-center mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide">
+                    <Spinner color="pink" size="md" />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="w-full h-11 items-center mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide"
+                  >
+                    LOGIN NOW
+                  </button>
+                )}
 
                 <p className="text-sm font-light text-gray-800">
                   Don’t have an account yet?{" "}

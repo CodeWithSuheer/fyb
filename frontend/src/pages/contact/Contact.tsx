@@ -1,9 +1,10 @@
 import { useState } from "react";
-import "./Contact.css";
-import { FaLinkedin } from "react-icons/fa6";
 import { MdPhone } from "react-icons/md";
 import { IoMail } from "react-icons/io5";
 import { MdLocationPin } from "react-icons/md";
+import { FaInstagram } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import "./Contact.css";
 
 const Contact = () => {
   const [formdata, setFormdata] = useState({
@@ -140,9 +141,9 @@ const Contact = () => {
                   <MdPhone className="bg-[#EC72AF] text-white size-9 rounded-full p-2" />
                   <a
                     href="tel:+1-281-607-5120"
-                    className="mt-1 mx-2 text-black truncate w-72"
+                    className="mt-1 mx-2 text-black truncate w-72 tracking-wide"
                   >
-                    +1 (281) 607-5120
+                    0334 4635801
                   </a>
                 </p>
 
@@ -165,13 +166,27 @@ const Contact = () => {
                 <h3 className="playfair text-black text-3xl font-bold">
                   Follow us
                 </h3>
-                <div className="flex mt-4">
-                  <a href="#" target="_blank">
-                    <FaLinkedin
-                      size={22}
-                      className="mr-5 bg-[#EC72AF] text-white size-10 rounded-full p-2"
-                    />
+                <div className="flex items-center gap-x-5 mt-4">
+                  <a
+                    href="https://www.facebook.com/glowwithfyb/"
+                    target="_blank"
+                  >
+                    <FaFacebook size={25} className="text-[#EC72AF]" />
                   </a>
+
+                  <a
+                    href="https://www.instagram.com/glowwithfyb/"
+                    target="_blank"
+                  >
+                    <FaInstagram size={25} className="text-[#EC72AF]" />
+                  </a>
+
+                  {/* <a href="#" target="_blank">
+                    <FaTwitter size={25} className="text-[#EC72AF]" />
+                  </a>
+                  <a href="#" target="_blank">
+                    <FaLinkedin size={25} className="text-[#EC72AF]" />
+                  </a> */}
                 </div>
               </div>
             </div>

@@ -146,6 +146,9 @@ export const resetPassAsync = createAsyncThunk(
 interface AuthState {
   user: User | null;
   loading: boolean;
+  signupLoading: boolean;
+  loginLoading: boolean;
+  forgetLoading: boolean;
   forgetPasswordEmail: string | null;
   resetPassword: string | null;
   validateToken: string | null;
@@ -154,6 +157,9 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   loading: false,
+  signupLoading: false,
+  loginLoading: false,
+  forgetLoading: false,
   forgetPasswordEmail: null,
   resetPassword: null,
   validateToken: null,
@@ -169,18 +175,18 @@ const authSlice = createSlice({
     builder
       // SIGN UP ADD CASE
       .addCase(createuserAsync.pending, (state) => {
-        state.loading = true;
+        state.signupLoading = true;
       })
       .addCase(createuserAsync.fulfilled, (state, _action) => {
-        state.loading = false;
+        state.signupLoading = false;
       })
 
       // LOGIN ADD CASE
       .addCase(loginuserAsync.pending, (state) => {
-        state.loading = true;
+        state.loginLoading = true;
       })
       .addCase(loginuserAsync.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loginLoading = false;
         state.user = action.payload;
       })
 
@@ -195,13 +201,13 @@ const authSlice = createSlice({
 
       // FORGET PASSWORD ADD CASE
       .addCase(forgetuserAsync.pending, (state) => {
-        state.loading = true;
+        state.forgetLoading = true;
       })
       .addCase(forgetuserAsync.fulfilled, (state) => {
-        state.loading = false;
+        state.forgetLoading = false;
       })
       .addCase(forgetuserAsync.rejected, (state) => {
-        state.loading = false;
+        state.forgetLoading = false;
       })
 
       // logout
@@ -209,8 +215,8 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(logoutUserAsync.fulfilled, (state) => {
-        state.user = null;
         state.loading = false;
+        state.user = null;
       });
   },
 });

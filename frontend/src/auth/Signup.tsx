@@ -1,7 +1,8 @@
 import React, { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createuserAsync } from "../features/authSlice";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { Spinner } from "keep-react";
 
 export interface SignupFormData {
   name: string;
@@ -12,6 +13,9 @@ export interface SignupFormData {
 const Signup: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const { signupLoading } = useAppSelector((state) => state.auth);
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<SignupFormData>({
     name: "",
@@ -28,7 +32,7 @@ const Signup: React.FC = () => {
           email: "",
           password: "",
         });
-        navigate('/login')
+        navigate("/login");
       }
     });
   };
@@ -132,13 +136,18 @@ const Signup: React.FC = () => {
                   </div>
                 </div>
 
-                <button
-                  type="submit"
-                  // onClick={handleHomePage}
-                  className="w-full py-2.5 mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide"
-                >
-                  SIGNUP NOW
-                </button>
+                {signupLoading ? (
+                  <button className="w-full h-11 items-center mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide">
+                    <Spinner color="pink" size="md" />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="w-full h-11 items-center mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide"
+                  >
+                    SIGNUP NOW
+                  </button>
+                )}
 
                 {/* TERM & CONDITION LINKS*/}
                 <p className="max-w-sm text-sm font-normal text-gray-800">

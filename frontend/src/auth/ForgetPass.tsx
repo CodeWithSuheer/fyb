@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { forgetuserAsync } from "../features/authSlice";
 import { useDispatch } from "react-redux";
+import { Spinner } from "keep-react";
+import { useAppSelector } from "../app/hooks";
 
 const ForgetPass = () => {
   const dispatch = useDispatch();
@@ -11,14 +13,19 @@ const ForgetPass = () => {
     email: "",
   });
 
+  const { forgetLoading } = useAppSelector((state) => state.auth);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    dispatch(forgetuserAsync(formData)).then(() => {
-      navigate("/otp");
-      setFormData({
-        email: "",
-      });
+    dispatch(forgetuserAsync(formData)).then((res) => {
+      if (res.error) {""}
+       else {
+        navigate("/otp");
+        setFormData({
+          email: "",
+        });
+      }
     });
   };
 
@@ -59,12 +66,18 @@ const ForgetPass = () => {
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-2.5 mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide"
-                >
-                  SUBMIT NOW
-                </button>
+                {forgetLoading ? (
+                  <button className="w-full h-11 items-center mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide">
+                    <Spinner color="pink" size="md" />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="w-full h-11 items-center mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide"
+                  >
+                    SUBMIT NOW
+                  </button>
+                )}
 
                 <p className="text-sm font-light text-gray-800">
                   Don’t have an account yet?{" "}
