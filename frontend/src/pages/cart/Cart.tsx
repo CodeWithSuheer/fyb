@@ -69,10 +69,16 @@ const Cart: React.FC = () => {
                           <h6 className="text-md text-gray-500 mt-2">
                             Category: <strong className="ml-2">Skincare</strong>
                           </h6>
-                          <h6 className="text-md text-gray-500 mt-2">
+                          <h6 className="text-md text-gray-500 mt-2 flex items-center">
                             Price:{" "}
-                            <strong className="ml-2">
-                              Rs. {product.price}
+                            <strong className="ml-2 flex items-center">
+                              {product.price !== product.sale_price ? (
+                                <>
+                                  <p className="">Rs. {product.sale_price}</p>
+                                </>
+                              ) : (
+                                <p className="">Rs. {product.price}</p>
+                              )}
                             </strong>
                           </h6>
                         </div>
@@ -105,7 +111,18 @@ const Cart: React.FC = () => {
 
                       <div className="flex items-center">
                         <h4 className="text-lg font-bold text-[#333]">
-                          Rs.{product.price * product.quantity}
+                          {/* Rs.{product.price * product.quantity} */}
+                          {product?.price !== product?.sale_price ? (
+                            <>
+                              <p className="">
+                                Rs. {product.sale_price * product.quantity}
+                              </p>
+                            </>
+                          ) : (
+                            <p className="">
+                              Rs. {product.price * product.quantity}
+                            </p>
+                          )}
                         </h4>
 
                         <div

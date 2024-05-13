@@ -271,7 +271,7 @@ const SelectedItem: React.FC = () => {
 
                   {/* PRICE SECTION */}
                   <div className="flex flex-wrap items-center gap-4 mt-4">
-                    {/* {product.price !== product.sale_price ? (
+                    {product.price !== product.sale_price ? (
                       <>
                         <p className="text-gray-500 text-lg line-through">
                           Rs. {product.price}
@@ -280,11 +280,11 @@ const SelectedItem: React.FC = () => {
                           Rs. {product.sale_price}
                         </p>
                       </>
-                    ) : ( */}
-                    <p className="text-gray-800 text-2xl font-bold">
-                      Rs. {product.price}
-                    </p>
-                    {/* )} */}
+                    ) : (
+                      <p className="text-gray-800 text-2xl font-bold">
+                        Rs. {product.price}
+                      </p>
+                    )}
                   </div>
 
                   {/* CART BUTTON */}
