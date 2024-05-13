@@ -261,7 +261,7 @@ const Products = () => {
 
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
-              {filteredProducts.length === 0 ? <div className="playfair text-3xl text-center font-medium uppercase">
+              {filteredProducts?.length === 0 ? <div className="playfair text-3xl text-center font-medium uppercase">
 no products
               </div> : <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
                 {filteredProducts?.map((data, index) => (
