@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginuserAsync } from "../features/authSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 
@@ -10,26 +10,29 @@ export interface LoginFormData {
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const user = useAppSelector(state => state.auth.user)
+  const user = useAppSelector((state) => state.auth.user);
 
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
   });
 
-  useEffect(()=>{
-    if(user?.login){
-      navigate("/")
+  useEffect(() => {
+    if (user?.login) {
+      const fromCart =
+        new URLSearchParams(location.search).get("from") === "cart";
+      navigate(fromCart ? "/cart" : "/");
     }
-  })
+  });
 
-  const handleSubmit = (e:FormEvent<HTMLFormElement>):void => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    dispatch(loginuserAsync(formData))
+    dispatch(loginuserAsync(formData));
   };
 
-  const togglePasswordVisibility = ():void => {
+  const togglePasswordVisibility = (): void => {
     setShowPassword(!showPassword);
   };
 
@@ -56,10 +59,7 @@ const Login = () => {
               <p className="max-w-full mb-5 text-md">
                 Lorem ipsum dolor sit amet consectetur.
               </p>
-              <form
-                onSubmit={handleSubmit}
-                className="space-y-4 md:space-y-6"
-              >
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                 {/* EMAIL */}
                 <div>
                   <input
@@ -123,7 +123,6 @@ const Login = () => {
 
                 <button
                   type="submit"
-                
                   className="w-full py-2.5 mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide"
                 >
                   LOGIN NOW
@@ -134,7 +133,7 @@ const Login = () => {
                   <Link
                     to="/signup"
                     onClick={() =>
-                      window.scrollTo({ top: 400, behavior: "smooth" })
+                      window.scrollTo({ top: 0, behavior: "smooth" })
                     }
                     className="font-medium text-primary-600 hover:underline"
                   >

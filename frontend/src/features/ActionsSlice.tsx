@@ -23,6 +23,13 @@ const ActionsSlice = createSlice({
   name: "actions",
   initialState,
   reducers: {
+
+    clearCart: (state) => {
+      state.cart = [];
+      state.totalQuantity = null;
+      state.totalPrice = null;
+    },
+
     addToCart: (state, action: PayloadAction<CartItem | CartItem[]>) => {
       const itemsToAdd = Array.isArray(action.payload)
         ? action.payload
@@ -106,6 +113,7 @@ export const {
   increaseQuantity,
   decreaseQuantity,
   getCartTotal,
+  clearCart
 } = ActionsSlice.actions;
 
 export default ActionsSlice.reducer;

@@ -5,10 +5,12 @@ import { FaStar } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const HairCare = ({ allproducts }) => {
+const RelatedProducts = ({ allproducts }) => {
   const navigate = useNavigate();
   const [slidesToShow, setSlidesToShow] = useState(4);
   const sliderRef = useRef(null);
+
+  console.log("allproducts", allproducts);
 
   const next = () => {
     if (sliderRef.current) {
@@ -31,13 +33,6 @@ const HairCare = ({ allproducts }) => {
     pauseOnHover: true,
     arrows: false,
     // responsive: [
-    //   {
-    //     breakpoint: 1400,
-    //     settings: {
-    //       slidesToShow: 3,
-    //       infinite: true,
-    //     },
-    //   },
     //   {
     //     breakpoint: 1024,
     //     settings: {
@@ -95,12 +90,12 @@ const HairCare = ({ allproducts }) => {
 
   return (
     <>
-      <section className="py-14 sm:py-16 px-5 sm:px-4 xl:px-0">
+      <section className="mt-10 py-14 sm:py-16 px-5 sm:px-4 xl:px-0 bg-[#FFF3F9]">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           <div className="header px-0 sm:px-5 flex justify-between items-center flex-wrap gap-6">
             <div className="name">
-              <h2 className="mb-2.5 playfair text-center text-4xl sm:text-5xl font-bold">
-                Haircare
+              <h2 className="mb-2.5 playfair text-center text-4xl sm:text-4xl font-bold">
+                Related Products
               </h2>
               <p className="h-0.5 w-16 bg-[#EC72AF]"></p>
             </div>
@@ -154,13 +149,13 @@ const HairCare = ({ allproducts }) => {
           <div className="data">
             <div className="mt-8 sm:mt-12">
               <Slider ref={sliderRef} {...settings}>
-                {allproducts?.products?.map((data, index) => (
+                {allproducts?.map((data, index) => (
                   <div
                     key={index}
                     onClick={() => handleItemClick(String(data.id))}
                     className="mx-0 pb-7"
                   >
-                    <div className="group mb-3 relative group w-60 mx-auto pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+                    <div className="group mb-3 relative group w-60 mx-auto bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                       <img
                         className="object-cover w-full h-56"
                         src={data.image.downloadURL}
@@ -249,4 +244,4 @@ const HairCare = ({ allproducts }) => {
   );
 };
 
-export default HairCare;
+export default RelatedProducts;

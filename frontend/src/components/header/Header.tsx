@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineMenu } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { Avatar, Dropdown, Button } from "keep-react";
+import { Dropdown, Button } from "keep-react";
 import { getCartTotal } from "../../features/ActionsSlice";
+import { IoIosArrowDown } from "react-icons/io";
 import {
   ArrowLeft,
   MagnifyingGlass,
@@ -15,6 +16,14 @@ import { logoutUserAsync } from "../../features/authSlice";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useAppDispatch();
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const { cart, totalQuantity } = useAppSelector((state) => state.actions);
   const data = useAppSelector((state) => state.auth.user);
@@ -108,16 +117,14 @@ const Header = () => {
           {/* LEFT SIDE BUTTONS */}
           <div className="flex items-center ml-auto space-x-6 sm:space-x-7">
             {/* cart */}
-            {window.innerWidth > 425 ? (
-              <Link to="/cart" className="relative">
-                <span className="relative">
-                  <ShoppingCart size={26} className="text-gray-700" />
-                  <span className="absolute -right-1 -top-2.5 rounded-full bg-red-500 px-1 py-0 text-xs text-white">
-                    {totalQuantity}
-                  </span>
+            <Link to="/cart" className="relative">
+              <span className="relative">
+                <ShoppingCart size={26} className="text-gray-700" />
+                <span className="absolute -right-1 -top-2.5 rounded-full bg-red-500 px-1 py-0 text-xs text-white">
+                  {totalQuantity}
                 </span>
-              </Link>
-            ) : null}
+              </span>
+            </Link>
 
             {/* search */}
             <button className="">
@@ -134,44 +141,46 @@ const Header = () => {
             </Link> */}
 
             {/* DROPDOWN */}
-            {login && user ? (
-              <Dropdown
-                showArrow
-                action={
-                  <Button className="-py-0 px-1 bg-white text-black hover:bg-white hover:text-black hover:underline hover:underline-offset-2 text-lg font-normal ">
-                    {user?.name}
-                  </Button>
-                }
-                actionClassName="border-none"
-              >
-                <Dropdown.List className="">
-                  <Dropdown.Item className="p-0 flex flex-col hover:bg-white">
-                    <Link
-                      to="/profile"
-                      className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
-                    >
-                      User Profile
-                    </Link>
-                    <Link
-                      to="/profile"
-                      className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
-                    >
-                      Order Tracking
-                    </Link>
-                    <p
-                      onClick={handleLogout}
-                      className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
-                    >
-                      Sign out
-                    </p>
-                  </Dropdown.Item>
-                </Dropdown.List>
-              </Dropdown>
-            ) : (
-              <Link to="/login">
-                <UserCircle size={28} className="text-gray-700" />
-              </Link>
-            )}
+            {windowWidth > 426 &&
+              (login && user ? (
+                <Dropdown
+                  showArrow
+                  action={
+                    <Button className="-py-0 px-1 bg-white text-black capitalize hover:bg-white hover:text-black hover:underline hover:underline-offset-2 text-lg font-normal">
+                      <span className="pr-1">{user?.name}</span>{" "}
+                      <IoIosArrowDown />
+                    </Button>
+                  }
+                  actionClassName="border-none"
+                >
+                  <Dropdown.List className="">
+                    <Dropdown.Item className="p-0 flex flex-col hover:bg-white">
+                      <Link
+                        to="/profile"
+                        className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
+                      >
+                        User Profile
+                      </Link>
+                      <Link
+                        to="/orders"
+                        className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
+                      >
+                        Order Tracking
+                      </Link>
+                      <p
+                        onClick={handleLogout}
+                        className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
+                      >
+                        Sign out
+                      </p>
+                    </Dropdown.Item>
+                  </Dropdown.List>
+                </Dropdown>
+              ) : (
+                <Link to="/login">
+                  <UserCircle size={28} className="text-gray-700" />
+                </Link>
+              ))}
 
             <button className="lg:hidden" id="toggleOpen" onClick={toggleMenu}>
               <MdOutlineMenu size={26} />

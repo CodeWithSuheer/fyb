@@ -21,6 +21,6 @@ userRouter.post("/users/updatePassword",updatePassword);
 userRouter.post("/users/sendResetPasswordOTP", sendResetPasswordOTP);
 userRouter.post("/users/verifyOtp", verifyOtp);
 userRouter.get("/users/persistUserSession", persistUserSession);
-userRouter.get("/users/updateUserInformation",verifyUser,updateUserInformation);
+userRouter.post("/users/updateUserInformation",verifyUser,updateUserInformation);
 
 export default userRouter;

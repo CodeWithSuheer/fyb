@@ -1,4 +1,14 @@
+import { Link } from "react-router-dom";
+
 const AboutSection = () => {
+  
+  const handleTop = () => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <section className="py-10 px-0">
@@ -6,7 +16,7 @@ const AboutSection = () => {
           <div className=" flex justify-center items-center flex-wrap">
             <div className="content lg:w-[50%] px-5 sm:px-16 md:px-10 py-14">
               <div className="data">
-                <h2 className="mb-6 playfair text-5xl font-bold">About Us</h2>
+                <h2 className="mb-6 playfair text-4xl sm:text-5xl font-bold">About Us</h2>
                 <p className="mb-6 text-md">
                   Lorem ipsum dolor sit amet consectetur. Vestibulum velit
                   suspendisse aliquet magnis dapibus dictum enim praesent. Sit
@@ -20,9 +30,13 @@ const AboutSection = () => {
                   turpis tellus at.
                 </p>
 
-                <button className="text-md mx-auto px-10 py-3 bg-[#EC72AF] text-white font-medium">
+                <Link
+                  to="/about"
+                  onClick={handleTop}
+                  className="text-md mx-auto px-10 py-3 bg-[#EC72AF] text-white font-medium"
+                >
                   Read More
-                </button>
+                </Link>
               </div>
             </div>
             <div className="img_side lg:w-[50%]">
