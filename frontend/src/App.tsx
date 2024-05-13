@@ -19,7 +19,7 @@ import OtpChecker from "./auth/OtpChecker";
 import Terms from "./components/Terms";
 import UserProfile from "./pages/user/UserProfile";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { useAppDispatch } from "./app/hooks";
 import { userSessionAsync } from "./features/authSlice";
 import {
   getAllProductsAsync,

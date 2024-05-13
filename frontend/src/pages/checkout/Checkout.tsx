@@ -3,11 +3,10 @@ import { updateuserAsync, userSessionAsync } from "../../features/authSlice";
 import { createOrderAsync, getallOrderAsync } from "../../features/orderSlice";
 import { useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
-import { Button, Modal } from "keep-react";
+import { Modal } from "keep-react";
 import { useDispatch } from "react-redux";
 import { Check } from "phosphor-react";
 import { clearCart } from "../../features/ActionsSlice";
-import { getallreviewsAsync } from "../../features/reviewsSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -58,16 +57,6 @@ const Checkout = () => {
     }
   }, [cart, navigate, user]);
 
-  // const handleSaveDetails = (e) => {
-  //   e.preventDefault();
-
-  //   const id = userID;
-  //   console.log({ id, ...formData });
-  //   dispatch(updateuserAsync({ id, ...formData })).then((res) => {
-  //     dispatch(userSessionAsync());
-  //   });
-  // };
-
   const handleMoveTop = () => {
     window.scroll(0, 0);
   };
@@ -79,7 +68,7 @@ const Checkout = () => {
     const id = userID;
 
     dispatch(updateuserAsync({ id, ...formData })).then((res) => {
-      console.log("res", res);
+     
       dispatch(userSessionAsync());
 
       if (res.payload.message === "Update Successfull") {
@@ -180,15 +169,6 @@ const Checkout = () => {
                             >
                               ORDER NOW
                             </button>
-                            {/* ) : (
-                              <button
-                                type="button"
-                                onClick={handleSaveDetails}
-                                className="rounded-md bg-[#EC72AF] px-4 py-2.5 tracking-wide text-sm font-semibold text-white shadow-sm"
-                              >
-                                Save Details
-                              </button>
-                            )} */}
                           </div>
                         </div>
                       </form>
@@ -256,37 +236,7 @@ const Checkout = () => {
                   </ul>
                 </div>
                 <hr className="mt-6 border-gray-200" />
-                {/* <div className="mt-6">
-                  <div className="button_coupn flex justify-end">
-                    <button
-                      onClick={handleCouponButtonClick}
-                      className="mb-3 text-[#EC72AF] font-medium underline underline-offset-2"
-                    >
-                      Have a coupon ?
-                    </button>
-                  </div>
 
-                  {showCouponInput && (
-                    <div className="sm:flex sm:space-x-2.5 md:flex-col md:space-x-0 lg:flex-row lg:space-x-2.5">
-                      <div className="flex-grow">
-                        <input
-                          className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                          type="text"
-                          placeholder="Enter coupon code"
-                        />
-                      </div>
-
-                      <div className="mt-4 sm:mt-0 md:mt-4 lg:mt-0">
-                        <button
-                          type="button"
-                          className="rounded-md bg-[#EC72AF] px-3 py-2 text-sm font-semibold text-white shadow-sm"
-                        >
-                          Apply Coupon
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div> */}
                 <ul className="mt-6 space-y-3">
                   <li className="flex items-center justify-between text-gray-600">
                     <p className="text-md font-medium">Sub total</p>
