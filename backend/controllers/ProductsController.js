@@ -22,7 +22,7 @@ export const getProducts = async (req, res, next) => {
     if (req.query.page) {
       page = req.query.page;
     }
-    const limit = 5;
+    const limit = 100;
     const products = await ProductsModel.find({ latest: false })
       .limit(limit)
       .skip((page - 1) * limit)

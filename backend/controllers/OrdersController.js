@@ -19,13 +19,20 @@ export const createOrder = async (req, res, next) => {
       address,
       phone,
       totalAmount,
-
+<<<<<<<<< Temporary merge branch 1
+      couponUsed,
+      orderProgress
+    });
+    return res
+      .status(201)
+      .json({ message: "Order PLaced Succcessfully", });
+=========
       couponUsed
     });
     return res
       .status(201)
       .json({ message: "Order PLaced Succcessfully", OrderTrackingID: order.OrderID });
-
+>>>>>>>>> Temporary merge branch 2
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
