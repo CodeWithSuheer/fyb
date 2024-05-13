@@ -21,7 +21,7 @@ export const createreviewsAsync = createAsyncThunk(
   async (formData: ReviewFormData) => {
     try {
       const response = await axios.post(createReviewUrl, formData);
-      toast.success(response.data.message);
+      // toast.success(response.data.message);
       console.log(response.data);
       return response.data;
     } catch (error: any) {
@@ -68,7 +68,7 @@ export const deletereviewsAsync = createAsyncThunk(
   async (id) => {
     try {
       const response = await axios.post(deleteReviewUrl, { id });
-      toast.success(response.data.message);
+      // toast.success(response.data.message);
       console.log(response.data);
       return response.data;
     } catch (error: any) {

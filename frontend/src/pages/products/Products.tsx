@@ -292,9 +292,20 @@ no products
 
                         <p className="mb-3 text-md text-gray-500">(Skincare)</p>
 
-                        <p className="mb-3 text-xl font-semibold text-black">
-                          ${data?.price}
-                        </p>
+                        {data.price !== data.sale_price ? (
+                          <>
+                            <p className="mb-1 text-xl font-semibold text-black">
+                              Rs. {data.sale_price}
+                            </p>
+                            <p className="mb-3 text-md font-semibold text-gray-500 line-through">
+                              Rs. {data.price}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="mb-3 text-xl font-semibold text-black">
+                            Rs. {data.price}
+                          </p>
+                        )}
 
                         <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
                           Shop Now
