@@ -4,78 +4,21 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import "./Products.css";
 
-// const data = [
-//   {
-//     id: "1",
-//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-//     name: " Basic Tee",
-//     price: "200",
-//   },
-//   {
-//     id: "2",
-//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-//     name: " Basic Tee",
-//     price: "200",
-//   },
-//   {
-//     id: "3",
-//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-//     name: " Basic Tee",
-//     price: "200",
-//   },
-//   {
-//     id: "4",
-//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-//     name: " Basic Tee",
-//     price: "200",
-//   },
-//   {
-//     id: "5",
-//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-//     name: " Basic Tee",
-//     price: "200",
-//   },
-//   {
-//     id: "6",
-//     img: "https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3953.png?v=1714511393",
-//     name: " Basic Tee",
-//     price: "200",
-//   },
-// ];
-
-// const fadeInAnimationVariants = {
-//   initial: {
-//     opacity: 0,
-//     y: 100,
-//   },
-//   animate: (index: number) => ({
-//     opacity: 1,
-//     y: 0,
-//     transition: {
-//       delay: 0.15 * index,
-//     },
-//   }),
-// };
 
 const Products = () => {
   const navigate = useNavigate();
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
   const allproducts = useAppSelector((state) => state.products.products || []);
-  console.log("allproducts", allproducts.products);
 
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
-  console.log("category", category);
 
   useEffect(() => {
     if (category) {
-      const filtered = allproducts.products.filter(
-        (product) => product?.category === category
-      );
-      console.log("filtered", filtered);
+      const filtered = allproducts.products.filter((product) => product?.category === category);
       setFilteredProducts(filtered);
     } else {
       setFilteredProducts(allproducts.products);
@@ -92,8 +35,14 @@ const Products = () => {
     window.scroll(0, 0);
   };
 
+  const handleCategoryFiltering = (category) => {
+    const filtered = allproducts.products.filter((product) => product?.category === category);
+    setFilteredProducts(filtered);
+  }
+
   return (
     <>
+
       {/* BANNER IMAGE */}
       <section className="product_banner">
         <div className="py-12 sm:py-28 about_cont px-2.5 flex justify-center items-center flex-col">
@@ -106,7 +55,7 @@ const Products = () => {
         </div>
       </section>
 
-      {/* PRODUCT DETAILS */}
+     
       <section>
         <div className="mx-auto max-w-5xl xl:max-w-6xl xxl:max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-5 xl:px-0">
           <div className="mt-8 block lg:hidden">
@@ -149,9 +98,9 @@ const Products = () => {
                 <div className="mt-1">
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span className="text-lg font-normal">Skincare</span>
+                      <span onClick={()=>handleCategoryFiltering('Skincare')} className="text-lg font-normal">Skincare</span>
 
-                      <span className="transition group-open:-rotate-180">
+                      {/* <span className="transition group-open:-rotate-180">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -166,10 +115,10 @@ const Products = () => {
                             d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                           />
                         </svg>
-                      </span>
+                      </span> */}
                     </summary>
 
-                    <div className="bg-white">
+                    {/* <div className="bg-white">
                       <ul className="pl-6" style={{ listStyleType: "initial" }}>
                         <li>
                           <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
@@ -192,14 +141,14 @@ const Products = () => {
                           </p>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                   </details>
 
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span className="text-lg font-normal">Bodycare</span>
+                      <span onClick={()=>handleCategoryFiltering('Body Care')}  className="text-lg font-normal">Body Care</span>
 
-                      <span className="transition group-open:-rotate-180">
+                      {/* <span className="transition group-open:-rotate-180">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -214,40 +163,40 @@ const Products = () => {
                             d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                           />
                         </svg>
-                      </span>
+                      </span> */}
                     </summary>
 
-                    <div className="bg-white">
+                    {/* <div className="bg-white">
                       <ul className="pl-6" style={{ listStyleType: "initial" }}>
                         <li>
                           <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Facewash
+                          Shower gels
                           </p>
                         </li>
                         <li>
                           <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Serums
+                          Body butter
                           </p>
                         </li>
                         <li>
                           <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Moisturizer
+                          Body oil
                           </p>
                         </li>
                         <li>
                           <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Toner
+                          Body scrubs
                           </p>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                   </details>
 
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span className="text-lg font-normal">Haircare</span>
+                      <span onClick={()=>handleCategoryFiltering('Haircare')} className="text-lg font-normal">Haircare</span>
 
-                      <span className="transition group-open:-rotate-180">
+                      {/* <span className="transition group-open:-rotate-180">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -262,38 +211,48 @@ const Products = () => {
                             d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                           />
                         </svg>
-                      </span>
+                      </span> */}
                     </summary>
 
-                    <div className="bg-white">
+                    {/* <div className="bg-white">
                       <ul className="pl-6" style={{ listStyleType: "initial" }}>
                         <li>
                           <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Facewash
+                          Shampoo
                           </p>
                         </li>
                         <li>
                           <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Serums
+                          Conditioner
                           </p>
                         </li>
                         <li>
                           <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Moisturizer
+                          Mask
                           </p>
                         </li>
                         <li>
                           <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Toner
+                          Hair oil
+                          </p>
+                        </li>
+                        <li>
+                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
+                          Hair serum
+                          </p>
+                        </li>
+                        <li>
+                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
+                          Hair mist
                           </p>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                   </details>
 
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span className="text-lg font-normal">Cosmetics</span>
+                      <span onClick={()=>handleCategoryFiltering('Cosmetics')} className="text-lg font-normal">Cosmetics</span>
                     </summary>
                   </details>
                 </div>
@@ -302,7 +261,9 @@ const Products = () => {
 
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
-              <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
+              {filteredProducts.length === 0 ? <div className="playfair text-3xl text-center font-medium uppercase">
+no products
+              </div> : <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
                 {filteredProducts?.map((data, index) => (
                   <li
                     key={index}
@@ -353,7 +314,7 @@ const Products = () => {
                     </div>
                   </li>
                 ))}
-              </ul>
+              </ul>}
             </div>
           </div>
         </div>
