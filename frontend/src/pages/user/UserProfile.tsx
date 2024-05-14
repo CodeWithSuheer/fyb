@@ -1,6 +1,65 @@
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateuserAsync, userSessionAsync } from "../../features/authSlice";
 
 const UserProfile = () => {
+  const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+  const userID = user?.user?.id;
+
+  const [formData, setFormData] = useState({
+    name: user?.user?.name || "",
+    email: user?.user?.email || "",
+    phone: user?.user?.phone || "",
+    address: user?.user?.address || "",
+  });
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user?.user?.name || "",
+        email: user?.user?.email || "",
+        phone: user?.user?.phone || "",
+        address: user?.user?.address || "",
+      });
+    }
+  }, [user]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // HANDLE SUBMIT
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const id = userID;
+
+    const updatedFields = {};
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== user?.user[key]) {
+        updatedFields[key] = formData[key];
+      }
+    });
+
+    if (Object.keys(updatedFields).length === 0) {
+      console.log("No changes made");
+      return;
+    }
+
+    console.log("Updated fields", updatedFields);
+
+    dispatch(updateuserAsync({ id, ...updatedFields })).then((res) => {
+      console.log("res", res);
+      dispatch(userSessionAsync());
+    });
+  };
+
   return (
     <>
       <section className="w-full bg-[#FDEDF5] py-14 sm:py-12 px-4 sm:px-8 lg:px-10 xl:px-0">
@@ -14,7 +73,7 @@ const UserProfile = () => {
               Manage your name, password and account settings.
             </p>
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="grid sm:grid-cols-12 gap-2 sm:gap-6">
               {/* full name label */}
               <div className="sm:col-span-3">
@@ -31,14 +90,11 @@ const UserProfile = () => {
                 <div className="sm:flex gap-3">
                   <input
                     className="bg-gray-50 mb-3 sm:mb-0 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full p-3 placeholder:text-gray-500"
-                    placeholder="First Name"
+                    placeholder="Enter your Full Name"
                     type="text"
-                  />
-
-                  <input
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full p-3 placeholder:text-gray-500"
-                    placeholder="Last Name"
-                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -60,6 +116,9 @@ const UserProfile = () => {
                   id="af-account-email"
                   placeholder="Enter Your Email"
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -106,6 +165,9 @@ const UserProfile = () => {
                     id="af-account-phone"
                     placeholder="Enter Phone Number"
                     type="text"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -125,8 +187,19 @@ const UserProfile = () => {
                   id="af-account-bio"
                   placeholder="Enter Your Address..."
                   rows={5}
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
                 />
               </div>
+            </div>
+            <div className="mt-5 flex justify-end gap-x-2">
+              <button
+                type="submit"
+                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-white bg-[#EC72AF] hover:bg-[#f181b9]disabled:opacity-50 disabled:pointer-events-none"
+              >
+                Save changes
+              </button>
             </div>
           </form>
 
