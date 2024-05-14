@@ -135,17 +135,17 @@ export const sendResetPasswordOTP = async (req, res, next) => {
 export const verifyOtp = async (req, res, next) => {
   try {
     const { otp, userId } = req.body;
-    const otpData = await OtpModel.findOne({ otp: otp, userId: userId });
+    const otpData = await OtpModel.findOne({ otp:otp, userId:userId });
     if (!otpData) {
       throw new Error("Invalid OTP");
-    }
+    };
     const verifyOtp = await validateOtp(otpData.timestamp);
     if (verifyOtp) {
       throw new Error("OTP Expired");
-    }
+    };
     res
       .status(200)
-      .json({ message: "OTP Verified Successfully", OtpVerified: true });
+      .json({ message: "OTP Verified Successfully", OtpVerified: true }); 
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

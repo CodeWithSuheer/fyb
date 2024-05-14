@@ -3,9 +3,11 @@ import { FaStar } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import "./Products.css";
+import { useDispatch } from "react-redux";
 
 const Products = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
   const allproducts = useAppSelector((state) => state.products.products || []);
@@ -13,7 +15,9 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   const [searchParams] = useSearchParams();
-  const category = searchParams.get("category");
+  const page = parseInt(searchParams.get("page")) || 1;
+  const category = searchParams.get("category") || "All";
+
 
   useEffect(() => {
     if (category) {
@@ -30,6 +34,33 @@ const Products = () => {
     setIsCategoryVisible(!isCategoryVisible);
   };
 
+  const renderPaginationLinks = () => {
+    const totalPages = products?.totalPages;
+    const paginationLinks = [];
+    for (let i = 1; i <= totalPages; i++) {
+      paginationLinks.push(
+        <li key={i}>
+          <Link
+            to={`/admin/all_product?category=${category}&page=${i}`}
+            className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 ${
+              i === page ? "bg-gray-200" : "hover:bg-gray-100"
+            }`}
+            onClick={() => dispatch(getAllProductsAsync({ category, page: i }))}
+          >
+            {i}
+          </Link>
+        </li>
+      );
+    }
+    return paginationLinks;
+  };
+
+  useEffect(() => {
+    
+      dispatch(getAllProductsAsync({ category, page }));
+    
+  }, [dispatch, page, category]);
+
   // HANDLE ITEM CLICK
   const handleItemClick = (productId: string) => {
     navigate(`/selectedItem/${productId}`);
@@ -37,10 +68,7 @@ const Products = () => {
   };
 
   const handleCategoryFiltering = (category) => {
-    const filtered = allproducts.products.filter(
-      (product) => product?.category === category
-    );
-    setFilteredProducts(filtered);
+    navigate(`/admin/all_product?category=${category}`);
   };
 
   return (
@@ -287,6 +315,7 @@ const Products = () => {
                   no products
                 </div>
               ) : (
+                <>
                 <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
                   {filteredProducts?.map((data, index) => (
                     <li
@@ -341,6 +370,113 @@ const Products = () => {
                     </li>
                   ))}
                 </ul>
+                
+                 <div className="flex justify-center">
+                    <nav aria-label="Page navigation example">
+                      <ul className="flex items-center -space-x-px h-8 py-10 text-sm">
+                        <li>
+                          {products?.page > 1 ? (
+                            <Link
+                              to={`/admin/all_product?category=${category}&page=${
+                                page - 1
+                              }`}
+                              className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            >
+                              <span className="sr-only">Previous</span>
+                              <svg
+                                className="w-2.5 h-2.5 rtl:rotate-180"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 6 10"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 1 1 5l4 4"
+                                />
+                              </svg>
+                            </Link>
+                          ) : (
+                            <button
+                              className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg cursor-not-allowed"
+                              disabled
+                            >
+                              <span className="sr-only">Previous</span>
+                              <svg
+                                className="w-2.5 h-2.5 rtl:rotate-180"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 6 10"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 1 1 5l4 4"
+                                />
+                              </svg>
+                            </button>
+                          )}
+                        </li>
+                        {renderPaginationLinks()}
+                        <li>
+                          {products?.totalPages !== page ? (
+                            <Link
+                              to={`/admin/all_product?category=${category}&page=${
+                                page + 1
+                              }`}
+                              className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            >
+                              <span className="sr-only">Next</span>
+                              <svg
+                                className="w-2.5 h-2.5 rtl:rotate-180"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 6 10"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="m1 9 4-4-4-4"
+                                />
+                              </svg>
+                            </Link>
+                          ) : (
+                            <button
+                              className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg cursor-not-allowed"
+                              disabled
+                            >
+                              <span className="sr-only">Next</span>
+                              <svg
+                                className="w-2.5 h-2.5 rtl:rotate-180"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 6 10"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="m1 9 4-4-4-4"
+                                />
+                              </svg>
+                            </button>
+                          )}
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </>
               )}
             </div>
           </div>
