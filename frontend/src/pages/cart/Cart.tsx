@@ -5,6 +5,7 @@ import { BsTrash3 } from "react-icons/bs";
 // import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import {
   decreaseQuantity,
   getCartTotal,
@@ -29,6 +30,11 @@ const Cart: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Cart - For Your Beauty</title>
+      </Helmet>
+
       <section className="w-full py-14 sm:py-14 px-5 sm:px-8 lg:px-10 xl:px-0 bg-[#FFF3F9] min-h-[90vh]">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           {/* HEADER */}

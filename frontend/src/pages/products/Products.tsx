@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
+import { Helmet } from "react-helmet";
 import "./Products.css";
 
 const Products = () => {
@@ -45,6 +46,10 @@ const Products = () => {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Products - For Your Beauty</title>
+      </Helmet>
       {/* BANNER IMAGE */}
       <section className="product_banner">
         <div className="py-12 sm:py-28 about_cont px-2.5 flex justify-center items-center flex-col">

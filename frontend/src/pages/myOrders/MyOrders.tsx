@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getallOrderAsync } from "../../features/orderSlice";
+import { Helmet } from "react-helmet";
 
 const MyOrders = () => {
   const dispatch = useAppDispatch();
@@ -20,8 +21,13 @@ const MyOrders = () => {
 
   return (
     <>
-      <section className="w-full bg-[#FFF3F9] py-14 sm:py-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
-        <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Orders - For Your Beauty</title>
+      </Helmet>
+
+      <section className="w-full  py-14 sm:py-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
+        <div className="max-w-5xl xl:max-w-6xl mx-auto">
           <h2 className="playfair text-3xl font-bold">Order Details</h2>
           <div className="mt-3 text-sm">
             Check the status of recent and old orders & discover more products
@@ -31,36 +37,47 @@ const MyOrders = () => {
               key={index}
               className="mt-8 flex flex-col overflow-hidden rounded-lg border border-gray-300 md:flex-row"
             >
-              <div className="w-full border-r border-gray-300 bg-gray-100 md:max-w-xs">
+              {/* ORDER DETAILS */}
+              <div className="w-full border-r border-gray-300 bg-[#FFF3F9] md:max-w-xs">
                 <div className="p-8">
                   <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-1">
                     <div className="mb-4">
-                      <div className="text-sm font-semibold">Order ID</div>
-                      <div className="text-sm font-medium text-gray-700">
+                      <div className="text-md sm:text-lg font-semibold">
+                        Order ID
+                      </div>
+                      <div className="text-md font-medium text-gray-700">
                         {data?.OrderID}
                       </div>
                     </div>
                     <div className="mb-4">
-                      <div className="text-sm font-semibold">Date</div>
-                      <div className="text-sm font-medium text-gray-700">
+                      <div className="text-md sm:text-lg font-semibold">
+                        Date
+                      </div>
+                      <div className="text-md font-medium text-gray-700">
                         {new Date(data?.createdAt).toLocaleDateString()}
                       </div>
                     </div>
                     <div className="mb-4">
-                      <div className="text-sm font-semibold">Total Amount</div>
-                      <div className="text-sm font-medium text-gray-700">
+                      <div className="text-md sm:text-lg font-semibold">
+                        Total Amount
+                      </div>
+                      <div className="text-md font-medium text-gray-700">
                         Rs. {data?.totalAmount}
                       </div>
                     </div>
                     <div className="mb-4">
-                      <div className="text-sm font-semibold">Order Status</div>
-                      <div className="text-sm font-medium text-gray-700">
+                      <div className="text-md sm:text-lg font-semibold">
+                        Order Status
+                      </div>
+                      <div className="text-md font-medium text-gray-700">
                         Pending
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* ORDER ITEMS */}
               <div className="flex-1 bg-white">
                 <div className="p-8">
                   <ul className="-my-7 divide-y divide-gray-200">

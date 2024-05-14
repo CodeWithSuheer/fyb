@@ -5,6 +5,7 @@ import { useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "keep-react";
 import { useDispatch } from "react-redux";
+import { Helmet } from "react-helmet";
 import { Check } from "phosphor-react";
 import { clearCart } from "../../features/ActionsSlice";
 
@@ -68,7 +69,6 @@ const Checkout = () => {
     const id = userID;
 
     dispatch(updateuserAsync({ id, ...formData })).then((res) => {
-     
       dispatch(userSessionAsync());
 
       if (res.payload.message === "Update Successfull") {
@@ -103,6 +103,11 @@ const Checkout = () => {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Checkout - For Your Beauty</title>
+      </Helmet>
+
       <section className="w-full bg-[#FFF3F9] py-14 sm:py-12 px-0 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           <div className="overflow-hidden rounded-xl shadow border border-gray-300">

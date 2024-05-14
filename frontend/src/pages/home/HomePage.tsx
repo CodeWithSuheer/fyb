@@ -10,6 +10,7 @@ import OurCategory from "./OurCategory";
 import Review from "./Review";
 import SecondCta from "./SecondCta";
 import Skincare from "./Skincare";
+import { Helmet } from "react-helmet";
 import { getallOrderAsync } from "../../features/orderSlice";
 
 const HomePage = () => {
@@ -26,9 +27,13 @@ const HomePage = () => {
     }
   }, [userID, dispatch]);
 
-
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>For Your Beauty</title>
+      </Helmet>
+
       <HeroSection />
 
       <FeaturesLine />
