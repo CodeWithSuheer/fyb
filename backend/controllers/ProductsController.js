@@ -1,5 +1,4 @@
 import { ProductsModel } from "../models/Products.Model.js";
-import { deleteImageFromFirebase, uploadImageToFirebase } from "../utils/Firebase.js";
 import { setMongoose } from "../utils/Mongoose.js";
 
 
@@ -18,26 +17,34 @@ export const getLatestPRoducts = async (req, res, next) => {
 
 export const getProducts = async (req, res, next) => {
   try {
-    var page = 1;
-    if (req.query.page) {
-      page = req.query.page;
-    }
-    const limit = 100;
-    const products = await ProductsModel.find({ latest: false })
-      .limit(limit)
-      .skip((page - 1) * limit)
-      .exec();
+    const page = parseInt(req.query.page) || 1; 
+    const limit = 5;
+    let search = req.query.search || "";
+    let category = req.query.category || "All";
 
-    const count = await ProductsModel.find({ latest: false }).countDocuments();
-    setMongoose();
-    return res
-      .status(200)
-      .json({
-        products,
-        totalPages: Math.ceil(count / limit),
-        currentPage: page,
-      });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+    let query = {
+      name: { $regex: search, $options: "i" }
+    };
+
+    if (category !== "All") {
+      query.category = category;
+    }
+   
+    const productData = await ProductsModel.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const total = await ProductsModel.countDocuments(query);
+
+    const response = {
+      totalPages:Math.ceil(total / limit),
+      page,
+      productData,
+    };
+
+    res.status(200).json(response);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: true, message: "Internal Server Error" });
   }
 };

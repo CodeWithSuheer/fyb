@@ -58,9 +58,9 @@ function App() {
           {/* ---------- AUTH ROUTES ---------- */}
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/reset" element={<ResetPass />} />
+          <Route path="/reset/:id/:value" element={<ResetPass />} />
           <Route path="/forget" element={<ForgetPass />} />
-          <Route path="/otp" element={<OtpChecker />} />
+          <Route path="/otp/:id" element={<OtpChecker />} />
           <Route path="/profile" element={<UserProfile />} />
 
           {/* ---------- OTHER ROUTES ---------- */}

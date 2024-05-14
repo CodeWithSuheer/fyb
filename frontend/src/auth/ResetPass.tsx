@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { resetPassAsync } from "../features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
@@ -9,7 +9,9 @@ const ResetPass = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
-  const id = useSelector((state) => state.auth.userId);
+  const params = useParams();
+
+  const { id } = params;
 
   const [formData, setFormData] = useState({
     password: "",
@@ -24,11 +26,14 @@ const ResetPass = () => {
     e.preventDefault();
     if (password === confirmPassword) {
       try {
-        await dispatch(resetPassAsync({ id, resetPassword }));
-        navigate("/");
-        setFormData({
-          password: "",
-          confirmPassword: "",
+        await dispatch(resetPassAsync({ id, resetPassword })).then((res) => {
+          if (res.payload.message) {
+            navigate("/login");
+            setFormData({
+              password: "",
+              confirmPassword: "",
+            });
+          }
         });
       } catch (error) {
         console.error("Error resetting password:", error);

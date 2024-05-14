@@ -132,11 +132,9 @@ export const resetPassAsync = createAsyncThunk(
         id,
         resetPassword,
       });
-      // toast.success(response.data.message);
+      toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data.error);
-      toast.error(error.response.data.error);
       throw error.response.data.error;
     }
   }

@@ -18,12 +18,11 @@ const ForgetPass = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
     dispatch(forgetuserAsync(formData)).then((res) => {
-      if (res.error) {
-        ("");
-      } else {
-        navigate("/otp");
+      if (res.error) {""}
+       else {
+        console.log(res);
+        navigate(`/otp/${res.payload.userId}`);
         setFormData({
           email: "",
         });

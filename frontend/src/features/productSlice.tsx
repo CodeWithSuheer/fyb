@@ -56,15 +56,15 @@ export const loginuserAsync = createAsyncThunk(
 
 // GET ALL PRODUCT ASYNC THUNK
 export const getAllProductsAsync = createAsyncThunk(
-  "products/get ",
-  async (id) => {
+  "Shop/getProduts",
+  async (data) => {
+
+    const searchQuery = data?.search !== undefined && data?.search !== null ? `&search=${data?.search}` : "";
     try {
-      const response = await axios.post(getAllProductUrl, id);
-      //   toast.success(response.data.message);
-      console.log("All", response.data);
+      const response = await axios.post(`${getProductsUrl}?category=${data.category}&page=${data.page}${searchQuery}`);
       return response.data;
-    } catch (error: any) {
-      toast.error(error.response.data.error);
+    } catch (error) {
+      console.log(error);
     }
   }
 );
