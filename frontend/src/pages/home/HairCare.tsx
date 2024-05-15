@@ -4,9 +4,12 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaStar } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { getAllProductsAsync } from "../../features/productSlice";
 
-const HairCare = ({ allproducts }) => {
+const HairCare = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [slidesToShow, setSlidesToShow] = useState(4);
   const sliderRef = useRef(null);
 
@@ -92,6 +95,16 @@ const HairCare = ({ allproducts }) => {
     navigate(`/selectedItem/${productId}`);
     window.scroll(0, 0);
   };
+
+  const category = "Skincare";
+  const page = 1;
+
+  useEffect(() => {
+    dispatch(getAllProductsAsync({category,page}));
+}, [dispatch,category,page]);
+
+
+  const allproducts = useAppSelector((state) => state.products.products);
 
   return (
     <>

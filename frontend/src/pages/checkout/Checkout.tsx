@@ -1,20 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { updateuserAsync, userSessionAsync } from "../../features/authSlice";
 import { createOrderAsync, getallOrderAsync } from "../../features/orderSlice";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "keep-react";
 import { useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
 import { Check } from "phosphor-react";
 import { clearCart } from "../../features/ActionsSlice";
+import { verifyCouponAsync } from "../../features/couponSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const formRef = useRef(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [coupon, setCoupon] = useState("");
 
   const openModal = () => {
     setIsOpen(true);
@@ -62,19 +64,26 @@ const Checkout = () => {
     window.scroll(0, 0);
   };
 
+  const [couponSuccessData, setCouponSuccessData] = useState("");
+
+  const couponData = {
+    code: coupon,
+    discount:couponSuccessData?.discountAmount
+  };
+
   // HANDLE SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const id = userID;
-
     dispatch(updateuserAsync({ id, ...formData })).then((res) => {
       dispatch(userSessionAsync());
 
       if (res.payload.message === "Update Successfull") {
         const { name, phone, address } = formData;
         const items = cart;
-        const totalAmount = totalPrice + shippingCharges;
+        const totalAmount = couponSuccessData
+          ? totalPrice + shippingCharges - couponSuccessData?.discountAmount
+          : totalPrice + shippingCharges;
         const requestData = {
           name,
           phone,
@@ -82,10 +91,10 @@ const Checkout = () => {
           items,
           userID,
           totalAmount,
+          couponUsed:couponSuccessData ? couponData : null
         };
 
         dispatch(createOrderAsync(requestData)).then((res) => {
-          console.log("res", res);
           if (res.payload.message === "Order PLaced Succcessfully") {
             openModal();
             dispatch(clearCart());
@@ -100,6 +109,24 @@ const Checkout = () => {
       }
     });
   };
+
+  const categories = cart.map((item: any) => item.category);
+
+  const handleVerifyCoupon = () => {
+    const formData = {
+      code: coupon,
+      userId: userID,
+      category: categories,
+    };
+    dispatch(verifyCouponAsync(formData)).then((res) => {
+      // console.log(res);
+      if (res.payload.couponDiscountSuccess) {
+        setCouponSuccessData(res.payload);
+      }
+    });
+  };
+
+  console.log(couponSuccessData);
 
   return (
     <>
@@ -167,7 +194,6 @@ const Checkout = () => {
                           </div>
 
                           <div className="flex justify-end pt-3">
-                            {/* {user?.address ? ( */}
                             <button
                               type="submit"
                               className="rounded-md bg-[#EC72AF] hover:bg-[#f181b9] px-4 py-2.5 tracking-wide text-sm font-semibold text-white shadow-sm"
@@ -241,6 +267,36 @@ const Checkout = () => {
                   </ul>
                 </div>
                 <hr className="mt-6 border-gray-200" />
+                <>
+                  <div className="mt-6">
+                    <div className="button_coupn flex justify-end">
+                      <button
+                        onClick={handleCouponButtonClick}
+                        className="mb-3 text-[#EC72AF] font-medium underline underline-offset-2"
+                      >
+                        Have a coupon ?
+                      </button>
+                    </div>
+                    {showCouponInput && (
+                      <div className="sm:flex sm:space-x-2.5 md:flex-col md:space-x-0 lg:flex-row lg:space-x-2.5">
+                        <div className="flex-grow">
+                          <input
+                            className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                            type="text"
+                            placeholder="Enter coupon code"
+                            value={coupon}
+                            onChange={(e) => setCoupon(e.target.value)}
+                          />
+                        </div>
+                        <div className="mt-4 sm:mt-0 md:mt-4 lg:mt-0">
+                          <button onClick={handleVerifyCoupon} type="button">
+                            verify
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </>
 
                 <ul className="mt-6 space-y-3">
                   <li className="flex items-center justify-between text-gray-600">
@@ -251,10 +307,25 @@ const Checkout = () => {
                     <p className="text-md font-medium">Shipping Charges</p>
                     <p className="text-md font-medium">Rs. {shippingCharges}</p>
                   </li>
+                  {couponSuccessData?.couponDiscountSuccess ? (
+                    <li className="flex items-center justify-between text-gray-600">
+                      <p className="text-md font-medium">Coupon Discount</p>
+                      <p className="text-md font-medium">
+                        Rs. {couponSuccessData?.discountAmount}
+                      </p>
+                    </li>
+                  ) : (
+                    ""
+                  )}
                   <li className="flex items-center justify-between text-gray-900">
                     <p className="text-md font-medium ">Total</p>
                     <p className="text-md font-bold ">
-                      Rs. {totalPrice + shippingCharges}
+                      Rs.{" "}
+                      {couponSuccessData
+                        ? totalPrice +
+                          shippingCharges -
+                          couponSuccessData?.discountAmount
+                        : totalPrice + shippingCharges}
                     </p>
                   </li>
                 </ul>

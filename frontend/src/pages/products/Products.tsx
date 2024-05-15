@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { Helmet } from "react-helmet";
 import "./Products.css";
 import { useDispatch } from "react-redux";
+import { getAllProductsAsync } from "../../features/productSlice";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -12,37 +13,23 @@ const Products = () => {
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
   const allproducts = useAppSelector((state) => state.products.products || []);
-
-  const [filteredProducts, setFilteredProducts] = useState([]);
-
+ 
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page")) || 1;
   const category = searchParams.get("category") || "All";
-
-
-  useEffect(() => {
-    if (category) {
-      const filtered = allproducts.products.filter(
-        (product) => product?.category === category
-      );
-      setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts(allproducts.products);
-    }
-  }, [category, allproducts]);
 
   const toggleCategory = () => {
     setIsCategoryVisible(!isCategoryVisible);
   };
 
   const renderPaginationLinks = () => {
-    const totalPages = products?.totalPages;
+    const totalPages = allproducts?.totalPages;
     const paginationLinks = [];
     for (let i = 1; i <= totalPages; i++) {
       paginationLinks.push(
-        <li key={i}>
+        <li  onClick={ToTop} key={i}>
           <Link
-            to={`/admin/all_product?category=${category}&page=${i}`}
+            to={`/products?category=${category}&page=${i}`}
             className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 ${
               i === page ? "bg-gray-200" : "hover:bg-gray-100"
             }`}
@@ -57,9 +44,7 @@ const Products = () => {
   };
 
   useEffect(() => {
-    
       dispatch(getAllProductsAsync({ category, page }));
-    
   }, [dispatch, page, category]);
 
   // HANDLE ITEM CLICK
@@ -68,8 +53,15 @@ const Products = () => {
     window.scroll(0, 0);
   };
 
-  const handleCategoryFiltering = (category) => {
-    navigate(`/admin/all_product?category=${category}`);
+  const handleCategoryFiltering = (category: string) => {
+    navigate(`/products?category=${category}`);
+  };
+
+  const ToTop = () => {
+    window.scrollTo({
+      top: 450, 
+      behavior: "smooth" 
+    });
   };
 
   return (
@@ -138,49 +130,9 @@ const Products = () => {
                       >
                         Skincare
                       </span>
-
-                      {/* <span className="transition group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="h-4 w-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                          />
-                        </svg>
-                      </span> */}
                     </summary>
 
-                    {/* <div className="bg-white">
-                      <ul className="pl-6" style={{ listStyleType: "initial" }}>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Facewash
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Serums
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Moisturizer
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                            Toner
-                          </p>
-                        </li>
-                      </ul>
-                    </div> */}
+                  
                   </details>
 
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
@@ -192,48 +144,10 @@ const Products = () => {
                         Body Care
                       </span>
 
-                      {/* <span className="transition group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="h-4 w-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                          />
-                        </svg>
-                      </span> */}
+                   
                     </summary>
 
-                    {/* <div className="bg-white">
-                      <ul className="pl-6" style={{ listStyleType: "initial" }}>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Shower gels
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Body butter
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Body oil
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Body scrubs
-                          </p>
-                        </li>
-                      </ul>
-                    </div> */}
+                
                   </details>
 
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
@@ -245,58 +159,10 @@ const Products = () => {
                         Haircare
                       </span>
 
-                      {/* <span className="transition group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="h-4 w-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                          />
-                        </svg>
-                      </span> */}
+                    
                     </summary>
 
-                    {/* <div className="bg-white">
-                      <ul className="pl-6" style={{ listStyleType: "initial" }}>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Shampoo
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Conditioner
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Mask
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Hair oil
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Hair serum
-                          </p>
-                        </li>
-                        <li>
-                          <p className="py-1.5 text-md font-normal hover:underline hover:underline-offset-4 cursor-pointer">
-                          Hair mist
-                          </p>
-                        </li>
-                      </ul>
-                    </div> */}
+                
                   </details>
 
                   <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
@@ -315,14 +181,14 @@ const Products = () => {
 
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
-              {filteredProducts?.length === 0 ? (
+              {allproducts.productData?.length === 0 ? (
                 <div className="playfair text-3xl text-center font-medium uppercase">
                   no products
                 </div>
               ) : (
                 <>
                 <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
-                  {filteredProducts?.map((data, index) => (
+                  {allproducts?.productData?.map((data, index) => (
                     <li
                       key={index}
                       onClick={() => handleItemClick(String(data.id))}
@@ -380,9 +246,10 @@ const Products = () => {
                     <nav aria-label="Page navigation example">
                       <ul className="flex items-center -space-x-px h-8 py-10 text-sm">
                         <li>
-                          {products?.page > 1 ? (
+                          {allproducts?.page > 1 ? (
                             <Link
-                              to={`/admin/all_product?category=${category}&page=${
+                              onClick={ToTop}
+                              to={`/products?category=${category}&page=${
                                 page - 1
                               }`}
                               className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -430,9 +297,10 @@ const Products = () => {
                         </li>
                         {renderPaginationLinks()}
                         <li>
-                          {products?.totalPages !== page ? (
+                          {allproducts?.totalPages !== page ? (
                             <Link
-                              to={`/admin/all_product?category=${category}&page=${
+                            onClick={ToTop}
+                              to={`/products?category=${category}&page=${
                                 page + 1
                               }`}
                               className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"

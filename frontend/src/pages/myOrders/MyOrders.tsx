@@ -81,7 +81,7 @@ const MyOrders = () => {
               <div className="flex-1 bg-white">
                 <div className="p-8">
                   <ul className="-my-7 divide-y divide-gray-200">
-                    {data.items.map((product) => (
+                    {data?.items.map((product) => (
                       <li
                         key={product.id}
                         className="flex flex-col justify-between space-x-5 py-7 md:flex-row"

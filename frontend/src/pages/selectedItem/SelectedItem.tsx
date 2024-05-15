@@ -16,7 +16,7 @@ import {
   updatereviewsAsync,
 } from "../../features/reviewsSlice";
 import RelatedProducts from "./RelatedProducts";
-import { getAllProductsAsync } from "../../features/productSlice";
+import { getAllProductsAsync, getProductByIdAsync } from "../../features/productSlice";
 
 
 interface RouteParams {
@@ -47,18 +47,16 @@ const SelectedItem: React.FC = () => {
   const [isReviewVisible, setIsReviewVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("Description");
 
-  const allproducts = useAppSelector(
-    (state) => state.products.products.products
-  );
+  const { id } = useParams<RouteParams>();
 
   useEffect(() => {
-    dispatch(getAllProductsAsync());
-  }, []);
+    dispatch(getProductByIdAsync(id));
+  }, [id]);
 
-  const { id } = useParams<RouteParams>();
-  const productId = id;
+  const allproducts = useAppSelector(
+    (state) => state.products.singleProduct
+  );
 
-  
   // DELETE MODAL
   const [isOpen, setIsOpen] = useState(false);
 
@@ -69,7 +67,7 @@ const SelectedItem: React.FC = () => {
 
   const closeModal = () => {
     setIsOpen(false);
-  };
+  }; 
 
   const toggleReviewVisibility = () => {
     setIsReviewVisible((prevVisibility) => !prevVisibility);
@@ -93,7 +91,7 @@ const SelectedItem: React.FC = () => {
   };
 
   // filter product based on id
-  const selectedItem = allproducts?.filter((item: any) => item.id === id);
+  const selectedItem = allproducts;
 
   // filter review based on id
   const allreviews = useAppSelector((state) => state.reviews.allReviews);
@@ -200,15 +198,16 @@ const SelectedItem: React.FC = () => {
     });
   };
 
+  const category = allproducts?.category
+
   return (
     <>
       <div className="pt-4">
         <div className="px-4 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-          {selectedItem?.map((product, index) => (
-            <div key={index}>
-              <p className="mt-5 mb-4">Home / Shop / {product.name}</p>
+         
+            <div >
+              <p className="mt-5 mb-4">Home / Shop / {selectedItem?.name}</p>
               <div
-                key={index}
                 className="grid items-start grid-cols-1 lg:grid-cols-2 gap-5"
               >
                 <div className="w-full lg:sticky top-0 sm:flex gap-2">
@@ -218,14 +217,14 @@ const SelectedItem: React.FC = () => {
                   <img
                     alt="Product"
                     className="w-full pr-0 lg:pr-10 object-cover border border-gray-300 rounded-lg"
-                    src={product?.image.downloadURL}
+                    src={selectedItem?.image?.downloadURL}
                   />
                 </div>
 
                 {/* CONTENT SIDE */}
                 <div className="content_side">
                   <h2 className="text-3xl font-extrabold text-gray-800">
-                    {product?.name}
+                    {selectedItem?.name}
                   </h2>
 
                   {/* ABOUT */}
@@ -250,18 +249,18 @@ const SelectedItem: React.FC = () => {
 
                   {/* PRICE SECTION */}
                   <div className="flex flex-wrap items-center gap-4 mt-4">
-                    {product.price !== product.sale_price ? (
+                    {selectedItem?.price !== selectedItem?.sale_price ? (
                       <>
                         <p className="text-gray-500 text-lg line-through">
-                          Rs. {product.price}
+                          Rs. {selectedItem?.price}
                         </p>
                         <p className="text-gray-800 text-2xl font-bold">
-                          Rs. {product.sale_price}
+                          Rs. {selectedItem?.sale_price}
                         </p>
                       </>
                     ) : (
                       <p className="text-gray-800 text-2xl font-bold">
-                        Rs. {product.price}
+                        Rs. {selectedItem?.price}
                       </p>
                     )}
                   </div>
@@ -277,7 +276,7 @@ const SelectedItem: React.FC = () => {
                 </div>
               </div>
             </div>
-          ))}
+          
 
           {/* DESCRIPTION & REVIEW SECTION */}
           <div className="mt-16 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
@@ -448,7 +447,7 @@ const SelectedItem: React.FC = () => {
       </div>
 
       {/* RELATED PRODUCT SECTION */}
-      <RelatedProducts allproducts={allproducts} />
+      <RelatedProducts category={category} />
 
       {/* UPDATE MODAL */}
       {selectedReview.map((data, index) => (
