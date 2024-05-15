@@ -1,10 +1,15 @@
 import "./About.css";
 import AboutSection from "../home/AboutSection";
 import Review from "../home/Review";
+import { Helmet } from "react-helmet";
 
 const About = () => {
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>About Us - For Your Beauty</title>
+      </Helmet>
       <section className="about">
         <div className="py-12 sm:py-24 about_cont px-2.5 flex justify-center items-center flex-col">
           <h2 className="mb-2 text-white text-2xl sm:text-4xl font-semibold text-center max-w-xl">
@@ -15,7 +20,6 @@ const About = () => {
           </h2>
         </div>
       </section>
-
       {/* ----------- IMAGE & TEXT SECTION -----------  */}
       <section className="body-font">
         <div className="max-w-6xl mx-auto flex px-0 py-4 sm:py-20 md:flex-row flex-col items-center">
@@ -45,7 +49,6 @@ const About = () => {
           </div>
         </div>
       </section>
-
       {/* ----------- OUR MISSION & VISSION -----------  */}
       <section className="">
         <div className="py-5 sm:py-8 max-w-6xl mx-auto grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
@@ -90,9 +93,7 @@ const About = () => {
           </div>
         </div>
       </section>
-
       <AboutSection />
-
       <Review />
     </>
   );

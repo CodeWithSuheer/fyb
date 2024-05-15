@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { verifyOtpAsync } from "../features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 const OtpChecker = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,10 @@ const OtpChecker = () => {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Otp - For Your Beauty</title>
+      </Helmet>
       <section className="py-10 sm:py-10 px-3 sm:px-4 xl:px-0 bg-[#FDEDF5]">
         <div className="max-w-5xl xl:max-w-4xl mx-auto">
           <div className="flex justify-center items-center flex-col-reverse sm:flex-row gap-10 md:gap-2 min-h-[80vh]">

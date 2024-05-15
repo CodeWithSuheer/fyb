@@ -4,6 +4,7 @@ import { IoMail } from "react-icons/io5";
 import { MdLocationPin } from "react-icons/md";
 import { FaInstagram } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
+import { Helmet } from "react-helmet";
 import "./Contact.css";
 
 const Contact = () => {
@@ -35,6 +36,11 @@ const Contact = () => {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Contact Us - For Your Beauty</title>
+      </Helmet>
+
       {/* BANNER IMAGE */}
       <section className="contact">
         <div className="py-12 sm:py-24 about_cont px-2.5 flex justify-center items-center flex-col">

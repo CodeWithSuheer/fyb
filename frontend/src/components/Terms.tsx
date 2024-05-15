@@ -1,6 +1,13 @@
+import { Helmet } from "react-helmet";
+
 const Terms = () => {
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Term & Conditions - For Your Beauty</title>
+      </Helmet>
+
       <section className="bg-[#ebecf5]">
         <div className="max-w-5xl px-4 sm:px-6 py-28 mx-auto min-h-screen">
           <h2 className="poppin text-3xl lg:text-4xl font-bold tracking-wide">

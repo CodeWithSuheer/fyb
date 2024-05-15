@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createuserAsync } from "../features/authSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Spinner } from "keep-react";
+import { Helmet } from "react-helmet";
 
 export interface SignupFormData {
   name: string;
@@ -43,6 +44,11 @@ const Signup: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Sign up - For Your Beauty</title>
+      </Helmet>
+
       <section className="py-10 sm:py-10 px-3 sm:px-4 md:px-14 bg-[#FDEDF5]">
         <div className="max-w-5xl xl:max-w-4xl mx-auto">
           <div className="flex justify-center items-center flex-col-reverse sm:flex-row gap-10 md:gap-2 min-h-[80vh]">
