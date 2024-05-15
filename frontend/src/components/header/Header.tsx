@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineMenu } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { Dropdown, Button } from "keep-react";
 import { getCartTotal } from "../../features/ActionsSlice";
 import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
 import {
   ArrowLeft,
   MagnifyingGlass,
@@ -18,6 +18,25 @@ const Header = () => {
   const dispatch = useAppDispatch();
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const handleLinkClick = () => {
+    setIsDropDownOpen(false);
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropDownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -140,42 +159,50 @@ const Header = () => {
               )}
             </Link> */}
 
-            {/* DROPDOWN */}
             {windowWidth > 426 &&
               (login && user ? (
-                <Dropdown
-                  showArrow
-                  action={
-                    <Button className="-py-0 px-1 bg-white text-black capitalize hover:bg-white hover:text-black hover:underline hover:underline-offset-2 text-lg font-normal">
-                      <span className="pr-1">{user?.name}</span>{" "}
-                      <IoIosArrowDown />
-                    </Button>
-                  }
-                  actionClassName="border-none"
-                >
-                  <Dropdown.List className="">
-                    <Dropdown.Item className="p-0 flex flex-col hover:bg-white">
+                <div className="dropdown relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setIsDropDownOpen(!isDropDownOpen)}
+                    className="text-md font-medium tracking-wide text-gray-700 rounded-xl"
+                  >
+                    <span className="poppins flex items-center font-medium text-[1.05rem]">
+                      {user?.name}
+                      {isDropDownOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                    </span>
+                  </button>
+
+                  {isDropDownOpen && (
+                    <div className="absolute right-0 z-20 w-40 py-2 mt-0 overflow-hidden origin-top-right bg-white rounded-xl shadow-xl">
                       <Link
                         to="/profile"
-                        className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
+                        onClick={handleLinkClick}
+                        className="block px-4 py-3 w-full text-left text-sm text-gray-800 font-medium capitalize hover:text-white hover:bg-[#EC72AF]"
                       >
-                        User Profile
+                        Profile
                       </Link>
+
+                      <hr className="border-gray-200" />
+
                       <Link
                         to="/orders"
-                        className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
+                        onClick={handleLinkClick}
+                        className="block px-4 py-3 w-full text-left text-sm text-gray-800 font-medium capitalize hover:text-white hover:bg-[#EC72AF]"
                       >
                         Order Tracking
                       </Link>
-                      <p
+
+                      <hr className="border-gray-200" />
+
+                      <button
                         onClick={handleLogout}
-                        className="py-1 font-medium text-metal-800 mx-auto text-center hover:underline underline-offset-2"
+                        className="block px-4 py-3 w-full text-left text-sm text-gray-800 font-medium capitalize hover:text-white hover:bg-[#EC72AF]"
                       >
                         Sign out
-                      </p>
-                    </Dropdown.Item>
-                  </Dropdown.List>
-                </Dropdown>
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <Link to="/login">
                   <UserCircle size={28} className="text-gray-700" />
