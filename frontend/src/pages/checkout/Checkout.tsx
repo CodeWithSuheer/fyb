@@ -34,7 +34,7 @@ const Checkout = () => {
   const userID = user?.user?.id;
 
   const [formData, setFormData] = useState({
-    name: user?.user?.name || "",
+    // name: user?.user?.name || "",
     phone: user?.user?.phone || "",
     address: user?.user?.address || "",
   });
@@ -68,7 +68,7 @@ const Checkout = () => {
 
   const couponData = {
     code: coupon,
-    discount:couponSuccessData?.discountAmount
+    discount: couponSuccessData?.discountAmount,
   };
 
   // HANDLE SUBMIT
@@ -85,13 +85,13 @@ const Checkout = () => {
           ? totalPrice + shippingCharges - couponSuccessData?.discountAmount
           : totalPrice + shippingCharges;
         const requestData = {
-          name,
+          name: user?.user?.name,
           phone,
           address,
           items,
           userID,
           totalAmount,
-          couponUsed:couponSuccessData ? couponData : null
+          couponUsed: couponSuccessData ? couponData : null,
         };
 
         dispatch(createOrderAsync(requestData)).then((res) => {
@@ -157,17 +157,17 @@ const Checkout = () => {
 
                             <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-x-4">
                               {/* FULL NAME */}
-                              <div className="mt-1 w-full col-span-2">
+                              {/* <div className="mt-1 w-full col-span-2">
                                 <input
                                   className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                                   id="name"
                                   type="text"
                                   name="name"
-                                  value={formData.name}
+                                  value={user?.user.name}
                                   onChange={handleInputChange}
                                   placeholder="Enter Your Name"
                                 />
-                              </div>
+                              </div> */}
 
                               {/* PHONE NUMBER */}
                               <div className="mt-1 w-full col-span-2">
@@ -179,6 +179,7 @@ const Checkout = () => {
                                   onChange={handleInputChange}
                                   placeholder="Phone Number"
                                   id="name"
+                                  required
                                 />
                               </div>
 
@@ -189,6 +190,7 @@ const Checkout = () => {
                                 onChange={handleInputChange}
                                 placeholder="Enter Shipping Address"
                                 className="col-span-2 resize-y w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                                required
                               ></textarea>
                             </div>
                           </div>

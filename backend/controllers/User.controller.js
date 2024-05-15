@@ -172,6 +172,8 @@ export const updateUserInformation = async (req, res, next) => {
         updateQuery = { ...updateQuery, email };
       }
     }
+    if (Object.keys(updateQuery).length === 0)
+      throw new Error("No fileds Updated");
     await UserModel.findByIdAndUpdate(id, updateQuery);
     return res.status(200).json({ message: "Update Successfull" });
   } catch (error) {
