@@ -1,3 +1,4 @@
+import { CouponModel } from "../models/CouponModel.js";
 import { OrdersModel } from "../models/OrdersModel.js";
 import { setMongoose } from "../utils/Mongoose.js";
 
@@ -12,6 +13,14 @@ export const createOrder = async (req, res, next) => {
     if (!userID || !address || !phone || !totalAmount || !name) {
       throw new Error("Please provide All Fields");
     }
+    const coupon = await CouponModel.findOne({code:couponUsed.code});
+    if (!coupon) throw new Error("Coupon Not Found");
+
+    const updatedUseCount = coupon.uses_count + 1;
+    coupon.uses_count = updatedUseCount;
+    coupon.users.push({userId:userID});
+    await coupon.save();
+
     await OrdersModel.create({
       items,
       userID,
@@ -30,9 +39,21 @@ export const createOrder = async (req, res, next) => {
   }
 };
 
+export const getAllOrdersForUser = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    if (!id) throw new Error("You must provide an Id");
+    const orders = await OrdersModel.find({ userID : id }).sort({ createdAt: -1 });
+    setMongoose();
+    return res.status(200).json(orders);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const updateOrder = async (data) => {
   try {
-    const { id, orderProgress, address, phone } = data;
+    const { id, orderProgress } = data;
     let orderQuery = {};
     if (!id) {
       throw new Error("No ID Provided");
@@ -45,54 +66,12 @@ export const updateOrder = async (data) => {
     if (order.status === "Dispatched") {
       throw new Error("This Order has been already been Dispatched");
     }
-    if (address) {
-      orderQuery = { ...orderQuery, address };
-    }
-    if (phone) {
-      orderQuery = { ...orderQuery, phone };
-    }
+    
     if (orderProgress) {
       updateQuery = { ...updateQuery, orderProgress };
     }
     await OrdersModel.findByIdAndUpdate(id, orderQuery);
     return res.status(200).json({ message: "Order Data Updated" });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-export const getAllOrdersForUser = async (req, res, next) => {
-  try {
-    const { id } = req.body;
-    if (!id) throw new Error("You must provide an Id");
-    const orders = await OrdersModel.find({ userID :id }).sort({ createdAt: -1 });
-    setMongoose();
-    return res.status(200).json(orders);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-export const getAllOrders = async (req, res, next) => {
-  try {
-    var page = 1;
-    if (req.query.page) {
-      page = req.query.page;
-    }
-    const limit = 5;
-    const orders = await OrdersModel.find({})
-      .sort({ createdAt: -1 })
-      .limit(limit)
-      .skip((page - 1) * limit)
-      .exec();
-
-    const count = await OrdersModel.find().countDocuments();
-    setMongoose();
-    return res.status(200).json({
-      orders,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page,
-    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

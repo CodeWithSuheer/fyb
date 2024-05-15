@@ -50,8 +50,8 @@ app.use(session({
 mongoose
 .connect(process.env.MONGODB_URI)
 .then(()=>{
-    console.log("Database Connected");
     app.listen(process.env.PORT,console.log(`Server is running on http://localhost:${process.env.PORT}`))
+    console.log("Database Connected");
 })
 .catch((error)=>{
     console.log(error)

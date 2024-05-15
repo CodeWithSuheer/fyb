@@ -8,11 +8,6 @@ const createOrderUrl = "http://localhost:8000/api/orders/createOrder";
 const getAllOrderUrl = "http://localhost:8000/api/orders/getAllOrdersForUser";
 const updateOrderUrl = "http://localhost:8000/api/orders/updateOrder";
 
-// Interfaces
-// interface User {
-//   id: string;
-// }
-
 // CREATE REVIEWS ASYNC THUNK
 export const createOrderAsync = createAsyncThunk(
   "reviews/create",
@@ -50,12 +45,11 @@ export const updateOrderAsync = createAsyncThunk(
   async (formData: ReviewFormData) => {
     try {
       const response = await axios.post(updateOrderUrl, formData);
-      // toast.success(response.data.message);
-      console.log(response.data);
+      toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.error);
-      console.error("Error submitting review:", error);
+      console.error("Error submitting update:", error);
     }
   }
 );

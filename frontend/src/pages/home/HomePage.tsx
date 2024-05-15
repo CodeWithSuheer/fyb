@@ -11,11 +11,18 @@ import Review from "./Review";
 import SecondCta from "./SecondCta";
 import Skincare from "./Skincare";
 import { getallOrderAsync } from "../../features/orderSlice";
+import { getLatestProductsAsync } from "../../features/productSlice";
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
 
-  const allproducts = useAppSelector((state) => state.products.products);
+  useEffect(() => {
+    dispatch(getLatestProductsAsync());
+}, []);
+
+
+ 
+  const latestProducts = useAppSelector((state) => state.products.latestProducts);
   const user = useAppSelector((state) => state.auth.user);
   const userID = user?.user?.id;
 
@@ -37,15 +44,15 @@ const HomePage = () => {
 
       <CtaSection />
 
-      <LatestProducts allproducts={allproducts} />
+      <LatestProducts latestProducts={latestProducts} />
 
       <AboutSection />
 
-      <Skincare allproducts={allproducts} />
+      <Skincare />
 
       <SecondCta />
 
-      <HairCare allproducts={allproducts} />
+      {/* <HairCare  /> */}
 
       <Review />
     </>

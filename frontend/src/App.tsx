@@ -22,7 +22,6 @@ import { useEffect } from "react";
 import { useAppDispatch } from "./app/hooks";
 import { userSessionAsync } from "./features/authSlice";
 import {
-  getAllProductsAsync,
   getLatestProductsAsync,
 } from "./features/productSlice";
 import Footer from "./components/footer/Footer";
@@ -34,7 +33,6 @@ function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(userSessionAsync());
-    dispatch(getAllProductsAsync());
     dispatch(getLatestProductsAsync());
   });
 

@@ -4,9 +4,12 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaStar } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { getAllProductsAsync } from "../../features/productSlice";
 
-const Skincare = ({ allproducts }) => {
+const Skincare = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [slidesToShow, setSlidesToShow] = useState(4);
   const sliderRef = useRef(null);
 
@@ -30,30 +33,7 @@ const Skincare = ({ allproducts }) => {
     autoplaySpeed: 3000,
     pauseOnHover: true,
     arrows: false,
-    // responsive: [
-    //   {
-    //     breakpoint: 1024,
-    //     settings: {
-    //       slidesToShow: 2,
-    //       infinite: true,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 600,
-    //     settings: {
-    //       slidesToShow: 2,
-    //       slidesToScroll: 1,
-    //       initialSlide: 2,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 480,
-    //     settings: {
-    //       slidesToShow: 1,
-    //       slidesToScroll: 1,
-    //     },
-    //   },
-    // ],
+  
   };
 
   useEffect(() => {
@@ -85,6 +65,17 @@ const Skincare = ({ allproducts }) => {
     navigate(`/selectedItem/${productId}`);
     window.scroll(0, 0);
   };
+
+  const category = "Skincare";
+  const page = 1;
+
+  useEffect(() => {
+    dispatch(getAllProductsAsync({category,page}));
+}, [dispatch,category,page]);
+
+
+  const allproducts = useAppSelector((state) => state.products.products);
+
 
   return (
     <>
@@ -147,7 +138,7 @@ const Skincare = ({ allproducts }) => {
           <div className="data">
             <div className="mt-8 sm:mt-12">
               <Slider ref={sliderRef} {...settings}>
-                {allproducts?.products?.map((data, index) => (
+                {allproducts?.productData?.map((data, index) => (
                   <div
                     key={index}
                     onClick={() => handleItemClick(String(data.id))}

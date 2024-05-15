@@ -4,10 +4,7 @@ import { setMongoose } from "../utils/Mongoose.js";
 
 export const getLatestPRoducts = async (req, res, next) => {
   try {
-    const products = await ProductsModel.aggregate([
-      { $match: { latest: true } },
-      { $sample: { size: 12 } },
-    ]);
+    const products = await ProductsModel.find({ latest: true });
     setMongoose();
     return res.status(200).json(products);
   } catch (error) {
@@ -41,10 +38,21 @@ export const getProducts = async (req, res, next) => {
       page,
       productData,
     };
-
+setMongoose();
     res.status(200).json(response);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+export const getProductById = async (req, res, next) => {
+  try {
+    const {id} = req.body;
+    const product = await ProductsModel.findById(id);
+    setMongoose();
+    return res.status(200).json(product);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 };
