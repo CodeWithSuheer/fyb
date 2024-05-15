@@ -4,8 +4,8 @@ import { createOrderAsync, getallOrderAsync } from "../../features/orderSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "keep-react";
+import { useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
-
 import { Check } from "phosphor-react";
 import { clearCart } from "../../features/ActionsSlice";
 import { verifyCouponAsync } from "../../features/couponSlice";
