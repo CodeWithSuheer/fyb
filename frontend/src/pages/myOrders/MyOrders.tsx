@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getallOrderAsync } from "../../features/orderSlice";
+import { getallOrderAsync, updateOrderAsync } from "../../features/orderSlice";
 import { Helmet } from "react-helmet";
 
 const MyOrders = () => {
@@ -19,6 +19,29 @@ const MyOrders = () => {
     }
   }, [userID, dispatch]);
 
+  const handleDelete = (id) => {
+    const formData = {
+      id,
+      orderProgress:"Cancelled"
+    }
+    dispatch(updateOrderAsync(formData))
+  }
+
+  const getStatusColor = (status) => {
+    switch (status) {
+        case 'Pending':
+            return 'text-yellow-500';
+        case 'Delivered':
+            return 'text-green-500'; 
+        case 'Dispatched':
+            return 'text-blue-500';
+        case 'Cancelled':
+            return 'text-red-500'; 
+        default:
+            return 'text-gray-700';
+    }
+};
+
   return (
     <>
       <Helmet>
@@ -30,7 +53,7 @@ const MyOrders = () => {
         <div className="max-w-5xl xl:max-w-6xl mx-auto">
           <h2 className="playfair text-3xl font-bold">Order Details</h2>
           <div className="mt-3 text-sm">
-            Check the status of recent and old orders & discover more products
+            Check the status of recent and old orders
           </div>
           {allOrder.map((data, index) => (
             <div
@@ -69,8 +92,8 @@ const MyOrders = () => {
                       <div className="text-md sm:text-lg font-semibold">
                         Order Status
                       </div>
-                      <div className="text-md font-medium text-gray-700">
-                        Pending
+                      <div className={`text-md font-medium ${getStatusColor(data?.orderProgress)}`}>
+                        {data?.orderProgress}
                       </div>
                     </div>
                   </div>
@@ -122,6 +145,12 @@ const MyOrders = () => {
                             )}
                           </p>
                         </div>
+                        {data?.orderProgress === "Pending" && <li>
+                          <button onClick={() => handleDelete(data.id)} className="text-red-500">             
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                          </button>
+                        </li>}
+                      
                       </li>
                     ))}
                   </ul>

@@ -49,7 +49,6 @@ export const updateOrderAsync = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.error);
-      console.error("Error submitting update:", error);
     }
   }
 );

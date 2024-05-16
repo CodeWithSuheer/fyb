@@ -1,4 +1,5 @@
 import { reviewsAndRatings } from "../models/ReviewsModel.js";
+import { UserModel } from "../models/User.Model.js";
 import { setMongoose } from "../utils/Mongoose.js";
 
 export const createReview = async (req,res,next) => {
@@ -13,7 +14,6 @@ export const createReview = async (req,res,next) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
 
 export const updateReview = async (req,res,next) => {
   try {
@@ -54,8 +54,22 @@ export const getAllReviewsByProduct = async (req, res, next) => {
         const { id } = req.body;
         if(!id) throw new Error('Id not recieved');
         const productReviews = await reviewsAndRatings.find({productID:id}).sort({createdAt:-1});
+        const userIds  = productReviews.map((item)=>item.userID);
+        const userNames = await UserModel.find({_id:{$in:userIds }});
+        const userNamesMap = {};
+        userNames.forEach(user => {
+          userNamesMap[user._id] = user.name;
+        });
+        const reviewsWithNames = productReviews.map(review => {
+          const { _id, ...reviewWithoutId } = review.toObject();
+          return {
+              ...reviewWithoutId,
+              id: review._id,
+              name: userNamesMap[review.userID]
+          };
+      });
         setMongoose();
-        return res.status(200).json(productReviews);
+        return res.status(200).json(reviewsWithNames);
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
