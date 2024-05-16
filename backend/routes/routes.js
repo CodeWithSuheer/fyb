@@ -4,6 +4,7 @@ import productRouter from "./ProductsRoutes.js";
 import reviewsRouter from "./ReviewsRoutes.js";
 import couponRouter from "./CouponRoutes.js";
 import orderRouter from "./OrdersRoutes.js";
+import contactRouter from "./ContactRoutes.js";
 
 
 const router = express.Router();
@@ -13,6 +14,7 @@ router.use(productRouter);
 router.use(reviewsRouter);
 router.use(couponRouter);
 router.use(orderRouter);
+router.use(contactRouter);
 
 
 export default router;
