@@ -6,6 +6,8 @@ import { FaInstagram } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import "./Contact.css";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Contact = () => {
   const [formdata, setFormdata] = useState({
@@ -15,23 +17,23 @@ const Contact = () => {
     message: "",
   });
 
-  // const { createLoading } = useSelector((state) => state.queries);
-
   // HANDLE SUBMIT
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formdata);
-    // if (formdata.message) {
-    //   dispatch(createQueryAsync(formdata)).then(() =>
-    //     setFormdata({
-    //       name: "",
-    //       email: "",
-    //       message: "",
-    //     })
-    //   );
-    // } else {
-    //   toast.error("Oops! Please fill in all fields.");
-    // }
+    try {
+      const response = await axios.post("http://localhost:8000/api/contact/createContact",formdata);
+      if(response.status === 201){
+        setFormdata({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+        toast.success(response.data.msg)
+      }
+    } catch (error:any) {
+      throw new Error(error)
+    }
   };
 
   return (
