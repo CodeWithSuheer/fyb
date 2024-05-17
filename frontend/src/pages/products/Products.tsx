@@ -238,7 +238,7 @@ const Products = () => {
                   transform: "translateZ(75px)",
                   transformStyle: "preserve-3d",
                 }}
-                className="absolute grid place-content-center rounded-xl bg-[#EC72AF] text-white shadow-lg"
+                className="absolute grid place-content-center rounded-xl bg-gradient-to-br from-[#EB72AF] to-[#f756aa] text-white shadow-lg"
               >
                 <div
                   className={`mb-7 category ${
