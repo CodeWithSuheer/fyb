@@ -16,8 +16,10 @@ import {
   updatereviewsAsync,
 } from "../../features/reviewsSlice";
 import RelatedProducts from "./RelatedProducts";
-import { getAllProductsAsync, getProductByIdAsync } from "../../features/productSlice";
-
+import {
+  getAllProductsAsync,
+  getProductByIdAsync,
+} from "../../features/productSlice";
 
 interface RouteParams {
   id: string;
@@ -41,7 +43,6 @@ const SelectedItem: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
- 
   const [reviewId, setReviewId] = useState();
   const [deleteReviewId, setDeleteReviewId] = useState();
   const [isReviewVisible, setIsReviewVisible] = useState(false);
@@ -53,9 +54,7 @@ const SelectedItem: React.FC = () => {
     dispatch(getProductByIdAsync(id));
   }, [id]);
 
-  const allproducts = useAppSelector(
-    (state) => state.products.singleProduct
-  );
+  const allproducts = useAppSelector((state) => state.products.singleProduct);
 
   // DELETE MODAL
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +66,7 @@ const SelectedItem: React.FC = () => {
 
   const closeModal = () => {
     setIsOpen(false);
-  }; 
+  };
 
   const toggleReviewVisibility = () => {
     setIsReviewVisible((prevVisibility) => !prevVisibility);
@@ -95,6 +94,7 @@ const SelectedItem: React.FC = () => {
 
   // filter review based on id
   const allreviews = useAppSelector((state) => state.reviews.allReviews);
+  console.log("allreviews", allreviews);
 
   // selected review
   const selectedReview = allreviews?.filter(
@@ -159,7 +159,7 @@ const SelectedItem: React.FC = () => {
       toast.error("Please leave a review or rate with at least one star.");
       return;
     }
-    
+
     dispatch(createreviewsAsync({ productID, userID, ...formData })).then(
       () => {
         dispatch(getallreviewsAsync(id));
@@ -198,85 +198,78 @@ const SelectedItem: React.FC = () => {
     });
   };
 
-  const category = allproducts?.category
+  const category = allproducts?.category;
 
   return (
     <>
       <div className="pt-4">
         <div className="px-4 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-         
-            <div >
-              <p className="mt-5 mb-4">Home / Shop / {selectedItem?.name}</p>
-              <div
-                className="grid items-start grid-cols-1 lg:grid-cols-2 gap-5"
-              >
-                <div className="w-full lg:sticky top-0 sm:flex gap-2">
-                 
+          <div>
+            <p className="mt-5 mb-4">Home / Shop / {selectedItem?.name}</p>
+            <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-5">
+              <div className="w-full h-[23rem] lg:sticky top-0 sm:flex gap-2">
+                {/* MAIN DISPLAYER IMAGE */}
+                <img
+                  alt="Product"
+                  className="w-full h-full pr-0 lg:pr-10 object-contain rounded-lg"
+                  src={selectedItem?.image?.downloadURL}
+                />
+              </div>
 
-                  {/* MAIN DISPLAYER IMAGE */}
-                  <img
-                    alt="Product"
-                    className="w-full pr-0 lg:pr-10 object-cover border border-gray-300 rounded-lg"
-                    src={selectedItem?.image?.downloadURL}
-                  />
+              {/* CONTENT SIDE */}
+              <div className="content_side">
+                <h2 className="text-3xl font-extrabold text-gray-800">
+                  {selectedItem?.name}
+                </h2>
+
+                {/* ABOUT */}
+                <div className="mt-4">
+                  <h3 className="text-lg font-bold text-gray-800">
+                    (Skincare)
+                  </h3>
+                  <div className="space-y-3 mt-4 pl-0 text-sm text-gray-800">
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                      Cumque, voluptas. Quidem sapiente maxime sunt beatae?
+                      Asperiores illo perferendis corporis officia, quam
+                      consequatur aperiam enim voluptatem cum sequi doloribus
+                      numquam eum ab, tempore delectus sed. Inventore asperiores
+                      sint blanditiis? Quo ipsum fugiat placeat sint sit ullam
+                      illum, nostrum, unde iure, labore incidunt. Ipsam
+                      perferendis, eum culpa libero quibusdam illum sit aliquid.
+                    </p>
+                  </div>
                 </div>
 
-                {/* CONTENT SIDE */}
-                <div className="content_side">
-                  <h2 className="text-3xl font-extrabold text-gray-800">
-                    {selectedItem?.name}
-                  </h2>
-
-                  {/* ABOUT */}
-                  <div className="mt-4">
-                    <h3 className="text-lg font-bold text-gray-800">
-                      (Skincare)
-                    </h3>
-                    <div className="space-y-3 mt-4 pl-0 text-sm text-gray-800">
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Cumque, voluptas. Quidem sapiente maxime sunt
-                        beatae? Asperiores illo perferendis corporis officia,
-                        quam consequatur aperiam enim voluptatem cum sequi
-                        doloribus numquam eum ab, tempore delectus sed.
-                        Inventore asperiores sint blanditiis? Quo ipsum fugiat
-                        placeat sint sit ullam illum, nostrum, unde iure, labore
-                        incidunt. Ipsam perferendis, eum culpa libero quibusdam
-                        illum sit aliquid.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* PRICE SECTION */}
-                  <div className="flex flex-wrap items-center gap-4 mt-4">
-                    {selectedItem?.price !== selectedItem?.sale_price ? (
-                      <>
-                        <p className="text-gray-500 text-lg line-through">
-                          Rs. {selectedItem?.price}
-                        </p>
-                        <p className="text-gray-800 text-2xl font-bold">
-                          Rs. {selectedItem?.sale_price}
-                        </p>
-                      </>
-                    ) : (
-                      <p className="text-gray-800 text-2xl font-bold">
+                {/* PRICE SECTION */}
+                <div className="flex flex-wrap items-center gap-4 mt-4">
+                  {selectedItem?.price !== selectedItem?.sale_price ? (
+                    <>
+                      <p className="text-gray-500 text-lg line-through">
                         Rs. {selectedItem?.price}
                       </p>
-                    )}
-                  </div>
-
-                  {/* CART BUTTON */}
-                  <button
-                    onClick={handleAddToCart}
-                    className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 bg-[#EC72AF] hover:bg-[#f181b9] text-white font-bold rounded"
-                    type="button"
-                  >
-                    Add to cart
-                  </button>
+                      <p className="text-gray-800 text-2xl font-bold">
+                        Rs. {selectedItem?.sale_price}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-gray-800 text-2xl font-bold">
+                      Rs. {selectedItem?.price}
+                    </p>
+                  )}
                 </div>
+
+                {/* CART BUTTON */}
+                <button
+                  onClick={handleAddToCart}
+                  className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 bg-[#EC72AF] hover:bg-[#f181b9] text-white font-bold rounded"
+                  type="button"
+                >
+                  Add to cart
+                </button>
               </div>
             </div>
-          
+          </div>
 
           {/* DESCRIPTION & REVIEW SECTION */}
           <div className="mt-16 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
@@ -358,7 +351,7 @@ const SelectedItem: React.FC = () => {
                         >
                           <div className="flex justify-between flex-wrap items-center gap-2">
                             <div className="left flex items-center gap-2">
-                              <h2>Username</h2>{" "}
+                              <h2>{data.name}</h2>{" "}
                               <p className="w-24">
                                 <StarRating rating={data?.rating} />
                               </p>

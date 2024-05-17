@@ -13,7 +13,8 @@ const Products = () => {
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
   const allproducts = useAppSelector((state) => state.products.products || []);
- 
+  const loading = useAppSelector((state) => state.products.Productloading);
+
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page")) || 1;
   const category = searchParams.get("category") || "All";
@@ -27,7 +28,7 @@ const Products = () => {
     const paginationLinks = [];
     for (let i = 1; i <= totalPages; i++) {
       paginationLinks.push(
-        <li  onClick={ToTop} key={i}>
+        <li onClick={ToTop} key={i}>
           <Link
             to={`/products?category=${category}&page=${i}`}
             className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 ${
@@ -44,7 +45,7 @@ const Products = () => {
   };
 
   useEffect(() => {
-      dispatch(getAllProductsAsync({ category, page }));
+    dispatch(getAllProductsAsync({ category, page }));
   }, [dispatch, page, category]);
 
   // HANDLE ITEM CLICK
@@ -59,8 +60,8 @@ const Products = () => {
 
   const ToTop = () => {
     window.scrollTo({
-      top: 450, 
-      behavior: "smooth" 
+      top: 450,
+      behavior: "smooth",
     });
   };
 
@@ -114,63 +115,55 @@ const Products = () => {
             <div
               className={`mb-7 category ${
                 isCategoryVisible ? "lg:block" : "hidden"
-              } space-y-4 lg:block border px-5 py-5 shadow-xl rounded-lg`}
+              } space-y-4 lg:block border px-3 py-5 shadow-xl rounded-lg`}
             >
               <div>
-                <p className="playfair block text-2xl tracking-wide font-bold text-gray-700">
+                <p className="playfair mb-3 pl-3 block text-2xl tracking-wide font-bold text-gray-700">
                   Categories
                 </p>
 
                 <div className="mt-1">
-                  <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span
-                        onClick={() => handleCategoryFiltering("Skincare")}
-                        className="text-lg font-normal"
-                      >
-                        Skincare
-                      </span>
+                  <details
+                    onClick={() => handleCategoryFiltering("Skincare")}
+                    className={`overflow-hidden ${
+                      category === "Skincare" ? "bg-[#EC72AF] text-white" : ""
+                    } rounded [&_summary::-webkit-details-marker]:hidden`}
+                  >
+                    <summary className="flex cursor-pointer items-center justify-between gap-2 pt-3 pb-3 transition ">
+                      <span className="text-lg pl-3 font-normal">Skincare</span>
                     </summary>
-
-                  
                   </details>
 
-                  <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span
-                        onClick={() => handleCategoryFiltering("Body Care")}
-                        className="text-lg font-normal"
-                      >
-                        Body Care
-                      </span>
-
-                   
+                  <details
+                    onClick={() => handleCategoryFiltering("Body Care")}
+                    className={`overflow-hidden ${
+                      category === "Body Care" ? "bg-[#EC72AF] text-white" : ""
+                    } rounded [&_summary::-webkit-details-marker]:hidden`}
+                  >
+                    <summary className="flex cursor-pointer items-center justify-between gap-2 pt-3 pb-3 transition">
+                      <span className="text-lg pl-3 font-normal">Bodycare</span>
                     </summary>
-
-                
                   </details>
 
-                  <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span
-                        onClick={() => handleCategoryFiltering("Haircare")}
-                        className="text-lg font-normal"
-                      >
-                        Haircare
-                      </span>
-
-                    
+                  <details
+                    onClick={() => handleCategoryFiltering("Haircare")}
+                    className={`overflow-hidden ${
+                      category === "Haircare" ? "bg-[#EC72AF] text-white" : ""
+                    } rounded [&_summary::-webkit-details-marker]:hidden`}
+                  >
+                    <summary className="flex cursor-pointer items-center justify-between gap-2 pt-3 pb-3 transition">
+                      <span className="text-lg pl-3 font-normal">Haircare</span>
                     </summary>
-
-                
                   </details>
 
-                  <details className="overflow-hidden rounded [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center justify-between gap-2 pt-4 pb-2 text-gray-900 transition">
-                      <span
-                        onClick={() => handleCategoryFiltering("Cosmetics")}
-                        className="text-lg font-normal"
-                      >
+                  <details
+                    onClick={() => handleCategoryFiltering("Cosmetics")}
+                    className={`overflow-hidden ${
+                      category === "Cosmetics" ? "bg-[#EC72AF] text-white" : ""
+                    } rounded [&_summary::-webkit-details-marker]:hidden`}
+                  >
+                    <summary className="flex cursor-pointer items-center justify-between gap-2 pt-3 pb-3 transition">
+                      <span className="text-lg pl-3 font-normal">
                         Cosmetics
                       </span>
                     </summary>
@@ -187,62 +180,90 @@ const Products = () => {
                 </div>
               ) : (
                 <>
-                <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
-                  {allproducts?.productData?.map((data, index) => (
-                    <li
-                      key={index}
-                      onClick={() => handleItemClick(String(data.id))}
-                    >
-                      <div className="group mb-5 relative group w-full bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
-                        <img
-                          className="object-cover w-full h-56"
-                          src={data?.image.downloadURL}
-                          alt="products"
-                        />
+                  <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
+                    {!loading ? (
+                      <>
+                        {allproducts?.productData?.map((data, index) => (
+                          <li
+                            key={index}
+                            onClick={() => handleItemClick(String(data.id))}
+                          >
+                            <div className="group mb-5 relative group w-full bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+                              <img
+                                className="object-cover w-full h-56"
+                                src={data?.image.downloadURL}
+                                alt="products"
+                              />
 
-                        <div className="py-5 text-center">
-                          <h3 className="playfair mb-2 text-md sm:text-lg font-semibold text-gray-800">
-                            {data?.name}
-                          </h3>
+                              <div className="py-5 text-center">
+                                <h3 className="playfair mb-2 text-md sm:text-lg font-semibold text-gray-800">
+                                  {data?.name}
+                                </h3>
 
-                          {/* STARS */}
-                          <div className="mb-2 flex items-center justify-center gap-1">
-                            <FaStar className="text-[#FFC107]" />
-                            <FaStar className="text-[#FFC107]" />
-                            <FaStar className="text-[#FFC107]" />
-                            <FaStar className="text-[#FFC107]" />
-                            <FaStar className="text-[#FFC107]" />
-                          </div>
+                                {/* STARS */}
+                                <div className="mb-2 flex items-center justify-center gap-1">
+                                  <FaStar className="text-[#FFC107]" />
+                                  <FaStar className="text-[#FFC107]" />
+                                  <FaStar className="text-[#FFC107]" />
+                                  <FaStar className="text-[#FFC107]" />
+                                  <FaStar className="text-[#FFC107]" />
+                                </div>
 
-                          <p className="mb-3 text-md text-gray-500">
-                            (Skincare)
-                          </p>
+                                <p className="mb-3 text-md text-gray-500">
+                                  ({data.category})
+                                </p>
 
-                          {data.price !== data.sale_price ? (
-                            <>
-                              <p className="mb-1 text-xl font-semibold text-black">
-                                Rs. {data.sale_price}
-                              </p>
-                              <p className="mb-3 text-md font-semibold text-gray-500 line-through">
-                                Rs. {data.price}
-                              </p>
-                            </>
-                          ) : (
-                            <p className="mb-3 text-xl font-semibold text-black">
-                              Rs. {data.price}
-                            </p>
-                          )}
+                                {data.price !== data.sale_price ? (
+                                  <>
+                                    <p className="mb-1 text-xl font-semibold text-black">
+                                      Rs. {data.sale_price}
+                                    </p>
+                                    <p className="mb-3 text-md font-semibold text-gray-500 line-through">
+                                      Rs. {data.price}
+                                    </p>
+                                  </>
+                                ) : (
+                                  <p className="mb-3 text-xl font-semibold text-black">
+                                    Rs. {data.price}
+                                  </p>
+                                )}
 
-                          <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
-                            Shop Now
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                
-                 <div className="flex justify-center">
+                                <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
+                                  Shop Now
+                                </button>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        {[0, 1, 2, 3, 4, 5].map((data, index) => (
+                          <li key={index}>
+                            <div className="group mb-5 relative rounded-lg w-full bg-white border border-gray-400 cursor-pointer animate-pulse">
+                              <div className="bg-gray-300 h-56 w-full"></div>
+
+                              <div className="py-5 text-center">
+                                <div className="bg-gray-300 h-5 w-3/4 mx-auto mb-2 rounded-lg"></div>
+                                <div className="flex items-center justify-center gap-1 mb-2">
+                                  <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                                  <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                                  <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                                  <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                                  <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                                </div>
+                                <div className="bg-gray-300 h-4 w-1/2 mx-auto mb-2 rounded-lg"></div>
+                                <div className="bg-gray-300 h-5 w-1/3 mx-auto mb-2 rounded-lg"></div>
+                                <div className="bg-gray-300 h-4 w-1/4 mx-auto mb-3 rounded-lg"></div>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </>
+                    )}
+                  </ul>
+
+                  <div className="flex justify-center">
                     <nav aria-label="Page navigation example">
                       <ul className="flex items-center -space-x-px h-8 py-10 text-sm">
                         <li>
@@ -299,7 +320,7 @@ const Products = () => {
                         <li>
                           {allproducts?.totalPages !== page ? (
                             <Link
-                            onClick={ToTop}
+                              onClick={ToTop}
                               to={`/products?category=${category}&page=${
                                 page + 1
                               }`}

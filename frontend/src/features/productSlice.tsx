@@ -55,6 +55,7 @@ export const getProductByIdAsync = createAsyncThunk(
 // INITIAL STATE
 interface ProductState {
   loading: boolean;
+  Productloading: boolean;
   products: [];
   latestProducts: [];
   singleProduct:[]
@@ -62,6 +63,7 @@ interface ProductState {
 
 const initialState: ProductState = {
   loading: false,
+  Productloading: false,
   products: [],
   latestProducts: [],
   singleProduct:[]
@@ -78,10 +80,10 @@ const productSlice = createSlice({
 
       // GET ALL PRODUCTS ADD CASE
       .addCase(getAllProductsAsync.pending, (state) => {
-        state.loading = true;
+        state.Productloading = true;
       })
       .addCase(getAllProductsAsync.fulfilled, (state, action) => {
-        state.loading = false;
+        state.Productloading = false;
         state.products = action.payload;
       })
 

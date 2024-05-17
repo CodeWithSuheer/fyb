@@ -189,7 +189,7 @@ const Header = () => {
                         onClick={handleLinkClick}
                         className="block px-4 py-3 w-full text-left text-sm text-gray-800 font-medium capitalize hover:text-white hover:bg-[#EC72AF]"
                       >
-                        Order Tracking
+                        My Order
                       </Link>
 
                       <hr className="border-gray-200" />

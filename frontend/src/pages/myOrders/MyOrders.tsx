@@ -22,25 +22,25 @@ const MyOrders = () => {
   const handleDelete = (id) => {
     const formData = {
       id,
-      orderProgress:"Cancelled"
-    }
-    dispatch(updateOrderAsync(formData))
-  }
+      orderProgress: "Cancelled",
+    };
+    dispatch(updateOrderAsync(formData));
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
-        case 'Pending':
-            return 'text-yellow-500';
-        case 'Delivered':
-            return 'text-green-500'; 
-        case 'Dispatched':
-            return 'text-blue-500';
-        case 'Cancelled':
-            return 'text-red-500'; 
-        default:
-            return 'text-gray-700';
+      case "Pending":
+        return "text-yellow-500";
+      case "Delivered":
+        return "text-green-500";
+      case "Dispatched":
+        return "text-blue-500";
+      case "Cancelled":
+        return "text-red-500";
+      default:
+        return "text-gray-700";
     }
-};
+  };
 
   return (
     <>
@@ -62,10 +62,10 @@ const MyOrders = () => {
             >
               {/* ORDER DETAILS */}
               <div className="w-full border-r border-gray-300 bg-[#FFF3F9] md:max-w-xs">
-                <div className="p-8">
-                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-1">
+                <div className="py-8 px-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2">
                     <div className="mb-4">
-                      <div className="text-md sm:text-lg font-semibold">
+                      <div className="text-md sm:text-md font-semibold">
                         Order ID
                       </div>
                       <div className="text-md font-medium text-gray-700">
@@ -73,15 +73,13 @@ const MyOrders = () => {
                       </div>
                     </div>
                     <div className="mb-4">
-                      <div className="text-md sm:text-lg font-semibold">
-                        Date
-                      </div>
+                      <div className="text-md sm:text-md font-semibold">Date</div>
                       <div className="text-md font-medium text-gray-700">
                         {new Date(data?.createdAt).toLocaleDateString()}
                       </div>
                     </div>
                     <div className="mb-4">
-                      <div className="text-md sm:text-lg font-semibold">
+                      <div className="text-md sm:text-md font-semibold">
                         Total Amount
                       </div>
                       <div className="text-md font-medium text-gray-700">
@@ -89,10 +87,14 @@ const MyOrders = () => {
                       </div>
                     </div>
                     <div className="mb-4">
-                      <div className="text-md sm:text-lg font-semibold">
+                      <div className="text-md sm:text-md font-semibold">
                         Order Status
                       </div>
-                      <div className={`text-md font-medium ${getStatusColor(data?.orderProgress)}`}>
+                      <div
+                        className={`text-md font-medium ${getStatusColor(
+                          data?.orderProgress
+                        )}`}
+                      >
                         {data?.orderProgress}
                       </div>
                     </div>
@@ -102,12 +104,12 @@ const MyOrders = () => {
 
               {/* ORDER ITEMS */}
               <div className="flex-1 bg-white">
-                <div className="p-8">
-                  <ul className="-my-7 divide-y divide-gray-200">
+                <div className="py-6 px-3 sm:px-6">
+                  <ul className="gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
                     {data?.items.map((product) => (
                       <li
                         key={product.id}
-                        className="flex flex-col justify-between space-x-5 py-7 md:flex-row"
+                        className="flex px-3 flex-col justify-between space-x-5 py-7 md:flex-row border rounded-xl bg-[#FFF3F9]"
                       >
                         <div className="flex flex-1 items-stretch">
                           <div className="flex-shrink-0">
@@ -145,12 +147,11 @@ const MyOrders = () => {
                             )}
                           </p>
                         </div>
-                        {data?.orderProgress === "Pending" && <li>
+                        {/* {data?.orderProgress === "Pending" && <li>
                           <button onClick={() => handleDelete(data.id)} className="text-red-500">             
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                           </button>
-                        </li>}
-                      
+                        </li>} */}
                       </li>
                     ))}
                   </ul>

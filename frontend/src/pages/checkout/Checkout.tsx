@@ -280,10 +280,10 @@ const Checkout = () => {
                       </button>
                     </div>
                     {showCouponInput && (
-                      <div className="sm:flex sm:space-x-2.5 md:flex-col md:space-x-0 lg:flex-row lg:space-x-2.5">
+                      <div className="sm:flex items-center sm:space-x-2.5 md:flex-col md:space-x-0 lg:flex-row lg:space-x-2.5">
                         <div className="flex-grow">
                           <input
-                            className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex w-[90%] rounded-md border border-gray-300 bg-white px-3 py-2.5 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                             type="text"
                             placeholder="Enter coupon code"
                             value={coupon}
@@ -291,8 +291,12 @@ const Checkout = () => {
                           />
                         </div>
                         <div className="mt-4 sm:mt-0 md:mt-4 lg:mt-0">
-                          <button onClick={handleVerifyCoupon} type="button">
-                            verify
+                          <button
+                            onClick={handleVerifyCoupon}
+                            type="button"
+                            className="bg-[#EC72AF] text-white px-6 py-1.5 rounded-lg"
+                          >
+                            Verify
                           </button>
                         </div>
                       </div>
@@ -302,7 +306,7 @@ const Checkout = () => {
 
                 <ul className="mt-6 space-y-3">
                   <li className="flex items-center justify-between text-gray-600">
-                    <p className="text-md font-medium">Sub total</p>
+                    <p className="text-md font-medium">Subtotal</p>
                     <p className="text-md font-medium">Rs. {totalPrice}</p>
                   </li>
                   <li className="flex items-center justify-between text-gray-600">

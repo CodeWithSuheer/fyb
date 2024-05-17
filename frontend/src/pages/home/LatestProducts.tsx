@@ -130,7 +130,7 @@ const LatestProducts = ({ latestProducts }) => {
                     onClick={() => handleItemClick(String(data.id))}
                     className="mx-0 pb-7"
                   >
-                    <div className="group mb-3 relative group w-60 mx-auto pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+                    <div className="group mb-3 relative group w-60 mx-auto pt-0 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                       <img
                         className="object-cover w-full h-56"
                         src={data.image.downloadURL}

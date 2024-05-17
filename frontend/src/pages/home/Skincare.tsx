@@ -33,7 +33,6 @@ const Skincare = () => {
     autoplaySpeed: 3000,
     pauseOnHover: true,
     arrows: false,
-  
   };
 
   useEffect(() => {
@@ -70,12 +69,10 @@ const Skincare = () => {
   const page = 1;
 
   useEffect(() => {
-    dispatch(getAllProductsAsync({category,page}));
-}, [dispatch,category,page]);
-
+    dispatch(getAllProductsAsync({ category, page }));
+  }, [dispatch, category, page]);
 
   const allproducts = useAppSelector((state) => state.products.products);
-
 
   return (
     <>
@@ -144,7 +141,7 @@ const Skincare = () => {
                     onClick={() => handleItemClick(String(data.id))}
                     className="mx-0 pb-7"
                   >
-                    <div className="group mb-3 relative group w-60 mx-auto pt-5 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+                    <div className="group mb-3 relative group w-60 mx-auto pt-0 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
                       <img
                         className="object-cover w-full h-56"
                         src={data.image.downloadURL}
