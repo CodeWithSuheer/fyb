@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -9,8 +9,15 @@ import { Helmet } from "react-helmet";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
   const userID = user?.user?.id;
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [navigate, user]);
 
   const [loginLoading, setLoginLoading] = useState(false);
 

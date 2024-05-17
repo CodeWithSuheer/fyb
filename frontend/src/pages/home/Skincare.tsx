@@ -11,6 +11,7 @@ const Skincare = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [slidesToShow, setSlidesToShow] = useState(4);
+  const loading = useAppSelector((state) => state.products.Productloading);
   const sliderRef = useRef(null);
 
   const next = () => {
@@ -134,50 +135,80 @@ const Skincare = () => {
           {/* DATA */}
           <div className="data">
             <div className="mt-8 sm:mt-12">
-              <Slider ref={sliderRef} {...settings}>
-                {allproducts?.productData?.map((data, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleItemClick(String(data.id))}
-                    className="mx-0 pb-7"
-                  >
-                    <div className="group mb-3 relative group w-60 mx-auto pt-0 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
-                      <img
-                        className="object-cover w-full h-56"
-                        src={data.image.downloadURL}
-                        alt="products"
-                      />
+              {!loading ? (
+                <>
+                  <Slider ref={sliderRef} {...settings}>
+                    {allproducts?.productData?.map((data, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleItemClick(String(data.id))}
+                        className="mx-0 pb-7"
+                      >
+                        <div className="group mb-3 relative group w-60 mx-auto pt-0 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+                          <img
+                            className="object-cover w-full h-56"
+                            src={data.image.downloadURL}
+                            alt="products"
+                          />
 
-                      <div className="py-5 text-center">
-                        <h3 className="playfair mb-2 text-lg font-semibold text-gray-800">
-                          {data.name}
-                        </h3>
+                          <div className="py-5 text-center">
+                            <h3 className="playfair mb-2 text-lg font-semibold text-gray-800">
+                              {data.name}
+                            </h3>
 
-                        {/* STARS */}
-                        <div className="mb-2 flex items-center justify-center gap-1">
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
+                            {/* STARS */}
+                            <div className="mb-2 flex items-center justify-center gap-1">
+                              <FaStar className="text-[#FFC107]" />
+                              <FaStar className="text-[#FFC107]" />
+                              <FaStar className="text-[#FFC107]" />
+                              <FaStar className="text-[#FFC107]" />
+                              <FaStar className="text-[#FFC107]" />
+                            </div>
+
+                            <p className="mb-3 text-md text-gray-500">
+                              ({data.category})
+                            </p>
+
+                            <p className="mb-3 text-xl font-semibold text-black">
+                              ${data.price}
+                            </p>
+
+                            <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
+                              Shop Now
+                            </button>
+                          </div>
                         </div>
-
-                        <p className="mb-3 text-md text-gray-500">
-                          ({data.category})
-                        </p>
-
-                        <p className="mb-3 text-xl font-semibold text-black">
-                          ${data.price}
-                        </p>
-
-                        <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
-                          Shop Now
-                        </button>
                       </div>
-                    </div>
-                  </div>
-                ))}
-              </Slider>
+                    ))}
+                  </Slider>
+                </>
+              ) : (
+                <>
+                  <Slider ref={sliderRef} {...settings}>
+                    {[0, 1, 2, 3, 4, 5].map((data, index) => (
+                      <li key={index} className="px-5">
+                        <div className="group mb-5 relative rounded-lg w-full bg-white border border-gray-400 cursor-pointer animate-pulse">
+                          <div className="bg-gray-300 h-56 w-full"></div>
+
+                          <div className="py-5 text-center">
+                            <div className="bg-gray-300 h-5 w-3/4 mx-auto mb-2 rounded-lg"></div>
+                            <div className="flex items-center justify-center gap-1 mb-2">
+                              <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                              <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                              <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                              <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                              <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+                            </div>
+                            <div className="bg-gray-300 h-4 w-1/2 mx-auto mb-2 rounded-lg"></div>
+                            <div className="bg-gray-300 h-5 w-1/3 mx-auto mb-2 rounded-lg"></div>
+                            <div className="bg-gray-300 h-4 w-1/4 mx-auto mb-3 rounded-lg"></div>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </Slider>
+                </>
+              )}
             </div>
 
             <div className="slider_button sm:hidden flex flex-row justify-center">

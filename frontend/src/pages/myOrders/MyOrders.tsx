@@ -1,16 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getallOrderAsync, updateOrderAsync } from "../../features/orderSlice";
 import { Helmet } from "react-helmet";
+import { CloudArrowUp } from "phosphor-react";
+import { Button, Modal } from "keep-react";
+import { useNavigate } from "react-router-dom";
 
 const MyOrders = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const user = useAppSelector((state) => state.auth.user);
   const userID = user?.user?.id;
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [orderId, setOrderId] = useState();
+
+  const openModal = (id) => {
+    setIsOpen(true);
+    setOrderId(id);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [navigate, user]);
+
   const allOrder = useAppSelector((state) => state.orders.allOrders);
-  console.log("allOrder", allOrder);
+
+  const selectedOrder = allOrder.find((data) => data?.id === orderId);
+  console.log("selectedOrder", selectedOrder);
 
   useEffect(() => {
     if (userID) {
@@ -19,12 +42,19 @@ const MyOrders = () => {
     }
   }, [userID, dispatch]);
 
+  // HANDLE DELETE
   const handleDelete = (id) => {
     const formData = {
       id,
       orderProgress: "Cancelled",
     };
-    dispatch(updateOrderAsync(formData));
+    dispatch(updateOrderAsync(formData)).then((res) => {
+      const id = userID;
+      if (res.payload.message === "Order Data Updated") {
+        dispatch(getallOrderAsync(id));
+        closeModal();
+      }
+    });
   };
 
   const getStatusColor = (status) => {
@@ -58,11 +88,12 @@ const MyOrders = () => {
           {allOrder.map((data, index) => (
             <div
               key={index}
-              className="mt-8 flex flex-col overflow-hidden rounded-lg border border-gray-300 md:flex-row"
+              className="mt-8 flex flex-col overflow-hidden rounded-xl border border-[#EB72AF] md:flex-row"
             >
               {/* ORDER DETAILS */}
               <div className="w-full border-r border-gray-300 bg-[#FFF3F9] md:max-w-xs">
-                <div className="py-8 px-6">
+                <div className="parent py-6 px-6 flex flex-col justify-between h-full gap-y-10">
+                  {/* ORDER DETAILS */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2">
                     <div className="mb-4">
                       <div className="text-md sm:text-md font-semibold">
@@ -73,7 +104,9 @@ const MyOrders = () => {
                       </div>
                     </div>
                     <div className="mb-4">
-                      <div className="text-md sm:text-md font-semibold">Date</div>
+                      <div className="text-md sm:text-md font-semibold">
+                        Date
+                      </div>
                       <div className="text-md font-medium text-gray-700">
                         {new Date(data?.createdAt).toLocaleDateString()}
                       </div>
@@ -99,6 +132,20 @@ const MyOrders = () => {
                       </div>
                     </div>
                   </div>
+
+                  {/* ORDER CANCEL BUTTON */}
+                  <div className="button">
+                    {data?.orderProgress === "Pending" && (
+                      <div>
+                        <button
+                          onClick={() => openModal(data?.id)}
+                          className="mt-5 flex items-center gap-2 bg-[#EB72AF] text-white px-4 py-2 rounded-lg"
+                        >
+                          <span>Cancel Order</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -114,7 +161,7 @@ const MyOrders = () => {
                         <div className="flex flex-1 items-stretch">
                           <div className="flex-shrink-0">
                             <img
-                              className="h-20 w-20 rounded-lg border border-gray-200 object-contain"
+                              className="h-20 w-20 rounded-lg bg-white border border-gray-200 object-contain"
                               src={product?.image.downloadURL}
                               alt="order_img"
                             />
@@ -161,6 +208,36 @@ const MyOrders = () => {
           ))}
         </div>
       </section>
+
+      {/* ORDER CANCEL MODAL */}
+      <Modal isOpen={isOpen} onClose={closeModal}>
+        <Modal.Body className="space-y-3">
+          <Modal.Content>
+            <div className="!mb-6">
+              <h3 className="mt-3 mb-2 text-body-1 font-medium text-metal-900">
+                Confirm order cancellation?
+              </h3>
+            </div>
+          </Modal.Content>
+          <Modal.Footer>
+            <Button
+              onClick={closeModal}
+              size="sm"
+              variant="outline"
+              color="secondary"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleDelete(selectedOrder?.id)}
+              className="bg-[#EB72AF] hover:bg-[#EB72AF]"
+              size="sm"
+            >
+              Confirm
+            </Button>
+          </Modal.Footer>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

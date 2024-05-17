@@ -1,13 +1,64 @@
-import { useEffect, useState } from "react";
-import { FaStar } from "react-icons/fa";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { getAllProductsAsync } from "../../features/productSlice";
 import { useAppSelector } from "../../app/hooks";
+import { useDispatch } from "react-redux";
+import { FaStar } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import "./Products.css";
-import { useDispatch } from "react-redux";
-import { getAllProductsAsync } from "../../features/productSlice";
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
+import { FiMousePointer } from "react-icons/fi";
+
+const Example = () => {
+  return (
+    <div className="grid w-full place-content-center px-4 py-2 text-slate-900">
+      <TiltCard />
+    </div>
+  );
+};
+
+const ROTATION_RANGE = 32.5;
+const HALF_ROTATION_RANGE = 32.5 / 2;
 
 const Products = () => {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const xSpring = useSpring(x);
+  const ySpring = useSpring(y);
+
+  const transform = useMotionTemplate`rotateX(${xSpring}deg) rotateY(${ySpring}deg)`;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!ref.current) return [0, 0];
+
+    const rect = ref.current.getBoundingClientRect();
+
+    const width = rect.width;
+    const height = rect.height;
+
+    const mouseX = (e.clientX - rect.left) * ROTATION_RANGE;
+    const mouseY = (e.clientY - rect.top) * ROTATION_RANGE;
+
+    const rX = (mouseY / height - HALF_ROTATION_RANGE) * -1;
+    const rY = mouseX / width - HALF_ROTATION_RANGE;
+
+    x.set(rX);
+    y.set(rY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
@@ -32,7 +83,7 @@ const Products = () => {
           <Link
             to={`/products?category=${category}&page=${i}`}
             className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 ${
-              i === page ? "bg-gray-200" : "hover:bg-gray-100"
+              i === page ? "bg-pink-400 text-white" : "hover:bg-gray-100"
             }`}
             onClick={() => dispatch(getAllProductsAsync({ category, page: i }))}
           >
@@ -112,7 +163,7 @@ const Products = () => {
           </div>
 
           <div className="mt-4 lg:mt-8 lg:grid lg:grid-cols-4 lg:items-start lg:gap-5">
-            <div
+            {/* <div
               className={`mb-7 category ${
                 isCategoryVisible ? "lg:block" : "hidden"
               } space-y-4 lg:block border px-3 py-5 shadow-xl rounded-lg`}
@@ -170,7 +221,92 @@ const Products = () => {
                   </details>
                 </div>
               </div>
-            </div>
+            </div> */}
+
+            <motion.div
+              ref={ref}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                transformStyle: "preserve-3d",
+                transform,
+              }}
+              className="relative h-96 w-72 rounded-xl "
+            >
+              <div
+                style={{
+                  transform: "translateZ(75px)",
+                  transformStyle: "preserve-3d",
+                }}
+                className="absolute grid place-content-center rounded-xl bg-[#EC72AF] text-white shadow-lg"
+              >
+                <div
+                  className={`mb-7 category ${
+                    isCategoryVisible ? "lg:block" : "hidden"
+                  } space-y-4 lg:block px-0 py-5 rounded-lg`}
+                >
+                  <div>
+                    <p className="playfair mb-3 pl-3 block text-2xl text-center tracking-wide font-bold text-gray-100">
+                      Categories
+                    </p>
+
+                    <div className="mt-1 px-12">
+                      <details
+                        onClick={() => handleCategoryFiltering("Skincare")}
+                        className={` overflow-hidden ${
+                          category === "Skincare"
+                            ? "text-[#EC72AF] bg-white"
+                            : ""
+                        } rounded [&_summary::-webkit-details-marker]:hidden`}
+                      >
+                        <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
+                          <span className="text-lg font-normal">Skincare</span>
+                        </summary>
+                      </details>
+
+                      <details
+                        onClick={() => handleCategoryFiltering("Body Care")}
+                        className={`overflow-hidden ${
+                          category === "Body Care"
+                            ? "text-[#EC72AF] bg-white"
+                            : ""
+                        } rounded [&_summary::-webkit-details-marker]:hidden`}
+                      >
+                        <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
+                          <span className="text-lg font-normal">Bodycare</span>
+                        </summary>
+                      </details>
+
+                      <details
+                        onClick={() => handleCategoryFiltering("Haircare")}
+                        className={`overflow-hidden ${
+                          category === "Haircare"
+                            ? "text-[#EC72AF] bg-white"
+                            : ""
+                        } rounded [&_summary::-webkit-details-marker]:hidden`}
+                      >
+                        <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
+                          <span className="text-lg font-normal">Haircare</span>
+                        </summary>
+                      </details>
+
+                      <details
+                        onClick={() => handleCategoryFiltering("Cosmetics")}
+                        className={`overflow-hidden ${
+                          category === "Cosmetics"
+                            ? "text-[#EC72AF] bg-white"
+                            : ""
+                        } rounded [&_summary::-webkit-details-marker]:hidden`}
+                      >
+                        <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
+                          <span className="text-lg font-normal">Cosmetics</span>
+                        </summary>
+                      </details>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
 
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
@@ -201,13 +337,13 @@ const Products = () => {
                                 </h3>
 
                                 {/* STARS */}
-                                <div className="mb-2 flex items-center justify-center gap-1">
+                                {/* <div className="mb-2 flex items-center justify-center gap-1">
                                   <FaStar className="text-[#FFC107]" />
                                   <FaStar className="text-[#FFC107]" />
                                   <FaStar className="text-[#FFC107]" />
                                   <FaStar className="text-[#FFC107]" />
                                   <FaStar className="text-[#FFC107]" />
-                                </div>
+                                </div> */}
 
                                 <p className="mb-3 text-md text-gray-500">
                                   ({data.category})

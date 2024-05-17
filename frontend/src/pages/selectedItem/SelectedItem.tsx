@@ -16,10 +16,7 @@ import {
   updatereviewsAsync,
 } from "../../features/reviewsSlice";
 import RelatedProducts from "./RelatedProducts";
-import {
-  getAllProductsAsync,
-  getProductByIdAsync,
-} from "../../features/productSlice";
+import { getProductByIdAsync } from "../../features/productSlice";
 
 interface RouteParams {
   id: string;
