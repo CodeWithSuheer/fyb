@@ -91,7 +91,6 @@ const SelectedItem: React.FC = () => {
 
   // filter review based on id
   const allreviews = useAppSelector((state) => state.reviews.allReviews);
-  console.log("allreviews", allreviews);
 
   // selected review
   const selectedReview = allreviews?.filter(
@@ -197,6 +196,8 @@ const SelectedItem: React.FC = () => {
 
   const category = allproducts?.category;
 
+  
+
   return (
     <>
       <div className="pt-4">
@@ -218,6 +219,15 @@ const SelectedItem: React.FC = () => {
                 <h2 className="text-3xl font-extrabold text-gray-800">
                   {selectedItem?.name}
                 </h2>
+
+                {selectedItem && (
+                    <div className="flex items-center mt-4">
+                      <StarRating rating={selectedItem.averageRating} />
+                      <span className="ml-2 text-sm text-gray-500">
+                        ({selectedItem.averageRating})
+                      </span>
+                    </div>
+                  )}
 
                 {/* ABOUT */}
                 <div className="mt-4">
