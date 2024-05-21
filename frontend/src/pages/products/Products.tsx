@@ -82,7 +82,7 @@ const Products = () => {
         <li onClick={ToTop} key={i}>
           <Link
             to={`/products?category=${category}&page=${i}`}
-            className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 ${
+            className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 ${
               i === page ? "bg-pink-400 text-white" : "hover:bg-gray-100"
             }`}
             onClick={() => dispatch(getAllProductsAsync({ category, page: i }))}
@@ -163,13 +163,13 @@ const Products = () => {
           </div>
 
           <div className="mt-4 lg:mt-8 lg:grid lg:grid-cols-4 lg:items-start lg:gap-5">
-            {/* <div
+            <div
               className={`mb-7 category ${
                 isCategoryVisible ? "lg:block" : "hidden"
-              } space-y-4 lg:block border px-3 py-5 shadow-xl rounded-lg`}
+              } space-y-4 lg:block border px-3 py-5 shadow-xl rounded-lg bg-gradient-to-br from-[#EB72AF] to-[#f756aa]`}
             >
               <div>
-                <p className="playfair mb-3 pl-3 block text-2xl tracking-wide font-bold text-gray-700">
+                <p className="playfair mb-3 pl-3 block text-2xl tracking-wide font-bold text-gray-50">
                   Categories
                 </p>
 
@@ -177,18 +177,24 @@ const Products = () => {
                   <details
                     onClick={() => handleCategoryFiltering("Skincare")}
                     className={`overflow-hidden ${
-                      category === "Skincare" ? "bg-[#EC72AF] text-white" : ""
+                      category === "Skincare"
+                        ? "bg-white text-[#EC72AF]"
+                        : "text-white"
                     } rounded [&_summary::-webkit-details-marker]:hidden`}
                   >
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-3 pb-3 transition ">
-                      <span className="text-lg pl-3 font-normal">Skincare</span>
+                      <span className="text-lg pl-3 font-normal ">
+                        Skincare
+                      </span>
                     </summary>
                   </details>
 
                   <details
                     onClick={() => handleCategoryFiltering("Body Care")}
                     className={`overflow-hidden ${
-                      category === "Body Care" ? "bg-[#EC72AF] text-white" : ""
+                      category === "Body Care"
+                        ? "bg-white text-[#EC72AF]"
+                        : "text-white"
                     } rounded [&_summary::-webkit-details-marker]:hidden`}
                   >
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-3 pb-3 transition">
@@ -199,7 +205,9 @@ const Products = () => {
                   <details
                     onClick={() => handleCategoryFiltering("Haircare")}
                     className={`overflow-hidden ${
-                      category === "Haircare" ? "bg-[#EC72AF] text-white" : ""
+                      category === "Haircare"
+                        ? "bg-white text-[#EC72AF]"
+                        : "text-white"
                     } rounded [&_summary::-webkit-details-marker]:hidden`}
                   >
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-3 pb-3 transition">
@@ -210,7 +218,9 @@ const Products = () => {
                   <details
                     onClick={() => handleCategoryFiltering("Cosmetics")}
                     className={`overflow-hidden ${
-                      category === "Cosmetics" ? "bg-[#EC72AF] text-white" : ""
+                      category === "Cosmetics"
+                        ? "bg-white text-[#EC72AF]"
+                        : "text-white"
                     } rounded [&_summary::-webkit-details-marker]:hidden`}
                   >
                     <summary className="flex cursor-pointer items-center justify-between gap-2 pt-3 pb-3 transition">
@@ -221,92 +231,106 @@ const Products = () => {
                   </details>
                 </div>
               </div>
-            </div> */}
+            </div>
 
-            <motion.div
-              ref={ref}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              style={{
-                transformStyle: "preserve-3d",
-                transform,
-              }}
-              className="relative h-96 w-72 rounded-xl "
+            {/* <div
+              className={`mb-7 category ${
+                isCategoryVisible ? "lg:block" : "hidden"
+              } space-y-4 lg:block`}
             >
-              <div
+              <motion.div
+                ref={ref}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
                 style={{
-                  transform: "translateZ(75px)",
                   transformStyle: "preserve-3d",
+                  transform,
                 }}
-                className="absolute grid place-content-center rounded-xl bg-gradient-to-br from-[#EB72AF] to-[#f756aa] text-white shadow-lg"
+                className="relative h-96 w-72 rounded-xl "
               >
                 <div
-                  className={`mb-7 category ${
-                    isCategoryVisible ? "lg:block" : "hidden"
-                  } space-y-4 lg:block px-0 py-5 rounded-lg`}
+                  style={{
+                    transform: "translateZ(75px)",
+                    transformStyle: "preserve-3d",
+                  }}
+                  className="absolute grid place-content-center rounded-xl bg-gradient-to-br from-[#EB72AF] to-[#f756aa] text-white shadow-lg"
                 >
-                  <div>
-                    <p className="playfair mb-3 pl-3 block text-2xl text-center tracking-wide font-bold text-gray-100">
-                      Categories
-                    </p>
+                  <div
+                    className={`mb-7 category ${
+                      isCategoryVisible ? "lg:block" : "hidden"
+                    } space-y-4 lg:block px-0 py-5 rounded-lg`}
+                  >
+                    <div>
+                      <p className="playfair mb-3 pl-3 block text-2xl text-center tracking-wide font-bold text-gray-100">
+                        Categories
+                      </p>
 
-                    <div className="mt-1 px-12">
-                      <details
-                        onClick={() => handleCategoryFiltering("Skincare")}
-                        className={` overflow-hidden ${
-                          category === "Skincare"
-                            ? "text-[#EC72AF] bg-white"
-                            : ""
-                        } rounded [&_summary::-webkit-details-marker]:hidden`}
-                      >
-                        <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
-                          <span className="text-lg font-normal">Skincare</span>
-                        </summary>
-                      </details>
+                      <div className="mt-1 px-12">
+                        <details
+                          onClick={() => handleCategoryFiltering("Skincare")}
+                          className={` overflow-hidden ${
+                            category === "Skincare"
+                              ? "text-[#EC72AF] bg-white"
+                              : ""
+                          } rounded [&_summary::-webkit-details-marker]:hidden`}
+                        >
+                          <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
+                            <span className="text-lg font-normal">
+                              Skincare
+                            </span>
+                          </summary>
+                        </details>
 
-                      <details
-                        onClick={() => handleCategoryFiltering("Body Care")}
-                        className={`overflow-hidden ${
-                          category === "Body Care"
-                            ? "text-[#EC72AF] bg-white"
-                            : ""
-                        } rounded [&_summary::-webkit-details-marker]:hidden`}
-                      >
-                        <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
-                          <span className="text-lg font-normal">Bodycare</span>
-                        </summary>
-                      </details>
+                        <details
+                          onClick={() => handleCategoryFiltering("Body Care")}
+                          className={`overflow-hidden ${
+                            category === "Body Care"
+                              ? "text-[#EC72AF] bg-white"
+                              : ""
+                          } rounded [&_summary::-webkit-details-marker]:hidden`}
+                        >
+                          <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
+                            <span className="text-lg font-normal">
+                              Bodycare
+                            </span>
+                          </summary>
+                        </details>
 
-                      <details
-                        onClick={() => handleCategoryFiltering("Haircare")}
-                        className={`overflow-hidden ${
-                          category === "Haircare"
-                            ? "text-[#EC72AF] bg-white"
-                            : ""
-                        } rounded [&_summary::-webkit-details-marker]:hidden`}
-                      >
-                        <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
-                          <span className="text-lg font-normal">Haircare</span>
-                        </summary>
-                      </details>
+                        <details
+                          onClick={() => handleCategoryFiltering("Haircare")}
+                          className={`overflow-hidden ${
+                            category === "Haircare"
+                              ? "text-[#EC72AF] bg-white"
+                              : ""
+                          } rounded [&_summary::-webkit-details-marker]:hidden`}
+                        >
+                          <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
+                            <span className="text-lg font-normal">
+                              Haircare
+                            </span>
+                          </summary>
+                        </details>
 
-                      <details
-                        onClick={() => handleCategoryFiltering("Cosmetics")}
-                        className={`overflow-hidden ${
-                          category === "Cosmetics"
-                            ? "text-[#EC72AF] bg-white"
-                            : ""
-                        } rounded [&_summary::-webkit-details-marker]:hidden`}
-                      >
-                        <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
-                          <span className="text-lg font-normal">Cosmetics</span>
-                        </summary>
-                      </details>
+                        <details
+                          onClick={() => handleCategoryFiltering("Cosmetics")}
+                          className={`overflow-hidden ${
+                            category === "Cosmetics"
+                              ? "text-[#EC72AF] bg-white"
+                              : ""
+                          } rounded [&_summary::-webkit-details-marker]:hidden`}
+                        >
+                          <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
+                            <span className="text-lg font-normal">
+                              Cosmetics
+                            </span>
+                          </summary>
+                        </details>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div> */}
 
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
@@ -316,7 +340,7 @@ const Products = () => {
                 </div>
               ) : (
                 <>
-                  <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
+                  <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
                     {!loading ? (
                       <>
                         {allproducts?.productData?.map((data, index) => (

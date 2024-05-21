@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineMenu } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getCartTotal } from "../../features/ActionsSlice";
@@ -16,6 +16,7 @@ import { logoutUserAsync } from "../../features/authSlice";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
@@ -30,6 +31,12 @@ const Header = () => {
       setIsDropDownOpen(false);
     }
   };
+
+  useEffect(() => {
+    if (windowWidth > 1024) {
+      setIsMenuOpen(false);
+    }
+  }, [windowWidth]);
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -60,6 +67,11 @@ const Header = () => {
     { title: "Contact Us", path: "contact" },
   ];
 
+  const forMobileNavigate = [
+    { title: "Profile", path: "profile" },
+    { title: "My Orders", path: "orders" },
+  ];
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -70,6 +82,12 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutUserAsync());
+    closeMenu();
+  };
+
+  const handleLogin = () => {
+    navigate("/login");
+    closeMenu();
   };
 
   return (
@@ -119,6 +137,7 @@ const Header = () => {
                 </li>
               ) : null}
 
+              {/* NORMAL ROUTES NAVIGATION */}
               {navigation.map((data, index) => (
                 <li key={index} className="max-lg:border-b max-lg:py-3 mr-2 ">
                   <Link
@@ -130,6 +149,46 @@ const Header = () => {
                   </Link>
                 </li>
               ))}
+
+              {/* PROTECTED ROUTES NAVIGATION */}
+              {login && user && isMenuOpen
+                ? forMobileNavigate.map((data, index) => (
+                    <>
+                      <li
+                        key={index}
+                        className="max-lg:border-b max-lg:py-3 mr-2 "
+                      >
+                        <Link
+                          to={`${data.path}`}
+                          className="crimson hover:underline hover:underline-offset-4 text-gray-800 block font-semibold text-[18px]"
+                          onClick={closeMenu}
+                        >
+                          {data.title}
+                        </Link>
+                      </li>
+                    </>
+                  ))
+                : null}
+
+              {/* LOGOUT BUTTON */}
+              {login && user && isMenuOpen && (
+                <button
+                  onClick={handleLogout}
+                  className="crimson w-full text-start hover:underline hover:underline-offset-4 text-red-600 tracking-wider block font-semibold text-[20px]"
+                >
+                  Logout
+                </button>
+              )}
+
+              {/* LOGIN BUTTON */}
+              {!login && !user && isMenuOpen && (
+                <button
+                  onClick={handleLogin}
+                  className="crimson w-full text-start hover:underline hover:underline-offset-4 text-gray-600 tracking-wider block font-semibold text-[20px]"
+                >
+                  Login
+                </button>
+              )}
             </ul>
           </div>
 
