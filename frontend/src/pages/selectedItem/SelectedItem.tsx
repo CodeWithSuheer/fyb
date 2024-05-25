@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addToCart } from "../../features/ActionsSlice";
 import { IoTrashOutline } from "react-icons/io5";
-import { useAppSelector } from "../../app/hooks";
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { FaStar } from "react-icons/fa";
 import { CloudArrowUp } from "phosphor-react";
 import { Button, Modal } from "keep-react";
@@ -17,18 +16,24 @@ import {
 } from "../../features/reviewsSlice";
 import RelatedProducts from "./RelatedProducts";
 import { getProductByIdAsync } from "../../features/productSlice";
-
-interface RouteParams {
-  id: string;
-}
+import Loader from "react-loaders";
+import "loaders.css/loaders.min.css";
+import "../../Loader.scss";
 
 export interface ReviewFormData {
   review: string;
   rating: number;
 }
+export interface CreateReviewPayload extends ReviewFormData {
+  productID: string | undefined;
+  userID: string | undefined;
+}
+export interface UpdateReviewPayload extends ReviewFormData {
+  id: string | undefined;
+}
 
 // STAR RATING
-const StarRating = ({ rating }) => {
+const StarRating = ({ rating }: { rating: number }) => {
   const stars = [];
   for (let i = 0; i < rating; i++) {
     stars.push(<FaStar key={i} className="text-[#FFC209]" />);
@@ -38,14 +43,13 @@ const StarRating = ({ rating }) => {
 
 const SelectedItem: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const [reviewId, setReviewId] = useState();
-  const [deleteReviewId, setDeleteReviewId] = useState();
-  const [isReviewVisible, setIsReviewVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>("Description");
+  const [reviewId, setReviewId] = useState<string>();
+  const [deleteReviewId, setDeleteReviewId] = useState<string>();
 
-  const { id } = useParams<RouteParams>();
+  const { id } = useParams<{ id: string }>();
+  const productId = id;
 
   useEffect(() => {
     dispatch(getProductByIdAsync(id));
@@ -56,7 +60,7 @@ const SelectedItem: React.FC = () => {
   // DELETE MODAL
   const [isOpen, setIsOpen] = useState(false);
 
-  const openModal = (id) => {
+  const openModal = (id: string) => {
     setDeleteReviewId(id);
     setIsOpen(true);
   };
@@ -65,14 +69,10 @@ const SelectedItem: React.FC = () => {
     setIsOpen(false);
   };
 
-  const toggleReviewVisibility = () => {
-    setIsReviewVisible((prevVisibility) => !prevVisibility);
-  };
-
   // UPDATE MODAL
   const [isOpenUpdate, setIsOpenUpdate] = useState(false);
 
-  const openUpdateModal = (id) => {
+  const openUpdateModal = (id: string) => {
     setReviewId(id);
     setIsOpenUpdate(true);
   };
@@ -91,7 +91,8 @@ const SelectedItem: React.FC = () => {
 
   // filter review based on id
   const allreviews = useAppSelector((state) => state.reviews.allReviews);
-
+  const loading = useAppSelector((state) => state.reviews.loading);
+  console.log(loading);
   // selected review
   const selectedReview = allreviews?.filter(
     (item: any) => item.id === reviewId
@@ -117,22 +118,15 @@ const SelectedItem: React.FC = () => {
 
   // CALLING API TO GET ALL REVIEWS
   useEffect(() => {
-    if (selectedItem) {
-      dispatch(getallreviewsAsync(id));
-    }
-  }, [dispatch, id]);
-
-  // HANDLE TAB CLICK
-  const handleTabClick = (tabName: string) => {
-    setActiveTab(tabName);
-  };
+    dispatch(getallreviewsAsync(id));
+  }, []);
 
   // HANDLE START CLICK
   const handleStarClick = (starValue: number) => {
     setFormData((prevData) => ({ ...prevData, rating: starValue }));
   };
 
-  const [selectedRating, setSelectedRating] = useState();
+  const [selectedRating, setSelectedRating] = useState<number>();
 
   const handleUpdateStarClick = (starValue: number) => {
     setSelectedRating(starValue);
@@ -152,7 +146,7 @@ const SelectedItem: React.FC = () => {
     const productID = id;
 
     if (!formData.review || formData.rating === 0) {
-      toast.error("Please leave a review or rate with at least one star.");
+      toast.error("Please leave a review to rate the product");
       return;
     }
 
@@ -165,15 +159,21 @@ const SelectedItem: React.FC = () => {
   };
 
   // HANDLE UPDATE REVIEW
-  const handleUpdateReview = (review_Id, rating) => {
+  const handleUpdateReview = (
+    review_Id: string | undefined,
+    rating: number
+  ) => {
     const id = review_Id;
 
     if (selectedRating !== rating) {
-      delete updateReviewData.rating;
+      const updateReviewDataOptional =
+        updateReviewData as Partial<ReviewFormData>;
+      delete updateReviewDataOptional.rating;
 
-      dispatch(
-        updatereviewsAsync({ id, rating: selectedRating, ...updateReviewData })
-      ).then(() => {
+      const payload: Partial<UpdateReviewPayload> = { id, ...updateReviewData };
+      payload.rating = selectedRating;
+
+      dispatch(updatereviewsAsync(payload as UpdateReviewPayload)).then(() => {
         dispatch(getallreviewsAsync(productId));
         closeUpdateModal();
       });
@@ -187,23 +187,32 @@ const SelectedItem: React.FC = () => {
   };
 
   // HANDLE DELETE REVIEW
-  const handleDeleteReview = (id) => {
+  const handleDeleteReview = (id: string) => {
     dispatch(deletereviewsAsync(id)).then(() => {
       closeModal();
       dispatch(getallreviewsAsync(productId));
     });
   };
 
-  const category = allproducts?.category;
+  // Function to handle textarea change
+  const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setUpdateReviewData({
+      ...updateReviewData,
+      review: e.target.value,
+    });
+  };
 
-  
+  const category = allproducts?.category;
 
   return (
     <>
       <div className="pt-4">
         <div className="px-4 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           <div>
-            <p className="mt-5 mb-4">Home / Shop / {selectedItem?.name}</p>
+            <p className="mt-5 mb-4">
+              Home / Shop /{" "}
+              <span className="text-[#EB72AF]">{selectedItem?.name}</span>
+            </p>
             <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-5">
               <div className="w-full h-[23rem] lg:sticky top-0 sm:flex gap-2">
                 {/* MAIN DISPLAYER IMAGE */}
@@ -221,13 +230,17 @@ const SelectedItem: React.FC = () => {
                 </h2>
 
                 {selectedItem && (
-                    <div className="flex items-center mt-4">
+                  <div className="flex items-center mt-4">
+                    {selectedItem.averageRating === 0 ? (
+                      "No Ratings"
+                    ) : (
                       <StarRating rating={selectedItem.averageRating} />
-                      <span className="ml-2 text-sm text-gray-500">
-                        ({selectedItem.averageRating})
-                      </span>
-                    </div>
-                  )}
+                    )}
+                    <span className="ml-2 text-sm text-gray-500">
+                      ({selectedItem.averageRating})
+                    </span>
+                  </div>
+                )}
 
                 {/* ABOUT */}
                 <div className="mt-4">
@@ -250,14 +263,27 @@ const SelectedItem: React.FC = () => {
 
                 {/* PRICE SECTION */}
                 <div className="flex flex-wrap items-center gap-4 mt-4">
-                  {selectedItem?.price !== selectedItem?.sale_price ? (
+                  {selectedItem &&
+                  selectedItem.price !== selectedItem?.sale_price ? (
                     <>
-                      <p className="text-gray-500 text-lg line-through">
+                      <p
+                        className={`${
+                          selectedItem?.sale_price &&
+                          selectedItem?.sale_price > 0
+                            ? "text-gray-500 text-lg line-through"
+                            : "text-gray-500 text-lg"
+                        }`}
+                      >
                         Rs. {selectedItem?.price}
                       </p>
-                      <p className="text-gray-800 text-2xl font-bold">
-                        Rs. {selectedItem?.sale_price}
-                      </p>
+                      {selectedItem?.sale_price &&
+                      selectedItem?.sale_price > 0 ? (
+                        <p className="text-gray-800 text-2xl font-bold">
+                          Rs. {selectedItem?.sale_price}
+                        </p>
+                      ) : (
+                        ""
+                      )}
                     </>
                   ) : (
                     <p className="text-gray-800 text-2xl font-bold">
@@ -267,180 +293,137 @@ const SelectedItem: React.FC = () => {
                 </div>
 
                 {/* CART BUTTON */}
-                <button
-                  onClick={handleAddToCart}
-                  className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 bg-[#EC72AF] hover:bg-[#f181b9] text-white font-bold rounded"
-                  type="button"
-                >
-                  Add to cart
-                </button>
+                {selectedItem?.stock && selectedItem?.stock > 0 ? (
+                  <button
+                    onClick={handleAddToCart}
+                    className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 bg-[#EC72AF] hover:bg-[#f181b9] text-white font-bold rounded"
+                    type="button"
+                  >
+                    Add to cart
+                  </button>
+                ) : (
+                  <span className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 bg-[#EC72AF] hover:bg-[#f181b9] text-white font-bold rounded">
+                    Out Of Stock
+                  </span>
+                )}
               </div>
             </div>
           </div>
 
           {/* DESCRIPTION & REVIEW SECTION */}
           <div className="mt-16 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-            <ul className="flex border-b">
-              {/* Description */}
-              <li
-                className={`${
-                  activeTab === "Description"
-                    ? "text-gray-800 font-bold text-sm bg-gray-100"
-                    : "text-gray-400 font-bold text-sm hover:bg-gray-100"
-                } py-3 px-8 border-b-2 border-gray-800 cursor-pointer transition-all`}
-                onClick={() => handleTabClick("Description")}
-              >
-                Description
-              </li>
-
-              {/* Reviews */}
-              <li
-                className={`${
-                  activeTab === "Reviews"
-                    ? "text-gray-800 font-bold text-sm bg-gray-100"
-                    : "text-gray-400 font-bold text-sm hover:bg-gray-100"
-                } py-3 px-8 cursor-pointer transition-all`}
-                onClick={() => handleTabClick("Reviews")}
-              >
-                Reviews
-              </li>
-            </ul>
-
             <div className="mt-8">
-              {/* DESCRIPTION CONTENT */}
-              {activeTab === "Description" && (
-                <>
-                  <h3 className="text-lg font-bold text-gray-800">
-                    Product Description
-                  </h3>
-                  <p className="text-sm text-gray-800 mt-4">
-                    Elevate your casual style with our premium men's t-shirt.
-                    Crafted for comfort and designed with a modern fit, this
-                    versatile shirt is an essential addition to your wardrobe.
-                    The soft and breathable fabric ensures all-day comfort,
-                    making it perfect for everyday wear. Its classic crew neck
-                    and short sleeves offer a timeless look.
-                  </p>
-                  <ul className="space-y-3 list-disc mt-6 pl-4 text-sm text-gray-800">
-                    <li>
-                      A gray t-shirt is a wardrobe essential because it is so
-                      versatile.
-                    </li>
-                    <li>
-                      Available in a wide range of sizes, from extra small to
-                      extra large, and even in tall and petite sizes.
-                    </li>
-                    <li>
-                      This is easy to care for. They can usually be
-                      machine-washed and dried on low heat.
-                    </li>
-                    <li>
-                      You can add your own designs, paintings, or embroidery to
-                      make it your own.
-                    </li>
-                  </ul>
-                </>
-              )}
-
               {/* REVIEWS FORMS */}
-              {activeTab === "Reviews" && (
-                <>
-                  <div className="mb-8 reviews max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-                    <div className="mt-10 all_reviews">
-                      <h2 className="text-2xl text-gray-800 font-semibold">
-                        ALL REVIEWS
-                      </h2>
 
-                      {allreviews.map((data, index) => (
-                        <div
-                          key={index}
-                          className="mt-3 px-6 py-4 rounded-xl border border-gray-300 bg-[#FFF3F9] all_reviews"
-                        >
-                          <div className="flex justify-between flex-wrap items-center gap-2">
-                            <div className="left flex items-center gap-2">
-                              <h2>{data.name}</h2>{" "}
-                              <p className="w-24">
-                                <StarRating rating={data?.rating} />
-                              </p>
-                            </div>
-                            <div className="right">
-                              <p>
-                                {new Date(data?.createdAt).toLocaleDateString()}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="mt-2 flex justify-between flex-wrap items-center gap-2">
-                            <p className="my-1">{data?.review}</p>
+              <>
+                <div className="mb-8 reviews max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
+                  <div className="mt-10 all_reviews">
+                    <h2 className="text-2xl text-gray-800 font-semibold">
+                      ALL REVIEWS
+                    </h2>
 
-                            <div className="edit flex items-center  gap-3">
-                              {userID === data.userID ? (
-                                <>
-                                  <FiEdit
-                                    onClick={() => openUpdateModal(data?.id)}
-                                    className="cursor-pointer"
-                                    size={20}
-                                  />
-                                  <IoTrashOutline
-                                    onClick={() => openModal(data?.id)}
-                                    className="cursor-pointer"
-                                    size={20}
-                                  />
-                                </>
-                              ) : null}
+                    {loading ? (
+                      <div className="flex justify-center mt-10">
+                        <Loader type="ball-beat" active={true} />
+                      </div>
+                    ) : (
+                      <>
+                        {allreviews &&
+                          allreviews.map((data, index) => (
+                            <div
+                              key={index}
+                              className="mt-3 px-6 py-4 rounded-xl border border-gray-300 bg-[#FFF3F9] all_reviews"
+                            >
+                              <div className="flex justify-between flex-wrap items-center gap-2">
+                                <div className="left flex items-center gap-2">
+                                  <h2>{data.name}</h2>{" "}
+                                  <p className="w-24">
+                                    <StarRating rating={data?.rating} />
+                                  </p>
+                                </div>
+                                <div className="right">
+                                  <p>
+                                    {new Date(
+                                      data?.createdAt
+                                    ).toLocaleDateString()}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="mt-2 flex justify-between flex-wrap items-center gap-2">
+                                <p className="my-1">{data?.review}</p>
+
+                                <div className="edit flex items-center  gap-3">
+                                  {userID === data.userID ? (
+                                    <>
+                                      <FiEdit
+                                        onClick={() =>
+                                          openUpdateModal(data?.id)
+                                        }
+                                        className="cursor-pointer"
+                                        size={20}
+                                      />
+                                      <IoTrashOutline
+                                        onClick={() => openModal(data?.id)}
+                                        className="cursor-pointer"
+                                        size={20}
+                                      />
+                                    </>
+                                  ) : null}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                          ))}
+                      </>
+                    )}
                   </div>
+                </div>
 
-                  <div>
-                    <p className="mb-1 ml-1 text-gray-700 font-medium">
-                      Your Comment*
+                <div>
+                  <p className="mb-1 ml-1 text-gray-700 font-medium">
+                    Your Comment*
+                  </p>
+                  <textarea
+                    id="OrderNotes"
+                    className="w-full resize-y border border-gray-800 rounded-xl align-top focus:ring-0 focus:outline-none focus:border-pink-500 sm:text-sm p-4"
+                    rows={4}
+                    placeholder="Write a comment..."
+                    value={formData.review}
+                    onChange={(e) =>
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        review: e.target.value,
+                      }))
+                    }
+                  ></textarea>
+
+                  {/* Star rating section */}
+                  <div className="mt-4 mb-2 flex items-center justify-start gap-1">
+                    <p className="mr-1 text-gray-700 font-medium text-sm">
+                      Give your rating:
                     </p>
-                    <textarea
-                      id="OrderNotes"
-                      className="w-full resize-y border border-gray-800 rounded-xl align-top focus:ring-0 focus:outline-none focus:border-pink-500 sm:text-sm p-4"
-                      rows={4}
-                      placeholder="Write a comment..."
-                      value={formData.review}
-                      onChange={(e) =>
-                        setFormData((prevData) => ({
-                          ...prevData,
-                          review: e.target.value,
-                        }))
-                      }
-                    ></textarea>
-
-                    {/* Star rating section */}
-                    <div className="mt-4 mb-2 flex items-center justify-start gap-1">
-                      <p className="mr-1 text-gray-700 font-medium text-sm">
-                        Give your rating:
-                      </p>
-                      {[1, 2, 3, 4, 5].map((starValue) => (
-                        <FaStar
-                          key={starValue}
-                          style={{
-                            color:
-                              starValue <= formData.rating
-                                ? "#FFC107"
-                                : "#D1D5DB",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handleStarClick(starValue)}
-                        />
-                      ))}
-                    </div>
-
-                    <button
-                      className="mt-1 text-white py-2 px-4 rounded-md bg-[#EC72AF] hover:bg-[#f181b9]"
-                      onClick={handleSubmitReview}
-                    >
-                      Submit Review
-                    </button>
+                    {[1, 2, 3, 4, 5].map((starValue) => (
+                      <FaStar
+                        key={starValue}
+                        style={{
+                          color:
+                            starValue <= formData.rating
+                              ? "#FFC107"
+                              : "#D1D5DB",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => handleStarClick(starValue)}
+                      />
+                    ))}
                   </div>
-                </>
-              )}
+
+                  <button
+                    className="mt-1 text-white py-2 px-4 rounded-md bg-[#EC72AF] hover:bg-[#f181b9]"
+                    onClick={handleSubmitReview}
+                  >
+                    Submit Review
+                  </button>
+                </div>
+              </>
             </div>
           </div>
         </div>
@@ -463,13 +446,8 @@ const SelectedItem: React.FC = () => {
                   className="w-full resize-y border border-gray-800 rounded-xl align-top focus:ring-0 focus:outline-none focus:border-pink-500 sm:text-sm p-4"
                   rows={4}
                   placeholder="Write a comment..."
-                  value={updateReviewData.review || data.review}
-                  onChange={(e) =>
-                    setUpdateReviewData({
-                      ...updateReviewData,
-                      review: e.target.value,
-                    })
-                  }
+                  value={data.review}
+                  onChange={handleReviewChange}
                 ></textarea>
 
                 <div className="mt-4 mb-2 flex items-center justify-start gap-1">

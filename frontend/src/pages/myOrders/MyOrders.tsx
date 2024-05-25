@@ -2,9 +2,30 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getallOrderAsync, updateOrderAsync } from "../../features/orderSlice";
 import { Helmet } from "react-helmet";
-import { CloudArrowUp } from "phosphor-react";
 import { Button, Modal } from "keep-react";
 import { useNavigate } from "react-router-dom";
+
+ export interface data {
+  id:string | undefined
+  orderProgress: string,
+}
+
+interface Image {
+  downloadURL: string;
+  name: string;
+  type: string;
+}
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  image:Image
+  averageRating:number
+  sale_price:number | undefined
+  price:number
+  stock:number
+  quantity:number
+}
 
 const MyOrders = () => {
   const dispatch = useAppDispatch();
@@ -14,9 +35,9 @@ const MyOrders = () => {
   const userID = user?.user?.id;
 
   const [isOpen, setIsOpen] = useState(false);
-  const [orderId, setOrderId] = useState();
+  const [orderId, setOrderId] = useState<string>();
 
-  const openModal = (id) => {
+  const openModal = (id:string) => {
     setIsOpen(true);
     setOrderId(id);
   };
@@ -33,7 +54,6 @@ const MyOrders = () => {
   const allOrder = useAppSelector((state) => state.orders.allOrders);
 
   const selectedOrder = allOrder.find((data) => data?.id === orderId);
-  console.log("selectedOrder", selectedOrder);
 
   useEffect(() => {
     if (userID) {
@@ -43,7 +63,7 @@ const MyOrders = () => {
   }, [userID, dispatch]);
 
   // HANDLE DELETE
-  const handleDelete = (id) => {
+  const handleDelete = (id:string | undefined) => {
     const formData = {
       id,
       orderProgress: "Cancelled",
@@ -57,7 +77,7 @@ const MyOrders = () => {
     });
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status:string) => {
     switch (status) {
       case "Pending":
         return "text-yellow-500";
@@ -85,7 +105,7 @@ const MyOrders = () => {
           <div className="mt-3 text-sm">
             Check the status of recent and old orders
           </div>
-          {allOrder.map((data, index) => (
+          {allOrder.map((data:any, index:number) => (
             <div
               key={index}
               className="mt-8 flex flex-col overflow-hidden rounded-xl border border-[#EB72AF] md:flex-row"
@@ -135,7 +155,7 @@ const MyOrders = () => {
 
                   {/* ORDER CANCEL BUTTON */}
                   <div className="button">
-                    {data?.orderProgress === "Pending" && (
+                    {data?.orderProgress && data?.orderProgress === "Pending" && (
                       <div>
                         <button
                           onClick={() => openModal(data?.id)}
@@ -153,7 +173,7 @@ const MyOrders = () => {
               <div className="flex-1 bg-white">
                 <div className="py-6 px-3 sm:px-6">
                   <ul className="gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
-                    {data?.items.map((product) => (
+                    {data && data?.items.map((product:Product) => (
                       <li
                         key={product.id}
                         className="flex px-3 flex-col justify-between space-x-5 py-7 md:flex-row border rounded-xl bg-[#FFF3F9]"
@@ -194,11 +214,6 @@ const MyOrders = () => {
                             )}
                           </p>
                         </div>
-                        {/* {data?.orderProgress === "Pending" && <li>
-                          <button onClick={() => handleDelete(data.id)} className="text-red-500">             
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                          </button>
-                        </li>} */}
                       </li>
                     ))}
                   </ul>

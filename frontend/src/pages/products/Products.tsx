@@ -1,74 +1,25 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { getAllProductsAsync } from "../../features/productSlice";
-import { useAppSelector } from "../../app/hooks";
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { FaStar } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import "./Products.css";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
-import { FiMousePointer } from "react-icons/fi";
 
-const Example = () => {
-  return (
-    <div className="grid w-full place-content-center px-4 py-2 text-slate-900">
-      <TiltCard />
-    </div>
-  );
-};
 
-const ROTATION_RANGE = 32.5;
-const HALF_ROTATION_RANGE = 32.5 / 2;
-
-const Products = () => {
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const xSpring = useSpring(x);
-  const ySpring = useSpring(y);
-
-  const transform = useMotionTemplate`rotateX(${xSpring}deg) rotateY(${ySpring}deg)`;
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!ref.current) return [0, 0];
-
-    const rect = ref.current.getBoundingClientRect();
-
-    const width = rect.width;
-    const height = rect.height;
-
-    const mouseX = (e.clientX - rect.left) * ROTATION_RANGE;
-    const mouseY = (e.clientY - rect.top) * ROTATION_RANGE;
-
-    const rX = (mouseY / height - HALF_ROTATION_RANGE) * -1;
-    const rY = mouseX / width - HALF_ROTATION_RANGE;
-
-    x.set(rX);
-    y.set(rY);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+const Products : React.FC = () => {
+ 
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
   const allproducts = useAppSelector((state) => state.products.products || []);
   const loading = useAppSelector((state) => state.products.Productloading);
 
   const [searchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page")) || 1;
-  const category = searchParams.get("category") || "All";
+  const page: number = parseInt(searchParams.get("page") || "1", 10);
+  const category: string = searchParams.get("category") || "All";
 
   const toggleCategory = () => {
     setIsCategoryVisible(!isCategoryVisible);
@@ -114,6 +65,15 @@ const Products = () => {
       top: 450,
       behavior: "smooth",
     });
+  };
+
+  // STAR RATING
+  const StarRating = ({ rating }:{rating:number}) => {
+    const stars = [];
+    for (let i = 0; i < rating; i++) {
+      stars.push(<FaStar key={i} className="text-[#FFC209]" />);
+    }
+    return <div className="flex">{stars}</div>;
   };
 
   return (
@@ -164,7 +124,7 @@ const Products = () => {
 
           <div className="mt-4 lg:mt-8 lg:grid lg:grid-cols-4 lg:items-start lg:gap-5">
             <div
-              className={`mb-7 category ${
+              className={`mb-7 lg:sticky lg:top-0 category ${
                 isCategoryVisible ? "lg:block" : "hidden"
               } space-y-4 lg:block border px-3 py-5 shadow-xl rounded-lg bg-gradient-to-br from-[#EB72AF] to-[#f756aa]`}
             >
@@ -233,104 +193,7 @@ const Products = () => {
               </div>
             </div>
 
-            {/* <div
-              className={`mb-7 category ${
-                isCategoryVisible ? "lg:block" : "hidden"
-              } space-y-4 lg:block`}
-            >
-              <motion.div
-                ref={ref}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-                style={{
-                  transformStyle: "preserve-3d",
-                  transform,
-                }}
-                className="relative h-96 w-72 rounded-xl "
-              >
-                <div
-                  style={{
-                    transform: "translateZ(75px)",
-                    transformStyle: "preserve-3d",
-                  }}
-                  className="absolute grid place-content-center rounded-xl bg-gradient-to-br from-[#EB72AF] to-[#f756aa] text-white shadow-lg"
-                >
-                  <div
-                    className={`mb-7 category ${
-                      isCategoryVisible ? "lg:block" : "hidden"
-                    } space-y-4 lg:block px-0 py-5 rounded-lg`}
-                  >
-                    <div>
-                      <p className="playfair mb-3 pl-3 block text-2xl text-center tracking-wide font-bold text-gray-100">
-                        Categories
-                      </p>
-
-                      <div className="mt-1 px-12">
-                        <details
-                          onClick={() => handleCategoryFiltering("Skincare")}
-                          className={` overflow-hidden ${
-                            category === "Skincare"
-                              ? "text-[#EC72AF] bg-white"
-                              : ""
-                          } rounded [&_summary::-webkit-details-marker]:hidden`}
-                        >
-                          <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
-                            <span className="text-lg font-normal">
-                              Skincare
-                            </span>
-                          </summary>
-                        </details>
-
-                        <details
-                          onClick={() => handleCategoryFiltering("Body Care")}
-                          className={`overflow-hidden ${
-                            category === "Body Care"
-                              ? "text-[#EC72AF] bg-white"
-                              : ""
-                          } rounded [&_summary::-webkit-details-marker]:hidden`}
-                        >
-                          <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
-                            <span className="text-lg font-normal">
-                              Bodycare
-                            </span>
-                          </summary>
-                        </details>
-
-                        <details
-                          onClick={() => handleCategoryFiltering("Haircare")}
-                          className={`overflow-hidden ${
-                            category === "Haircare"
-                              ? "text-[#EC72AF] bg-white"
-                              : ""
-                          } rounded [&_summary::-webkit-details-marker]:hidden`}
-                        >
-                          <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
-                            <span className="text-lg font-normal">
-                              Haircare
-                            </span>
-                          </summary>
-                        </details>
-
-                        <details
-                          onClick={() => handleCategoryFiltering("Cosmetics")}
-                          className={`overflow-hidden ${
-                            category === "Cosmetics"
-                              ? "text-[#EC72AF] bg-white"
-                              : ""
-                          } rounded [&_summary::-webkit-details-marker]:hidden`}
-                        >
-                          <summary className="flex cursor-pointer items-center justify-between gap-0 pt-3 pb-3 px-10 transition focus:outline-none">
-                            <span className="text-lg font-normal">
-                              Cosmetics
-                            </span>
-                          </summary>
-                        </details>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div> */}
+      
 
             {/* PRODUCTS GRID */}
             <div className="products lg:col-span-3">
@@ -343,7 +206,7 @@ const Products = () => {
                   <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
                     {!loading ? (
                       <>
-                        {allproducts?.productData?.map((data, index) => (
+                        {allproducts?.productData?.map((data:any, index:number) => (
                           <li
                             key={index}
                             onClick={() => handleItemClick(String(data.id))}
@@ -360,32 +223,33 @@ const Products = () => {
                                   {data?.name}
                                 </h3>
 
-                                {/* STARS */}
-                                {/* <div className="mb-2 flex items-center justify-center gap-1">
-                                  <FaStar className="text-[#FFC107]" />
-                                  <FaStar className="text-[#FFC107]" />
-                                  <FaStar className="text-[#FFC107]" />
-                                  <FaStar className="text-[#FFC107]" />
-                                  <FaStar className="text-[#FFC107]" />
-                                </div> */}
+                                <div className="mb-2 flex items-center justify-center gap-1">
+                                  {data?.averageRating === 0 ? (
+                                    <FaStar className="text-white" />
+                                  ) : (
+                                    <StarRating rating={data?.averageRating} />
+                                  )}
+                                </div>
 
                                 <p className="mb-3 text-md text-gray-500">
                                   ({data.category})
                                 </p>
 
-                                {data.price !== data.sale_price ? (
-                                  <>
-                                    <p className="mb-1 text-xl font-semibold text-black">
+                                {data.sale_price > 0 ? (
+                                  <div className="flex justify-center items-center gap-2">
+                                    <p className="mb-3 text-md font-semibold text-black">
                                       Rs. {data.sale_price}
                                     </p>
                                     <p className="mb-3 text-md font-semibold text-gray-500 line-through">
                                       Rs. {data.price}
                                     </p>
-                                  </>
+                                  </div>
                                 ) : (
-                                  <p className="mb-3 text-xl font-semibold text-black">
-                                    Rs. {data.price}
-                                  </p>
+                                  <>
+                                    <p className="mb-3 text-md font-semibold text-black">
+                                      Rs. {data.price}
+                                    </p>
+                                  </>
                                 )}
 
                                 <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
@@ -398,7 +262,7 @@ const Products = () => {
                       </>
                     ) : (
                       <>
-                        {[0, 1, 2, 3, 4, 5].map((data, index) => (
+                        {[0, 1, 2, 3, 4, 5].map((_data, index) => (
                           <li key={index}>
                             <div className="group mb-5 relative rounded-lg w-full bg-white border border-gray-400 cursor-pointer animate-pulse">
                               <div className="bg-gray-300 h-56 w-full"></div>

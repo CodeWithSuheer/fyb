@@ -1,7 +1,7 @@
 import Button from "../../components/Button";
 import "./Home.css";
 
-const CtaSection = () => {
+const CtaSection:React.FC = () => {
   return (
     <>
       <section className="w-full cta_bg py-14 sm:py-32 px-4 sm:px-4 xl:px-0">

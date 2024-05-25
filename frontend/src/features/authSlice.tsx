@@ -3,6 +3,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import { SignupFormData } from "../auth/Signup";
 import { LoginFormData } from "../auth/Login";
+import { FormData } from "../auth/OtpChecker";
+import { ForgetPassData } from "../auth/ForgetPass";
 
 // API URLs
 const signupUrl = "http://localhost:8000/api/users/signup";
@@ -25,6 +27,9 @@ interface User {
     id: string;
   };
 }
+
+
+
 
 // CREATE ASYNC THUNK
 export const createuserAsync = createAsyncThunk(
@@ -57,11 +62,10 @@ export const loginuserAsync = createAsyncThunk(
 // UPDATE ASYNC THUNK
 export const updateuserAsync = createAsyncThunk(
   "user/update",
-  async (formData: LoginFormData) => {
+  async (formData: any) => {
     try {
       const response = await axios.post(updateUrl, formData);
-      // toast.success(response.data.message);
-      console.log(response.data);
+      toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.error);
@@ -93,15 +97,13 @@ export const logoutUserAsync = createAsyncThunk("user/logout", async () => {
 // FORGET ASYNC THUNK
 export const forgetuserAsync = createAsyncThunk(
   "user/forget",
-  async (formData: FormData) => {
+  async (formData: ForgetPassData) => {
     try {
       const response = await axios.post(forgetPassUrl, formData);
       // toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data.error);
       toast.error(error.response.data.error);
-      throw error.response.data.error;
     }
   }
 );
@@ -109,7 +111,7 @@ export const forgetuserAsync = createAsyncThunk(
 // VERIFY ASYNC THUNK
 export const verifyOtpAsync = createAsyncThunk(
   "user/verify",
-  async (formData: FormData) => {
+  async (formData:FormData) => {
     try {
       const response = await axios.post<User>(verifyOtpPassUrl, formData);
       // toast.success(response.data.message);
@@ -128,7 +130,7 @@ export const resetPassAsync = createAsyncThunk(
   async (resetPasswordData: any) => {
     const { id, resetPassword } = resetPasswordData;
     try {
-      const response = await axios.post<User>(resetPassUrl, {
+      const response = await axios.post<any>(resetPassUrl, {
         id,
         resetPassword,
       });

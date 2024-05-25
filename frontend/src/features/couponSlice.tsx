@@ -2,10 +2,17 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import axios from "axios";
 
+
 // INITIAL STATE
 const initialState = {
   Loading: false,
 };
+
+interface VerifyCoupon {
+  code:string,
+  userId: string | undefined,
+  category: string,
+}
 
 //API URL
 const verifyCouponUrl = "http://localhost:8000/api/coupons/verifyCouponAtCheckout";
@@ -13,7 +20,7 @@ const verifyCouponUrl = "http://localhost:8000/api/coupons/verifyCouponAtCheckou
 // Register Function
 export const verifyCouponAsync = createAsyncThunk(
   "coupon/verifyCoupon",
-  async (formData) => {
+  async (formData:VerifyCoupon) => {
     try {
       const response = await axios.post(verifyCouponUrl, formData);
       toast.success(response.data.message);

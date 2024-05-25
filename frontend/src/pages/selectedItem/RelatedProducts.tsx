@@ -4,25 +4,22 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaStar } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../app/hooks";
+
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getAllProductsAsync } from "../../features/productSlice";
 
-const RelatedProducts = ({ category }) => {
+const RelatedProducts = ({ category }: {category : string | undefined}) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [slidesToShow, setSlidesToShow] = useState(4);
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<Slider>(null);
   const page = 1;
 
   useEffect(() => {
     dispatch(getAllProductsAsync({ category , page }));
 }, [dispatch, category, page]);
 
-const allproducts = useAppSelector((state) => state.products.products || []);
-
-console.log(allproducts);
-
+const allproducts = useAppSelector((state) => state.products.products);
 
   const next = () => {
     if (sliderRef.current) {
@@ -75,6 +72,15 @@ console.log(allproducts);
     navigate(`/selectedItem/${productId}`);
     window.scroll(0, 0);
   };
+
+  // STAR RATING
+const StarRating = ({ rating }: { rating: number }) => {
+  const stars = [];
+  for (let i = 0; i < rating; i++) {
+    stars.push(<FaStar key={i} className="text-[#FFC209]" />);
+  }
+  return <div className="flex">{stars}</div>;
+};
 
   return (
     <>
@@ -137,7 +143,7 @@ console.log(allproducts);
           <div className="data">
             <div className="mt-8 sm:mt-12">
               <Slider ref={sliderRef} {...settings}>
-                {allproducts?.productData?.map((data, index) => (
+                {allproducts && allproducts?.productData?.map((data: any, index: number) => (
                   <div
                     key={index}
                     onClick={() => handleItemClick(String(data.id))}
@@ -157,11 +163,11 @@ console.log(allproducts);
 
                         {/* STARS */}
                         <div className="mb-2 flex items-center justify-center gap-1">
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
-                          <FaStar className="text-[#FFC107]" />
+                        {data?.averageRating === 0 ? (
+                                    <FaStar className="text-white" />
+                                  ) : (
+                                    <StarRating rating={data?.averageRating} />
+                                  )}
                         </div>
 
                         <p className="mb-3 text-md text-gray-500">

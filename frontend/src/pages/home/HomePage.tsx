@@ -56,8 +56,6 @@ const HomePage = () => {
 
       <SecondCta />
 
-      {/* <HairCare  /> */}
-
       <Review />
     </>
   );

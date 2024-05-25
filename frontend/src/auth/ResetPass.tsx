@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { resetPassAsync } from "../features/authSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
+import { useAppDispatch } from "../app/hooks";
 
 const ResetPass = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -21,7 +21,7 @@ const ResetPass = () => {
   const { password, confirmPassword } = formData;
 
   // HANDLE SUBMIT
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:FormEvent) => {
     const resetPassword = password;
     e.preventDefault();
     if (password === confirmPassword) {

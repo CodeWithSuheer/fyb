@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { MdPhone } from "react-icons/md";
 import { IoMail } from "react-icons/io5";
 import { MdLocationPin } from "react-icons/md";
@@ -9,7 +9,7 @@ import "./Contact.css";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const Contact = () => {
+const Contact: React.FC = () => {
   const [formdata, setFormdata] = useState({
     name: "",
     email: "",
@@ -18,7 +18,7 @@ const Contact = () => {
   });
 
   // HANDLE SUBMIT
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:FormEvent) => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:8000/api/contact/createContact",formdata);

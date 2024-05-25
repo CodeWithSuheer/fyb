@@ -1,16 +1,41 @@
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { updateuserAsync, userSessionAsync } from "../../features/authSlice";
 import { createOrderAsync, getallOrderAsync } from "../../features/orderSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "keep-react";
-import { useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
 import { Check } from "phosphor-react";
 import { clearCart } from "../../features/ActionsSlice";
 import { verifyCouponAsync } from "../../features/couponSlice";
 
-const Checkout = () => {
+ export interface couponSuccess {
+  couponDiscountSuccess: boolean;
+  code:string;
+  discount:number;
+  discountAmount:number;
+}
+
+interface formData {
+  phone:string;
+  address:string
+}
+
+export interface RequestData {
+  name:string | undefined;
+  phone:string;
+  address:string;
+  items:any;
+  userID:string | undefined;
+  totalAmount:string;
+  couponUsed:{
+    code: string;
+    discount: number;
+} | null
+}
+
+
+const Checkout:React.FC = () => {
   const navigate = useNavigate();
   const formRef = useRef(null);
   const dispatch = useAppDispatch();
@@ -33,13 +58,12 @@ const Checkout = () => {
   const user = useAppSelector((state) => state.auth.user);
   const userID = user?.user?.id;
 
-  const [formData, setFormData] = useState({
-    // name: user?.user?.name || "",
+  const [formData, setFormData] = useState<formData>({
     phone: user?.user?.phone || "",
-    address: user?.user?.address || "",
+    address: user?.user?.address || ""
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -64,7 +88,12 @@ const Checkout = () => {
     window.scroll(0, 0);
   };
 
-  const [couponSuccessData, setCouponSuccessData] = useState("");
+  const [couponSuccessData, setCouponSuccessData] = useState<couponSuccess>({
+    code: "",
+    discount: 0,
+    discountAmount: 0,
+    couponDiscountSuccess:false
+  }); 
 
   const couponData = {
     code: coupon,
@@ -72,14 +101,14 @@ const Checkout = () => {
   };
 
   // HANDLE SUBMIT
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:FormEvent) => {
     e.preventDefault();
     const id = userID;
     dispatch(updateuserAsync({ id, ...formData })).then((res) => {
       dispatch(userSessionAsync());
 
       if (res.payload.message === "Update Successfull") {
-        const { name, phone, address } = formData;
+        const { phone, address } = formData;
         const items = cart;
         const totalAmount = couponSuccessData
           ? totalPrice + shippingCharges - couponSuccessData?.discountAmount
@@ -101,7 +130,6 @@ const Checkout = () => {
             dispatch(getallOrderAsync(id));
           }
           setFormData({
-            name: "",
             phone: "",
             address: "",
           });
@@ -119,7 +147,6 @@ const Checkout = () => {
       category: categories,
     };
     dispatch(verifyCouponAsync(formData)).then((res) => {
-      // console.log(res);
       if (res.payload.couponDiscountSuccess) {
         setCouponSuccessData(res.payload);
       }
@@ -214,7 +241,7 @@ const Checkout = () => {
               <div className="bg-gray-100 px-5 py-10 md:px-8">
                 <div className="flow-root">
                   <ul className="-my-7 divide-y divide-gray-200">
-                    {cart.map((product) => (
+                    {cart.map((product:any) => (
                       <li
                         key={product.id}
                         className="flex items-stretch justify-between space-x-5 py-7"
