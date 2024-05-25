@@ -45,12 +45,11 @@ export const updatereviewsAsync = createAsyncThunk(
   async (formData: UpdateReviewPayload) => {
     try {
       const response = await axios.post(updateReviewUrl, formData);
-      // toast.success(response.data.message);
-      console.log(response.data);
+      toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.error);
-      console.error("Error submitting review:", error);
+      throw new Error(error);
     }
   }
 );

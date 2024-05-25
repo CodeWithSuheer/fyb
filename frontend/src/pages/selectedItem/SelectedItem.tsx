@@ -74,15 +74,21 @@ const SelectedItem: React.FC = () => {
 
   const openUpdateModal = (id: string) => {
     setReviewId(id);
+    const review = allreviews.find((item) => item.id === id);
+    if (review) {
+      setUpdateReviewData({
+        review: review.review,
+        rating: review.rating,
+      });
+    }
     setIsOpenUpdate(true);
   };
 
   const closeUpdateModal = () => {
     setIsOpenUpdate(false);
-
     setUpdateReviewData({
       review: "",
-      rating: 0,
+      rating: 1,
     });
   };
 
@@ -92,7 +98,7 @@ const SelectedItem: React.FC = () => {
   // filter review based on id
   const allreviews = useAppSelector((state) => state.reviews.allReviews);
   const loading = useAppSelector((state) => state.reviews.loading);
-  console.log(loading);
+
   // selected review
   const selectedReview = allreviews?.filter(
     (item: any) => item.id === reviewId
@@ -194,7 +200,7 @@ const SelectedItem: React.FC = () => {
     });
   };
 
-  // Function to handle textarea change
+
   const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUpdateReviewData({
       ...updateReviewData,
@@ -446,7 +452,7 @@ const SelectedItem: React.FC = () => {
                   className="w-full resize-y border border-gray-800 rounded-xl align-top focus:ring-0 focus:outline-none focus:border-pink-500 sm:text-sm p-4"
                   rows={4}
                   placeholder="Write a comment..."
-                  value={data.review}
+                  value={updateReviewData.review}
                   onChange={handleReviewChange}
                 ></textarea>
 
