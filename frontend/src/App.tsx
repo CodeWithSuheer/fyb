@@ -56,6 +56,7 @@ function App() {
   };
 
   const dispatch = useAppDispatch();
+  
   useEffect(() => {
     dispatch(userSessionAsync());
     dispatch(getLatestProductsAsync());

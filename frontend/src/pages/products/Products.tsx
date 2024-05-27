@@ -8,8 +8,6 @@ import "./Products.css";
 
 
 const Products : React.FC = () => {
- 
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
