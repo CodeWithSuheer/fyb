@@ -7,20 +7,25 @@ const getProductById = `http://localhost:8000/api/products/getProductById`;
 const getLatestProductUrl =
   "http://localhost:8000/api/products/getLatestPRoducts";
 
-// Interfaces    (YA DATA BACKEND SAY AA RAHA HA)
-
-
 // GET ALL PRODUCT ASYNC THUNK
 export const getAllProductsAsync = createAsyncThunk(
   "Shop/getProduts",
-  async (data: { category: string | undefined; page: number; search?: string }) => {
-
-    const searchQuery = data?.search !== undefined && data?.search !== null ? `&search=${data?.search}` : "";
+  async (data: {
+    category: string | undefined;
+    page: number;
+    search?: string;
+  }) => {
+    const searchQuery =
+      data?.search !== undefined && data?.search !== null
+        ? `&search=${data?.search}`
+        : "";
     try {
-      const response = await axios.post(`${getAllProductUrl}?category=${data.category}&page=${data.page}${searchQuery}`);
+      const response = await axios.post(
+        `${getAllProductUrl}?category=${data.category}&page=${data.page}${searchQuery}`
+      );
       return response.data;
-    } catch (error:any) {
-      throw new Error(error)
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 );
@@ -33,7 +38,7 @@ export const getLatestProductsAsync = createAsyncThunk(
       const response = await axios.post(getLatestProductUrl);
       return response.data;
     } catch (error: any) {
-      throw new Error(error)
+      throw new Error(error);
     }
   }
 );
@@ -41,12 +46,12 @@ export const getLatestProductsAsync = createAsyncThunk(
 // GET ALL PRODUCT ASYNC THUNK
 export const getProductByIdAsync = createAsyncThunk(
   "products/singleProduct ",
-  async (id:string | undefined) => {
+  async (id: string | undefined) => {
     try {
-      const response = await axios.post(getProductById,{id});
+      const response = await axios.post(getProductById, { id });
       return response.data;
     } catch (error: any) {
-      throw new Error(error)
+      throw new Error(error);
     }
   }
 );
@@ -61,11 +66,11 @@ interface Product {
   id: string;
   name: string;
   category: string;
-  image:Image
-  averageRating:number
-  sale_price:number | undefined
-  price:number
-  stock:number
+  image: Image;
+  averageRating: number;
+  sale_price: number | undefined;
+  price: number;
+  stock: number;
 }
 
 // INITIAL STATE
@@ -74,7 +79,7 @@ interface ProductState {
   Productloading: boolean;
   products: Product[] | any;
   latestProducts: Product[];
-  singleProduct:Product | null
+  singleProduct: Product | null;
 }
 
 const initialState: ProductState = {
@@ -82,17 +87,15 @@ const initialState: ProductState = {
   Productloading: false,
   products: [],
   latestProducts: [],
-  singleProduct:null
+  singleProduct: null,
 };
 
 const productSlice = createSlice({
   name: "productSlice",
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-     
 
       // GET ALL PRODUCTS ADD CASE
       .addCase(getAllProductsAsync.pending, (state) => {
@@ -103,14 +106,14 @@ const productSlice = createSlice({
         state.products = action.payload;
       })
 
-        // GET SINGLE PRODUCTS
-        .addCase(getProductByIdAsync.pending, (state) => {
-          state.loading = true;
-        })
-        .addCase(getProductByIdAsync.fulfilled, (state, action) => {
-          state.loading = false;
-          state.singleProduct = action.payload;
-        })
+      // GET SINGLE PRODUCTS
+      .addCase(getProductByIdAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getProductByIdAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.singleProduct = action.payload;
+      })
 
       // GET ALL LATEST PRODUCTS ADD CASE
       .addCase(getLatestProductsAsync.pending, (state) => {
@@ -119,8 +122,7 @@ const productSlice = createSlice({
       .addCase(getLatestProductsAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.latestProducts = action.payload;
-      })
-
+      });
   },
 });
 

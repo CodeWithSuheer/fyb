@@ -200,7 +200,6 @@ const SelectedItem: React.FC = () => {
     });
   };
 
-
   const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUpdateReviewData({
       ...updateReviewData,
