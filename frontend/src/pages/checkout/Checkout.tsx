@@ -28,10 +28,10 @@ export interface RequestData {
   items:any;
   userID:string | undefined;
   totalAmount:string;
-  couponUsed:{
-    code: string;
+  couponUsed?:{
+    code: string ;
     discount: number;
-} | null
+}
 }
 
 
@@ -113,15 +113,16 @@ const Checkout:React.FC = () => {
         const totalAmount = couponSuccessData
           ? totalPrice + shippingCharges - couponSuccessData?.discountAmount
           : totalPrice + shippingCharges;
-        const requestData = {
-          name: user?.user?.name,
-          phone,
-          address,
-          items,
-          userID,
-          totalAmount,
-          couponUsed: couponSuccessData ? couponData : null,
-        };
+          
+          const requestData = {
+            name: user?.user?.name,
+            phone,
+            address,
+            items,
+            userID,
+            totalAmount,
+            ...(couponSuccessData.code !== "" && { couponUsed: couponData })
+          };
 
         dispatch(createOrderAsync(requestData)).then((res) => {
           if (res.payload.message === "Order PLaced Succcessfully") {
@@ -152,8 +153,6 @@ const Checkout:React.FC = () => {
       }
     });
   };
-
-  console.log(couponSuccessData);
 
   return (
     <>

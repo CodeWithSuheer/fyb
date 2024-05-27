@@ -30,6 +30,7 @@ import { FaArrowUp } from "react-icons/fa6";
 // import Footer from "./components/footer/Footer";
 
 function App() {
+
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
@@ -54,6 +55,7 @@ function App() {
       behavior: "smooth",
     });
   };
+
 
   const dispatch = useAppDispatch();
   
