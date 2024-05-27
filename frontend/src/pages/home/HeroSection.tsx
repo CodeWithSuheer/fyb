@@ -1,6 +1,6 @@
 import Button from "../../components/Button";
 
-const HeroSection:React.FC = () => {
+const HeroSection: React.FC = () => {
   return (
     <>
       <section className="w-full ">
@@ -16,13 +16,14 @@ const HeroSection:React.FC = () => {
 
           {/* CONTENT SECTION */}
           <div className="text_side min-w-[50%] h-full py-20 sm:py-12 px-5 sm:px-8">
-            <div className="content lg:max-w-lg mx-auto">
+            <div className="content lg:max-w-xl mx-auto">
               <h1 className="playfair max-w-xs sm:max-w-full mb-6 text-4xl sm:text-5xl xl:text-6xl font-semibold">
-                A New <br /> Destination for <br /> Natural Cosmetics
+                {/* A New <br /> Destination for <br /> Natural Cosmetics */}
+                Keep It <br /> Natural  With  Our <br /> New  Cosmetic Range
               </h1>
               <p className="roboto mb-6 text-sm sm:text-lg font-normal">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore
+                Your one-stop destination for natural slaying looks and glowing
+                skin. Shop from our carefully handpicked beauty products.
               </p>
               <Button name="Shop Now" />
             </div>

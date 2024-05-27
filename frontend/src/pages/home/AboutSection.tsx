@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
-const AboutSection:React.FC = () => {
-  
+const AboutSection: React.FC = () => {
   const handleTop = () => {
     window.scroll({
       top: 0,
@@ -16,18 +15,18 @@ const AboutSection:React.FC = () => {
           <div className=" flex justify-center items-center flex-wrap">
             <div className="content lg:w-[50%] px-5 sm:px-16 md:px-10 py-14">
               <div className="data">
-                <h2 className="mb-6 playfair text-4xl sm:text-5xl font-bold">About Us</h2>
+                <h2 className="mb-6 playfair text-4xl sm:text-5xl font-bold">
+                  About Us
+                </h2>
                 <p className="mb-6 text-md">
-                  Lorem ipsum dolor sit amet consectetur. Vestibulum velit
-                  suspendisse aliquet magnis dapibus dictum enim praesent. Sit
-                  non eleifend nisl mi sit aliquam. Eget adipiscing hac nisl
-                  metus malesuada vitae quam erat dui. Mattis erat habitant
-                  maecenas nisl proin ac ipsum nulla. Nunc lorem tortor commodo
-                  rhoncus senectus diam quam a. Rhoncus nunc dolor ultricies
-                  turpis. Viverra feugiat penatibus ac quis. Semper dolor
-                  integer id ac sed integer tempus. Non nullam mattis tempor
-                  scelerisque quis amet velit. Quis aliquet gravida tempus
-                  turpis tellus at.
+                  ForYourBeauty is your go-to resort for all things beauty!
+                  Our story began with an urge to empower individuals to help
+                  glorify their uniqueness in their most natural selves. We
+                  believe that everyone deserves to feel radiant and confident
+                  in their skin, and that's why we came into being. We produce
+                  and promote quality products, inclusivity and all-skin
+                  compatibility, cruelty-free cosmetics, and
+                  environment-sustainable practices.
                 </p>
 
                 <Link

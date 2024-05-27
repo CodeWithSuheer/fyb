@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
-const HomePage = React.lazy(() => import( "./pages/home/HomePage")) ;
+const HomePage = React.lazy(() => import("./pages/home/HomePage"));
 import Header from "./components/header/Header";
 import ResetPass from "./auth/ResetPass";
 import ForgetPass from "./auth/ForgetPass";
@@ -22,15 +22,38 @@ import UserProfile from "./pages/user/UserProfile";
 import { useEffect } from "react";
 import { useAppDispatch } from "./app/hooks";
 import { userSessionAsync } from "./features/authSlice";
-import {
-  getLatestProductsAsync,
-} from "./features/productSlice";
+import { getLatestProductsAsync } from "./features/productSlice";
 import Footer from "./components/footer/Footer";
 import MyOrders from "./pages/myOrders/MyOrders";
 import Loader from "./components/Loader";
+import { FaArrowUp } from "react-icons/fa6";
 // import Footer from "./components/footer/Footer";
 
 function App() {
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 500) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -38,15 +61,20 @@ function App() {
     dispatch(getLatestProductsAsync());
   });
 
-
-
   return (
     <>
       <BrowserRouter>
         <Header />
         <Routes>
           <Route path="*" element={<NotFound />} />
-          <Route path="/" element={<Suspense fallback={<Loader />}><HomePage /></Suspense>} />
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<Loader />}>
+                <HomePage />
+              </Suspense>
+            }
+          />
 
           {/* ---------- MAIN ROUTES ---------- */}
           <Route path="/products" element={<Products />} />
@@ -69,6 +97,16 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
         </Routes>
+
+        {showButton && (
+          <button
+            onClick={handleTop}
+            className="moveTop rounded-full px-3 py-3 bg-[#EB72AF]"
+          >
+            <FaArrowUp size={21} className="text-white" />
+          </button>
+        )}
+
         <Footer />
       </BrowserRouter>
       <Toaster />
