@@ -1,5 +1,6 @@
 import { CouponModel } from "../models/CouponModel.js";
 import { OrdersModel } from "../models/OrdersModel.js";
+import { ProductsModel } from "../models/Products.Model.js";
 import { setMongoose } from "../utils/Mongoose.js";
 
 export const createOrder = async (req, res, next) => {
@@ -28,7 +29,15 @@ export const createOrder = async (req, res, next) => {
       coupon.users.push({ userId: userID });
       await coupon.save();
     };
-    await OrdersModel.create({
+    const ids = items.map((data)=>data._id);
+    if(ids.length > 0){
+      await ProductsModel.updateMany(
+        { _id: { $in: ids } },
+        { $inc: { stock: -1 } }
+        );
+   
+  };
+   await OrdersModel.create({
       items,
       userID,
       name,
@@ -38,6 +47,7 @@ export const createOrder = async (req, res, next) => {
       couponUsed,
       orderProgress,
     });
+   
     return res.status(201).json({ message: "Order PLaced Succcessfully" });
   } catch (error) {
     return res.status(500).json({ error: error.message });

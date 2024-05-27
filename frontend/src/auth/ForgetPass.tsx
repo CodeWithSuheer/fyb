@@ -1,24 +1,27 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { forgetuserAsync } from "../features/authSlice";
-import { useDispatch } from "react-redux";
 import { Spinner } from "keep-react";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Helmet } from "react-helmet";
 
+export interface ForgetPassData {
+  email: string;
+}
+
 const ForgetPass = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ForgetPassData>({
     email: "",
   });
 
   const { forgetLoading } = useAppSelector((state) => state.auth);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:FormEvent) => {
     e.preventDefault();
-    dispatch(forgetuserAsync(formData)).then((res) => {
+    dispatch(forgetuserAsync(formData)).then((res:any) => {
       if (res.error) {
         ("");
       } else {

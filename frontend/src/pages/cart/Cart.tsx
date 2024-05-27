@@ -54,7 +54,7 @@ const Cart: React.FC = () => {
               <div className=" py-6">
                 <div className="rounded-xl">
                   {/* First Product Row */}
-                  {cart.map((product) => (
+                  {cart.map((product:any) => (
                     <div
                       key={product.id}
                       className="grid md:grid-cols-4 items-center gap-8 px-4 py-6 mb-4 bg-white border-b border-gray-400 rounded-xl"
@@ -118,7 +118,7 @@ const Cart: React.FC = () => {
                       <div className="flex items-center">
                         <h4 className="text-lg font-bold text-[#333]">
                           {/* Rs.{product.price * product.quantity} */}
-                          {product?.price !== product?.sale_price ? (
+                          {product?.sale_price > 0 ? (
                             <>
                               <p className="">
                                 Rs. {product.sale_price * product.quantity}

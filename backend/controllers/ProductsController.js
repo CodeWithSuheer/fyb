@@ -5,8 +5,33 @@ import { setMongoose } from "../utils/Mongoose.js";
 export const getLatestPRoducts = async (req, res, next) => {
   try {
     const products = await ProductsModel.find({ latest: true });
+    const productIds  = products.map((item)=>item._id);
+    const ratings = await reviewsAndRatings.find({productID:productIds});
+
+      // Calculate average ratings for each product
+      const ratingsMap = ratings.reduce((acc, rating) => {
+        if (!acc[rating.productID]) {
+          acc[rating.productID] = { sum: 0, count: 0 };
+        }
+        acc[rating.productID].sum += rating.rating;
+        acc[rating.productID].count += 1;
+        return acc;
+      }, {});
+  
+      // Add averageRating to each product
+      const productDataWithRatings = products.map((product) => {
+        const ratingData = ratingsMap[product._id] || { sum: 0, count: 0 };
+        const averageRating = ratingData.count > 0 ? (ratingData.sum / ratingData.count).toFixed(1) : 0;
+        const {_id,...productDataWithoutId} = product.toObject();
+        return {
+          ...productDataWithoutId,
+          id:product._id,
+          averageRating: parseFloat(averageRating),
+        };
+      });
+  
     setMongoose();
-    return res.status(200).json(products);
+    return res.status(200).json(productDataWithRatings);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -15,7 +40,7 @@ export const getLatestPRoducts = async (req, res, next) => {
 export const getProducts = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = 5;
+    const limit = 15;
     let search = req.query.search || "";
     let category = req.query.category || "All";
 
@@ -29,14 +54,39 @@ export const getProducts = async (req, res, next) => {
 
     const productData = await ProductsModel.find(query)
       .skip((page - 1) * limit)
-      .limit(limit);
+      .limit(limit)
+      .sort({createdAt:-1})
 
     const total = await ProductsModel.countDocuments(query);
+    const productIds  = productData.map((item)=>item._id);
+    const ratings = await reviewsAndRatings.find({productID:productIds});
 
+      // Calculate average ratings for each product
+      const ratingsMap = ratings.reduce((acc, rating) => {
+        if (!acc[rating.productID]) {
+          acc[rating.productID] = { sum: 0, count: 0 };
+        }
+        acc[rating.productID].sum += rating.rating;
+        acc[rating.productID].count += 1;
+        return acc;
+      }, {});
+  
+      // Add averageRating to each product
+      const productDataWithRatings = productData.map((product) => {
+        const ratingData = ratingsMap[product._id] || { sum: 0, count: 0 };
+        const averageRating = ratingData.count > 0 ? (ratingData.sum / ratingData.count).toFixed(1) : 0;
+        const {_id,...productDataWithoutId} = product.toObject();
+        return {
+          ...productDataWithoutId,
+          id:product._id,
+          averageRating: parseFloat(averageRating),
+        };
+      });
+  
     const response = {
       totalPages: Math.ceil(total / limit),
       page,
-      productData,
+      productData:productDataWithRatings,
     };
     setMongoose();
     res.status(200).json(response);
@@ -63,7 +113,7 @@ export const getProductById = async (req, res, next) => {
     };  
     const productWithRating = {
       ...product._doc,
-      averageRating: Math.round(averageRating * 100) / 100,
+      averageRating: parseFloat(averageRating.toFixed(1))
     };
 
 

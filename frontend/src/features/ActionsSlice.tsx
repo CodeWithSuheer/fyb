@@ -1,11 +1,31 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface CartItem {
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  image:Image
+  averageRating:number
+  sale_price:number | undefined
+  price:number
+  stock:number
+}
+
+interface Image {
+  downloadURL: string;
+  name: string;
+  type: string;
+}
+
+
+interface CartItem extends Product {
   id: string;
   quantity: number;
   price: number;
   sale_price: number;
 }
+
+
 
 interface ActionsState {
   cart: CartItem[];
@@ -35,7 +55,7 @@ const ActionsSlice = createSlice({
       localStorage.removeItem("cart");
     },
 
-    addToCart: (state, action: PayloadAction<CartItem | CartItem[]>) => {
+    addToCart: (state, action: PayloadAction<Product | CartItem>) => {
       const itemsToAdd = Array.isArray(action.payload)
         ? action.payload
         : [action.payload];
@@ -43,7 +63,7 @@ const ActionsSlice = createSlice({
       itemsToAdd.forEach((item) => {
         const { id } = item;
         const existingItemIndex = state.cart.findIndex(
-          (existingItem) => existingItem.id === id
+          (existingItem:any) => existingItem.id === id
         );
 
         if (existingItemIndex !== -1) {
@@ -60,7 +80,7 @@ const ActionsSlice = createSlice({
 
     getCartTotal: (state) => {
       const { totalPrice, totalQuantity } = state.cart.reduce(
-        (cartTotal, cartItem) => {
+        (cartTotal:{totalPrice:number,totalQuantity:number}, cartItem:CartItem) => {
           const { sale_price, price, quantity } = cartItem;
           const itemTotal = sale_price
             ? sale_price * quantity
@@ -82,20 +102,20 @@ const ActionsSlice = createSlice({
 
     removeFromCart: (state, action: PayloadAction<string>) => {
       const itemId = action.payload;
-      const removedItem = state.cart.find((item) => item.id === itemId);
+      const removedItem = state.cart.find((item:Product) => item.id === itemId);
 
       if (removedItem) {
         state.totalQuantity -= removedItem.quantity;
         state.totalPrice -= removedItem.price * removedItem.quantity;
 
-        state.cart = state.cart.filter((item) => item.id !== itemId);
+        state.cart = state.cart.filter((item:Product) => item.id !== itemId);
       }
       localStorage.setItem("cart", JSON.stringify(state));
     },
 
     increaseQuantity: (state, action: PayloadAction<string>) => {
       const itemId = action.payload;
-      const itemToIncrease = state.cart.find((item) => item.id === itemId);
+      const itemToIncrease = state.cart.find((item:Product) => item.id === itemId);
 
       if (itemToIncrease) {
         itemToIncrease.quantity += 1;
@@ -107,7 +127,7 @@ const ActionsSlice = createSlice({
 
     decreaseQuantity: (state, action: PayloadAction<string>) => {
       const itemId = action.payload;
-      const itemToDecrease = state.cart.find((item) => item.id === itemId);
+      const itemToDecrease = state.cart.find((item:Product) => item.id === itemId);
 
       if (itemToDecrease && itemToDecrease.quantity > 1) {
         itemToDecrease.quantity -= 1;

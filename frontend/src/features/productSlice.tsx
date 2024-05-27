@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import toast from "react-hot-toast";
 
 // API URLs
 const getAllProductUrl = `http://localhost:8000/api/products/getProducts`;
@@ -14,7 +13,7 @@ const getLatestProductUrl =
 // GET ALL PRODUCT ASYNC THUNK
 export const getAllProductsAsync = createAsyncThunk(
   "Shop/getProduts",
-  async (data) => {
+  async (data: { category: string | undefined; page: number; search?: string }) => {
 
     const searchQuery = data?.search !== undefined && data?.search !== null ? `&search=${data?.search}` : "";
     try {
@@ -42,7 +41,7 @@ export const getLatestProductsAsync = createAsyncThunk(
 // GET ALL PRODUCT ASYNC THUNK
 export const getProductByIdAsync = createAsyncThunk(
   "products/singleProduct ",
-  async (id) => {
+  async (id:string | undefined) => {
     try {
       const response = await axios.post(getProductById,{id});
       return response.data;
@@ -52,13 +51,30 @@ export const getProductByIdAsync = createAsyncThunk(
   }
 );
 
+interface Image {
+  downloadURL: string;
+  name: string;
+  type: string;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  image:Image
+  averageRating:number
+  sale_price:number | undefined
+  price:number
+  stock:number
+}
+
 // INITIAL STATE
 interface ProductState {
   loading: boolean;
   Productloading: boolean;
-  products: [];
-  latestProducts: [];
-  singleProduct:[]
+  products: Product[] | any;
+  latestProducts: Product[];
+  singleProduct:Product | null
 }
 
 const initialState: ProductState = {
@@ -66,7 +82,7 @@ const initialState: ProductState = {
   Productloading: false,
   products: [],
   latestProducts: [],
-  singleProduct:[]
+  singleProduct:null
 };
 
 const productSlice = createSlice({

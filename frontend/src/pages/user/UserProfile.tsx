@@ -1,16 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Spinner } from "keep-react";
 import { updateuserAsync, userSessionAsync } from "../../features/authSlice";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 
 const UserProfile = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const user = useAppSelector((state) => state.auth.user);
+  const user = useAppSelector((state:any) => state.auth.user);
   const userID = user?.user?.id;
 
   useEffect(() => {
@@ -21,7 +20,7 @@ const UserProfile = () => {
 
   const [loginLoading, setLoginLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     name: user?.user?.name || "",
     email: user?.user?.email || "",
     phone: user?.user?.phone || "",
@@ -39,21 +38,21 @@ const UserProfile = () => {
     }
   }, [user]);
 
-  const handleChange = (e) => {
+  const handleChange = (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setFormData((prevData:any) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
   // HANDLE SUBMIT
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
     const id = userID;
 
-    const updatedFields = {};
+    const updatedFields: Partial<any> = {};
 
     Object.keys(formData).forEach((key) => {
       if (formData[key] !== user?.user[key]) {
@@ -67,7 +66,7 @@ const UserProfile = () => {
       return;
     }
 
-    dispatch(updateuserAsync({ id, ...updatedFields })).then((res) => {
+    dispatch(updateuserAsync({ id, ...updatedFields })).then(() => {
       dispatch(userSessionAsync());
       setLoginLoading(false);
     });

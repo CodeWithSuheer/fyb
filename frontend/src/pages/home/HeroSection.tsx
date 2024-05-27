@@ -1,6 +1,6 @@
 import Button from "../../components/Button";
 
-const HeroSection = () => {
+const HeroSection:React.FC = () => {
   return (
     <>
       <section className="w-full ">

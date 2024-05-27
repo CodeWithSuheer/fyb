@@ -27,7 +27,7 @@ const data = [
   },
 ];
 
-const FeaturesLine = () => {
+const FeaturesLine:React.FC= () => {
   return (
     <section className="py-0 px-0 bg-[#EC72AF]">
       <Marquee direction="left" className="testimonial_marquee">

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const Footer = () => {
+const Footer:React.FC= () => {
   const navigate = useNavigate();
 
   const handleProducts = (categoryName: string) => {

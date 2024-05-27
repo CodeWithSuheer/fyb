@@ -6,10 +6,26 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 
-const LatestProducts = ({ latestProducts }) => {
+interface Image {
+  downloadURL: string;
+  name: string;
+  type: string;
+}
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  image:Image
+  averageRating:number
+  sale_price:number | undefined
+  price:number
+  stock:number
+}
+
+const LatestProducts = ({ latestProducts }:{latestProducts:Product[]}) => {
   const navigate = useNavigate();
   const [slidesToShow, setSlidesToShow] = useState(4);
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<Slider>(null);
 
   const loading = useAppSelector((state) => state.products.Productloading);
 
@@ -60,10 +76,19 @@ const LatestProducts = ({ latestProducts }) => {
   }, []);
 
   // HANDLE ITEM CLICK
-  const handleItemClick = (productId) => {
+  const handleItemClick = (productId:string) => {
     navigate(`/selectedItem/${productId}`);
     window.scroll(0, 0);
   };
+
+    // STAR RATING
+    const StarRating = ({ rating }:{rating:number}) => {
+      const stars = [];
+      for (let i = 0; i < rating; i++) {
+        stars.push(<FaStar key={i} className="text-[#FFC209]" />);
+      }
+      return <div className="flex">{stars}</div>;
+    };
 
   return (
     <>
@@ -149,20 +174,33 @@ const LatestProducts = ({ latestProducts }) => {
 
                             {/* STARS */}
                             <div className="mb-2 flex items-center justify-center gap-1">
-                              <FaStar className="text-[#FFC107]" />
-                              <FaStar className="text-[#FFC107]" />
-                              <FaStar className="text-[#FFC107]" />
-                              <FaStar className="text-[#FFC107]" />
-                              <FaStar className="text-[#FFC107]" />
+                            {data?.averageRating === 0 ? (
+                                    <FaStar className="text-white" />
+                                  ) : (
+                                    <StarRating rating={data?.averageRating} />
+                                  )}
                             </div>
 
                             <p className="mb-3 text-md text-gray-500">
                               ({data.category})
                             </p>
 
-                            <p className="mb-3 text-xl font-semibold text-black">
-                              ${data.price}
-                            </p>
+                            {data.sale_price  && data.sale_price > 0 ? (
+                                  <div className="flex justify-center items-center gap-2">
+                                    <p className="mb-3 text-md font-semibold text-black">
+                                      Rs. {data.sale_price}
+                                    </p>
+                                    <p className="mb-3 text-md font-semibold text-gray-500 line-through">
+                                      Rs. {data.price}
+                                    </p>
+                                  </div>
+                                ) : (
+                                  <>
+                                  <p className="mb-3 text-md font-semibold text-black">
+                                    Rs. {data.price}
+                                  </p>
+                                </>
+                                )}
 
                             <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
                               Shop Now
@@ -176,7 +214,7 @@ const LatestProducts = ({ latestProducts }) => {
               ) : (
                 <>
                   <Slider ref={sliderRef} {...settings}>
-                    {[0, 1, 2, 3, 4, 5].map((data, index) => (
+                    {[0, 1, 2, 3, 4, 5].map((_data, index:number) => (
                       <li key={index} className="px-5">
                         <div className="group mb-5 relative rounded-lg w-full bg-white border border-gray-400 cursor-pointer animate-pulse">
                           <div className="bg-gray-300 h-56 w-full"></div>

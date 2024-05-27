@@ -3,7 +3,7 @@ import AboutSection from "../home/AboutSection";
 import Review from "../home/Review";
 import { Helmet } from "react-helmet";
 
-const About = () => {
+const About:React.FC = () => {
   return (
     <>
       <Helmet>

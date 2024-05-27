@@ -16,7 +16,7 @@ const productsSchema = new mongoose.Schema(
     },
     sale_price: {
       type: Number,
-      default:null
+      default:0
     },
     stock: {
       type: Number,

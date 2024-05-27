@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { Suspense } from "react";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
-import HomePage from "./pages/home/HomePage";
+const HomePage = React.lazy(() => import( "./pages/home/HomePage")) ;
 import Header from "./components/header/Header";
 import ResetPass from "./auth/ResetPass";
 import ForgetPass from "./auth/ForgetPass";
@@ -26,6 +27,7 @@ import {
 } from "./features/productSlice";
 import Footer from "./components/footer/Footer";
 import MyOrders from "./pages/myOrders/MyOrders";
+import Loader from "./components/Loader";
 // import Footer from "./components/footer/Footer";
 
 function App() {
@@ -44,7 +46,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="*" element={<NotFound />} />
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Suspense fallback={<Loader />}><HomePage /></Suspense>} />
 
           {/* ---------- MAIN ROUTES ---------- */}
           <Route path="/products" element={<Products />} />

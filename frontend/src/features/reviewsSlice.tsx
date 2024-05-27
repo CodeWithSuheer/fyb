@@ -1,7 +1,8 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import { ReviewFormData } from "../pages/selectedItem/SelectedItem";
+import { CreateReviewPayload, UpdateReviewPayload } from "../pages/selectedItem/SelectedItem";
+
 
 // API URLs
 const createReviewUrl = "http://localhost:8000/api/reviews/createReview";
@@ -10,54 +11,45 @@ const deleteReviewUrl = "http://localhost:8000/api/reviews/deleteReview";
 const getAllReviewsByProductUrl =
   "http://localhost:8000/api/reviews/getAllReviewsByProduct";
 
-// Interfaces
-// interface User {
-//   id: string;
-// }
 
 // CREATE REVIEWS ASYNC THUNK
 export const createreviewsAsync = createAsyncThunk(
   "reviews/create",
-  async (formData: ReviewFormData) => {
+  async (formData: CreateReviewPayload) => {
     try {
       const response = await axios.post(createReviewUrl, formData);
-      // toast.success(response.data.message);
-      console.log(response.data);
+      toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
-      toast.error(error.response.data.error);
-      console.error("Error submitting review:", error);
-    }
+    toast.error(error.response.data.message)
+      }
   }
 );
 
 // GET ALL REVIEWS BY PRODUCT ASYNC THUNK
 export const getallreviewsAsync = createAsyncThunk(
   "reviews/getall",
-  async (id) => {
+  async (id:any) => {
     try {
       const response = await axios.post(getAllReviewsByProductUrl, { id });
-      // toast.success(response.data.message);
-      console.log(response.data);
       return response.data;
     } catch (error: any) {
-      toast.error(error.response.data.error);
-      console.error("Error submitting review:", error);
+      throw new Error(error)
+
     }
   }
 );
 
 export const updatereviewsAsync = createAsyncThunk(
   "reviews/update",
-  async (formData: ReviewFormData) => {
+  async (formData: UpdateReviewPayload) => {
     try {
       const response = await axios.post(updateReviewUrl, formData);
-      // toast.success(response.data.message);
-      console.log(response.data);
+      toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.error);
-      console.error("Error submitting review:", error);
+      throw new Error(error);
     }
   }
 );
@@ -65,7 +57,7 @@ export const updatereviewsAsync = createAsyncThunk(
 // DELETE REVIEWS PRODUCT ASYNC THUNK
 export const deletereviewsAsync = createAsyncThunk(
   "reviews/delete",
-  async (id) => {
+  async (id:string) => {
     try {
       const response = await axios.post(deleteReviewUrl, { id });
       // toast.success(response.data.message);
@@ -78,10 +70,19 @@ export const deletereviewsAsync = createAsyncThunk(
   }
 );
 
+interface Review {
+  id: string;
+  name: string;
+  rating: number;
+  review: string;
+  userID: string;
+  createdAt: string;
+}
+
 // INITIAL STATE
 interface ReviewsState {
   loading: boolean;
-  allReviews: [];
+  allReviews: Review[];
 }
 
 const initialState: ReviewsState = {

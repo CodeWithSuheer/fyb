@@ -1,29 +1,35 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { verifyOtpAsync } from "../features/authSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
+import { useAppDispatch } from "../app/hooks";
+
+ export interface FormData {                 
+  otp: string;
+  userId: string | undefined ;
+}
+
 
 const OtpChecker = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const params = useParams();
+  const params = useParams<{id:string}>();
 
   const {id} = params;
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     otp: "",
     userId: id,
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:FormEvent) => {
     e.preventDefault();
     console.log(formData);
-    dispatch(verifyOtpAsync(formData)).then((res) => {
-      console.log(res);
+    dispatch(verifyOtpAsync(formData)).then((res:any) => {
       if(res.payload.OtpVerified){
         navigate(`/reset/${id}/${res.payload.OtpVerified.toString()}`);
         setFormData({
         otp: "",
+        userId:id
       });
       }
       

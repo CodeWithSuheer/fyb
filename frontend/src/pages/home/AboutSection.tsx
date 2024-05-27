@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const AboutSection = () => {
+const AboutSection:React.FC = () => {
   
   const handleTop = () => {
     window.scroll({

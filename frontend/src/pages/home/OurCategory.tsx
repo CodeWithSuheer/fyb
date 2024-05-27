@@ -1,7 +1,7 @@
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
-const OurCategory = () => {
+const OurCategory:React.FC = () => {
   const navigate = useNavigate();
 
   const handleProducts = (categoryName: string) => {

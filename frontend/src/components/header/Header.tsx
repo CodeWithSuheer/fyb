@@ -7,7 +7,6 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import {
   ArrowLeft,
-  MagnifyingGlass,
   ShoppingCart,
   UserCircle,
 } from "phosphor-react";
@@ -20,14 +19,14 @@ const Header = () => {
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleLinkClick = () => {
     setIsDropDownOpen(false);
   };
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  const handleClickOutside = (event:MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsDropDownOpen(false);
     }
   };
