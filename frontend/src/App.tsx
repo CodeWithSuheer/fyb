@@ -31,7 +31,6 @@ import Loader from "./components/Loader";
 // import Footer from "./components/footer/Footer";
 
 function App() {
-
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(userSessionAsync());
