@@ -12,7 +12,7 @@ const updateOrderUrl = "http://localhost:8000/api/orders/updateOrder";
 // CREATE REVIEWS ASYNC THUNK
 export const createOrderAsync = createAsyncThunk(
   "reviews/create",
-  async (formData:RequestData) => {
+  async (formData: RequestData) => {
     try {
       const response = await axios.post(createOrderUrl, formData);
       // toast.success(response.data.message);
@@ -28,7 +28,7 @@ export const createOrderAsync = createAsyncThunk(
 // GET ALL REVIEWS BY PRODUCT ASYNC THUNK
 export const getallOrderAsync = createAsyncThunk(
   "reviews/getall",
-  async (id:string | undefined) => {
+  async (id: string | undefined) => {
     try {
       const response = await axios.post(getAllOrderUrl, { id });
       // toast.success(response.data.message);
@@ -62,26 +62,26 @@ interface Product {
   id: string;
   name: string;
   category: string;
-  image:Image
-  averageRating:number
-  sale_price:number | undefined
-  price:number
-  stock:number
+  image: Image;
+  averageRating: number;
+  sale_price: number | undefined;
+  price: number;
+  stock: number;
 }
 
 interface Orders {
-  OrderID:string
-  createdAt:Date
-  orderProgress:string
-  totalAmount:number
-  id:string
-  items:Product
+  OrderID: string;
+  createdAt: Date;
+  orderProgress: string;
+  totalAmount: number;
+  id: string;
+  items: Product;
 }
 
 // INITIAL STATE
 interface ReviewsState {
   loading: boolean;
-  allOrders: Orders[] ;
+  allOrders: Orders[];
 }
 
 const initialState: ReviewsState = {

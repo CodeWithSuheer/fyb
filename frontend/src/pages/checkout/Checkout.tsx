@@ -9,33 +9,32 @@ import { Check } from "phosphor-react";
 import { clearCart } from "../../features/ActionsSlice";
 import { verifyCouponAsync } from "../../features/couponSlice";
 
- export interface couponSuccess {
+export interface couponSuccess {
   couponDiscountSuccess: boolean;
-  code:string;
-  discount:number;
-  discountAmount:number;
+  code: string;
+  discount: number;
+  discountAmount: number;
 }
 
 interface formData {
-  phone:string;
-  address:string
+  phone: string;
+  address: string;
 }
 
 export interface RequestData {
-  name:string | undefined;
-  phone:string;
-  address:string;
-  items:any;
-  userID:string | undefined;
-  totalAmount:string;
-  couponUsed?:{
-    code: string ;
+  name: string | undefined;
+  phone: string;
+  address: string;
+  items: any;
+  userID: string | undefined;
+  totalAmount: string;
+  couponUsed?: {
+    code: string;
     discount: number;
-}
+  };
 }
 
-
-const Checkout:React.FC = () => {
+const Checkout: React.FC = () => {
   const navigate = useNavigate();
   const formRef = useRef(null);
   const dispatch = useAppDispatch();
@@ -60,10 +59,12 @@ const Checkout:React.FC = () => {
 
   const [formData, setFormData] = useState<formData>({
     phone: user?.user?.phone || "",
-    address: user?.user?.address || ""
+    address: user?.user?.address || "",
   });
 
-  const handleInputChange = (e:ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleInputChange = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -92,8 +93,8 @@ const Checkout:React.FC = () => {
     code: "",
     discount: 0,
     discountAmount: 0,
-    couponDiscountSuccess:false
-  }); 
+    couponDiscountSuccess: false,
+  });
 
   const couponData = {
     code: coupon,
@@ -101,7 +102,7 @@ const Checkout:React.FC = () => {
   };
 
   // HANDLE SUBMIT
-  const handleSubmit = async (e:FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const id = userID;
     dispatch(updateuserAsync({ id, ...formData })).then((res) => {
@@ -113,16 +114,16 @@ const Checkout:React.FC = () => {
         const totalAmount = couponSuccessData
           ? totalPrice + shippingCharges - couponSuccessData?.discountAmount
           : totalPrice + shippingCharges;
-          
-          const requestData = {
-            name: user?.user?.name,
-            phone,
-            address,
-            items,
-            userID,
-            totalAmount,
-            ...(couponSuccessData.code !== "" && { couponUsed: couponData })
-          };
+
+        const requestData = {
+          name: user?.user?.name,
+          phone,
+          address,
+          items,
+          userID,
+          totalAmount,
+          ...(couponSuccessData.code !== "" && { couponUsed: couponData }),
+        };
 
         dispatch(createOrderAsync(requestData)).then((res) => {
           if (res.payload.message === "Order PLaced Succcessfully") {
@@ -240,7 +241,7 @@ const Checkout:React.FC = () => {
               <div className="bg-gray-100 px-5 py-10 md:px-8">
                 <div className="flow-root">
                   <ul className="-my-7 divide-y divide-gray-200">
-                    {cart.map((product:any) => (
+                    {cart.map((product: any) => (
                       <li
                         key={product.id}
                         className="flex items-stretch justify-between space-x-5 py-7"
