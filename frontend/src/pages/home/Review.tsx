@@ -60,7 +60,7 @@ const Review = () => {
         <Marquee direction="left" className="testimonial_marquee mt-14">
           {data.map((data, i) => (
             <article
-              className="group mx-10 py-8 px-6 bg-white max-w-sm border border-gray-300 rounded-md"
+              className="group mx-10 py-8 px-6 bg-white max-w-sm border border-gray-300 rounded-2xl"
               key={i}
             >
               <div className="card">

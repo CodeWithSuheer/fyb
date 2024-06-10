@@ -5,11 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getCartTotal } from "../../features/ActionsSlice";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
-import {
-  ArrowLeft,
-  ShoppingCart,
-  UserCircle,
-} from "phosphor-react";
+import { ArrowLeft, ShoppingCart, UserCircle } from "phosphor-react";
 import { logoutUserAsync } from "../../features/authSlice";
 
 const Header = () => {
@@ -25,8 +21,11 @@ const Header = () => {
     setIsDropDownOpen(false);
   };
 
-  const handleClickOutside = (event:MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setIsDropDownOpen(false);
     }
   };
@@ -95,10 +94,10 @@ const Header = () => {
       <div className="w-full bg-[#FDEDF5] px-5">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto flex justify-between items-center flex-wrap flex-col sm:flex-row">
           <div className="banner py-2 text-center hidden sm:block text-[13px] xl:text-[14px] tracking-wide font-normal">
-            Here we need to add text
+            ✨ New Arrivals Are Here! Shop Now ✨
           </div>
           <div className="banner py-2 text-center text-[13px] xl:text-[14px] tracking-wide font-normal">
-            Here we need to add text
+            ✨ New Arrivals Are Here! Shop Now ✨
           </div>
         </div>
       </div>
@@ -141,7 +140,7 @@ const Header = () => {
                 <li key={index} className="max-lg:border-b max-lg:py-3 mr-2 ">
                   <Link
                     to={`${data.path}`}
-                    className="crimson hover:underline hover:underline-offset-4 text-gray-800 block font-semibold text-[18px]"
+                    className="crimson text-gray-800 block font-semibold text-[18px]"
                     onClick={closeMenu}
                   >
                     {data.title}

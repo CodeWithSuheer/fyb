@@ -105,9 +105,9 @@ const MyOrders = () => {
           <div className="mt-3 text-sm">
             Check the status of recent and old orders
           </div>
-          {allOrder.map((data: any, index: number) => (
+          {allOrder.map((data: any) => (
             <div
-              key={index}
+              key={data?.OrderID}
               className="mt-8 flex flex-col overflow-hidden rounded-xl border border-[#EB72AF] md:flex-row"
             >
               {/* ORDER DETAILS */}
@@ -175,9 +175,9 @@ const MyOrders = () => {
                 <div className="py-6 px-3 sm:px-6">
                   <ul className="gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
                     {data &&
-                      data?.items.map((product: Product) => (
+                      data?.items?.map((product: Product) => (
                         <li
-                          key={product.id}
+                          key={product?.id}
                           className="flex px-3 flex-col justify-between space-x-5 py-7 md:flex-row border rounded-xl bg-[#FFF3F9]"
                         >
                           <div className="flex flex-1 items-stretch">
@@ -192,27 +192,28 @@ const MyOrders = () => {
                             <div className="ml-5 flex flex-col justify-between">
                               <div className="flex-1">
                                 <p className="text-sm font-bold text-gray-900">
-                                  {product.name}
+                                  {product?.name}
                                 </p>
                                 <p className="mt-1.5 text-sm font-medium text-gray-500">
-                                  {product.category}
+                                  {product?.category}
                                 </p>
                               </div>
 
                               <p className="mt-4 text-sm font-medium text-gray-500">
-                                x {product.quantity}
+                                x {product?.quantity}
                               </p>
                             </div>
                           </div>
 
                           <div className="ml-auto flex flex-col items-end justify-between">
                             <p className="text-right text-sm font-bold text-gray-900">
-                              {product.price !== product.sale_price ? (
+                              {product?.sale_price !== 0 ||
+                              product?.sale_price > 0 ? (
                                 <>
-                                  <p className="">Rs. {product.sale_price}</p>
+                                  <p className="">Rs. {product?.sale_price}</p>
                                 </>
                               ) : (
-                                <p className="">Rs. {product.price}</p>
+                                <p className="">Rs. {product?.price}</p>
                               )}
                             </p>
                           </div>

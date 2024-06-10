@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const Footer:React.FC= () => {
+const Footer: React.FC = () => {
   const navigate = useNavigate();
 
   const handleProducts = (categoryName: string) => {
@@ -44,7 +44,7 @@ const Footer:React.FC= () => {
                     <Link
                       to="/"
                       onClick={handleMoveTop}
-                      className="text-white transition hover:text-white"
+                      className="text-white transition hover:text-white hover:underline hover:underline-offset-8"
                     >
                       Home
                     </Link>
@@ -54,7 +54,7 @@ const Footer:React.FC= () => {
                     <Link
                       to="/products"
                       onClick={handleMoveTop}
-                      className="text-white transition hover:text-white"
+                      className="text-white transition hover:text-white hover:underline hover:underline-offset-8"
                     >
                       Shop
                     </Link>
@@ -64,7 +64,7 @@ const Footer:React.FC= () => {
                     <Link
                       to="/about"
                       onClick={handleMoveTop}
-                      className="text-white transition hover:text-white"
+                      className="text-white transition hover:text-white hover:underline hover:underline-offset-8"
                     >
                       About Us
                     </Link>
@@ -74,7 +74,7 @@ const Footer:React.FC= () => {
                     <Link
                       to="/contact"
                       onClick={handleMoveTop}
-                      className="text-white transition hover:text-white"
+                      className="text-white transition hover:text-white hover:underline hover:underline-offset-8"
                     >
                       Contact Us
                     </Link>
@@ -90,7 +90,7 @@ const Footer:React.FC= () => {
                   <li>
                     <button
                       onClick={() => handleProducts("Skincare")}
-                      className="text-white transition hover:text-white"
+                      className="text-white transition hover:text-white hover:underline hover:underline-offset-8"
                     >
                       Skin Care
                     </button>
@@ -99,7 +99,7 @@ const Footer:React.FC= () => {
                   <li>
                     <button
                       onClick={() => handleProducts("Body Care")}
-                      className="text-white transition hover:text-white"
+                      className="text-white transition hover:text-white hover:underline hover:underline-offset-8"
                     >
                       Hair Care
                     </button>
@@ -108,7 +108,7 @@ const Footer:React.FC= () => {
                   <li>
                     <button
                       onClick={() => handleProducts("Haircare")}
-                      className="text-white transition hover:text-white"
+                      className="text-white transition hover:text-white hover:underline hover:underline-offset-8"
                     >
                       Body Care
                     </button>
@@ -117,7 +117,7 @@ const Footer:React.FC= () => {
                   <li>
                     <button
                       onClick={() => handleProducts("Cosmetics")}
-                      className="text-white transition hover:text-white"
+                      className="text-white transition hover:text-white hover:underline hover:underline-offset-8"
                     >
                       Cosmetic
                     </button>
@@ -130,6 +130,30 @@ const Footer:React.FC= () => {
                 <p className="text-xl font-medium text-white">Contact Us</p>
 
                 <ul className="mt-5 space-y-4 text-sm">
+                  <li>
+                    <a
+                      className="flex items-center justify-center gap-1.5 "
+                      href="tel:+92 334 4635801"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="size-5 shrink-0 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                        />
+                      </svg>
+
+                      <span className="sm:flex-1 text-white">0334 4635801</span>
+                    </a>
+                  </li>
+
                   <li>
                     <a
                       className="flex items-center justify-center gap-1.5 "
@@ -150,31 +174,13 @@ const Footer:React.FC= () => {
                         />
                       </svg>
 
-                      <span className="sm:flex-1 text-white">john@doe.com</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      className="flex items-center justify-center gap-1.5 "
-                      href="#"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-5 shrink-0 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
+                      <a
+                        href="mailto:support@foryourbeauty.shop"
+                        target="_blank"
+                        className="sm:flex-1 text-white"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                        />
-                      </svg>
-
-                      <span className="sm:flex-1 text-white">0334 4635801</span>
+                        support@foryourbeauty.shop
+                      </a>
                     </a>
                   </li>
 
@@ -200,7 +206,7 @@ const Footer:React.FC= () => {
                     </svg>
 
                     <address className="-mt-0.5 sm:flex-1 not-italic text-white">
-                      213 Lane, London, United Kingdom
+                      2nd Floor, 88 G Phase 1 DHA
                     </address>
                   </li>
                 </ul>

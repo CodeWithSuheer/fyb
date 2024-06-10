@@ -8,115 +8,121 @@ const Terms = () => {
         <title>Term & Conditions - For Your Beauty</title>
       </Helmet>
 
-      <section className="bg-[#ebecf5]">
+      <section className="bg-[#FDEDF5]">
         <div className="max-w-5xl px-4 sm:px-6 py-28 mx-auto min-h-screen">
           <h2 className="poppin text-3xl lg:text-4xl font-bold tracking-wide">
-            Term & Condition - For Your Beauty
+            Terms & Conditions - For Your Beauty
           </h2>
-
           <p className="mb-4 mt-3">
-            Octa Tech is committed to protecting the privacy of our clients and
-            users. We understand that your personal information is important to
-            you, and we take our responsibility to protect it seriously.
+            Welcome to For Your Beauty. These terms and conditions outline the
+            rules and regulations for the use of our website and services. By
+            accessing this website, you accept these terms and conditions in
+            full. If you disagree with any part of these terms and conditions,
+            do not use our website.
           </p>
-
-          {/* FIRST DETAILS */}
+          <h2 className="mt-6 text-2xl font-bold mb-2">Use of Our Website</h2>
+          <p className="mb-4">
+            By using our website, you agree to use it for lawful purposes only.
+            You must not use our website in any way that causes or may cause
+            damage to the website or impairs the availability or accessibility
+            of the website. You must not use our website in any way that is
+            unlawful, illegal, fraudulent, or harmful.
+          </p>
           <h2 className="mt-6 text-2xl font-bold mb-2">
-            What information do we collect?
+            Intellectual Property Rights
           </h2>
           <p className="mb-4">
-            We collect information from our clients and users in order to
-            provide our services. This information may include:
+            Unless otherwise stated, For Your Beauty owns the intellectual
+            property rights for all material on this website. All intellectual
+            property rights are reserved.
           </p>
-
+          <p className="mb-4">You must not:</p>
           <ul className="list-disc list-inside mb-4">
-            <li className="">
-              Contact information, such as your name, email address, and phone
-              number. We need this information to communicate with you about
-              your account and to provide you with support.
-            </li>
-            <li className="">
-              Billing information, such as your credit card or bank account
-              details. We need this information to process payments for our
-              services.
-            </li>
-            <li className="">
-              Technical information, such as your IP address, device type, and
-              operating system. We collect this information to help us improve
-              our services and to troubleshoot any problems you may encounter.
-            </li>
-            <li className="">
-              Usage data, such as the pages you visit on our website and the
-              services you use. We collect this information to help us
-              understand how our services are being used and to improve our user
-              experience.
+            <li>Republish material from this website</li>
+            <li>Sell, rent, or sub-license material from this website</li>
+            <li>Reproduce, duplicate, or copy material from this website</li>
+            <li>
+              Redistribute content from For Your Beauty (unless content is
+              specifically made for redistribution)
             </li>
           </ul>
-
-          {/* SECOND DETAILS */}
-          <h2 className="mt-6 text-2xl font-bold mb-2">
-            How do we use your information?
-          </h2>
-          <p className="mb-4">We use the information we collect to:</p>
-
-          <ul className="list-disc list-inside mb-4">
-            <li>Provide our services to you</li>
-            <li>Process payments</li>
-            <li>Send you updates and notifications</li>
-            <li>Improve our services</li>
-            <li>Protect our clients and users from fraud and abuse</li>
-          </ul>
-
-          {/* THIRD DETAILS */}
-          <h2 className="mt-6 text-2xl font-bold mb-2">
-            Do we share your information with third parties?
-          </h2>
+          <h2 className="mt-6 text-2xl font-bold mb-2">User Comments</h2>
           <p className="mb-4">
-            We do not share your information with third parties except in the
-            following cases:
+            Certain parts of this website offer the opportunity for users to
+            post and exchange opinions, information, material, and data
+            ('Comments'). For Your Beauty does not screen, edit, publish, or
+            review Comments prior to their appearance on the website and
+            Comments do not reflect the views or opinions of For Your Beauty,
+            its agents, or affiliates. Comments reflect the view and opinion of
+            the person who posts such view or opinion. To the extent permitted
+            by applicable laws, For Your Beauty shall not be responsible or
+            liable for the Comments or for any loss, liability, damages, or
+            expenses caused and or suffered as a result of any use of and/or
+            posting of and/or appearance of the Comments on this website.
           </p>
-
+          <p className="mb-4">
+            For Your Beauty reserves the right to monitor all Comments and to
+            remove any Comments which it considers in its absolute discretion to
+            be inappropriate, offensive, or otherwise in breach of these Terms
+            and Conditions.
+          </p>
+          <p className="mb-4">You warrant and represent that:</p>
           <ul className="list-disc list-inside mb-4">
             <li>
-              With your consent. We will only share your information with third
-              parties if you give us your explicit consent to do so.
+              You are entitled to post the Comments on our website and have all
+              necessary licenses and consents to do so;
             </li>
             <li>
-              To comply with legal requirements. We may be required to share
-              your information with third parties in order to comply with legal
-              requirements, such as a subpoena or court order.
+              The Comments do not infringe any intellectual property right,
+              including without limitation copyright, patent, or trademark, or
+              other proprietary right of any third party;
             </li>
             <li>
-              To protect our clients and users from fraud and abuse. We may
-              share your information with third parties in order to protect our
-              clients and users from fraud and abuse, such as by reporting
-              fraudulent activity to law enforcement.
+              The Comments do not contain any defamatory, libelous, offensive,
+              indecent, or otherwise unlawful material or material which is an
+              invasion of privacy;
+            </li>
+            <li>
+              The Comments will not be used to solicit or promote business or
+              custom or present commercial activities or unlawful activity.
             </li>
           </ul>
-
           <h2 className="mt-6 text-2xl font-bold mb-2">
-            How do we protect your information?
+            Limitation of Liability
           </h2>
           <p className="mb-4">
-            We take reasonable steps to protect your information from
-            unauthorized access, use, or disclosure. However, no security
-            measures are perfect, and we cannot guarantee the security of your
-            information.
+            In no event shall For Your Beauty, nor any of its officers,
+            directors, and employees, be liable to you for anything arising out
+            of or in any way connected with your use of this website, whether
+            such liability is under contract, tort, or otherwise, and For Your
+            Beauty, including its officers, directors, and employees shall not
+            be liable for any indirect, consequential, or special liability
+            arising out of or in any way related to your use of this website.
           </p>
-
           <h2 className="mt-6 text-2xl font-bold mb-2">
-            Changes to this Privacy Policy
+            Changes to These Terms
           </h2>
           <p className="mb-4">
-            We may update this Privacy Policy from time to time. We will notify
-            you of any changes by posting the updated Privacy Policy on our
-            website.
+            For Your Beauty reserves the right to revise these Terms at any time
+            as it sees fit, and by using this website, you are expected to
+            review these Terms on a regular basis to ensure you understand all
+            terms and conditions governing the use of this website.
           </p>
-
-          <h2 className="mt-6 text-2xl font-bold mb-2">Contact us</h2>
+          <h2 className="mt-6 text-2xl font-bold mb-2">
+            Governing Law & Jurisdiction
+          </h2>
           <p className="mb-4">
-            If you have any questions about this Privacy Policy, please contact
-            us at info@octatechsolution.com
+            These Terms will be governed by and construed in accordance with the
+            laws of the State in which For Your Beauty operates, and you submit
+            to the non-exclusive jurisdiction of the state and federal courts
+            located in that State for the resolution of any disputes.
+          </p>
+          <h2 className="mt-6 text-2xl font-bold mb-2">Contact Us</h2>
+          <p className="mb-4">
+            If you have any questions about these Terms, please contact us at{" "}
+            <a href="mailto:support@foryourbeauty.shop" target="_blank">
+              support@foryourbeauty.shop.
+            </a>
           </p>
         </div>
       </section>

@@ -19,7 +19,7 @@ const AboutSection: React.FC = () => {
                   About Us
                 </h2>
                 <p className="mb-6 text-md">
-                  ForYourBeauty is your go-to resort for all things beauty!
+                  For Your Beauty is your go-to resort for all things beauty!
                   Our story began with an urge to empower individuals to help
                   glorify their uniqueness in their most natural selves. We
                   believe that everyone deserves to feel radiant and confident
@@ -38,8 +38,9 @@ const AboutSection: React.FC = () => {
                 </Link>
               </div>
             </div>
-            <div className="img_side lg:w-[50%]">
+            <div className="group img_side lg:w-[50%] overflow-hidden">
               <img
+                className="ransition duration-500 group-hover:scale-105"
                 src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_3951.png?v=1714512402"
                 alt=""
               />

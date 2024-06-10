@@ -94,7 +94,7 @@ const SelectedItem: React.FC = () => {
 
   // filter product based on id
   const selectedItem = allproducts;
-
+  
   // filter review based on id
   const allreviews = useAppSelector((state) => state.reviews.allReviews);
   const loading = useAppSelector((state) => state.reviews.loading);
@@ -219,7 +219,7 @@ const SelectedItem: React.FC = () => {
               <span className="text-[#EB72AF]">{selectedItem?.name}</span>
             </p>
             <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-5">
-              <div className="w-full h-[23rem] lg:sticky top-0 sm:flex gap-2">
+              <div className="w-full min:h-[23rem] lg:sticky top-0 sm:flex gap-2">
                 {/* MAIN DISPLAYER IMAGE */}
                 <img
                   alt="Product"
@@ -253,16 +253,7 @@ const SelectedItem: React.FC = () => {
                     (Skincare)
                   </h3>
                   <div className="space-y-3 mt-4 pl-0 text-sm text-gray-800">
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Cumque, voluptas. Quidem sapiente maxime sunt beatae?
-                      Asperiores illo perferendis corporis officia, quam
-                      consequatur aperiam enim voluptatem cum sequi doloribus
-                      numquam eum ab, tempore delectus sed. Inventore asperiores
-                      sint blanditiis? Quo ipsum fugiat placeat sint sit ullam
-                      illum, nostrum, unde iure, labore incidunt. Ipsam
-                      perferendis, eum culpa libero quibusdam illum sit aliquid.
-                    </p>
+                    <p>{selectedItem?.description}</p>
                   </div>
                 </div>
 
@@ -385,7 +376,7 @@ const SelectedItem: React.FC = () => {
 
                 <div>
                   <p className="mb-1 ml-1 text-gray-700 font-medium">
-                    Your Comment*
+                    Your Review *
                   </p>
                   <textarea
                     id="OrderNotes"

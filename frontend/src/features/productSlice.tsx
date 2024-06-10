@@ -68,6 +68,7 @@ interface Product {
   category: string;
   image: Image;
   averageRating: number;
+  description: string;
   sale_price: number | undefined;
   price: number;
   stock: number;

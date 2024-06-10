@@ -3,7 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginuserAsync } from "../features/authSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Helmet } from "react-helmet";
-import { Spinner } from "keep-react";
+// import { Spinner } from "keep-react";
+import Loader from "react-loaders";
 
 export interface LoginFormData {
   email: string;
@@ -64,7 +65,7 @@ const Login = () => {
               </h1>
 
               <p className="max-w-full mb-5 text-md">
-                Lorem ipsum dolor sit amet consectetur.
+                Welcome back! Enter your details to continue.
               </p>
               <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                 {/* EMAIL */}
@@ -129,9 +130,9 @@ const Login = () => {
                 </div>
 
                 {loginLoading ? (
-                  <button className="w-full h-11 items-center mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide">
-                    <Spinner color="pink" size="md" />
-                  </button>
+                  <div className="flex justify-center mt-10">
+                    <Loader type="ball-beat" active={true} />
+                  </div>
                 ) : (
                   <button
                     type="submit"

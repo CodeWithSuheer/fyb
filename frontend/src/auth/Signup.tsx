@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createuserAsync } from "../features/authSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { Spinner } from "keep-react";
+import Loader from "react-loaders";
 import { Helmet } from "react-helmet";
 
 export interface SignupFormData {
@@ -68,7 +68,7 @@ const Signup: React.FC = () => {
               </h1>
 
               <p className="max-w-full mb-5 text-md">
-                Lorem ipsum dolor sit amet consectetur.
+                Join us today and enjoy exclusive benefits.
               </p>
               <form onSubmit={handleSubmit} className="space-y-4 md:space-y-4">
                 {/* NAME */}
@@ -143,9 +143,9 @@ const Signup: React.FC = () => {
                 </div>
 
                 {signupLoading ? (
-                  <button className="w-full h-11 items-center mx-auto bg-[#EC72AF] text-white flex justify-center tracking-wide">
-                    <Spinner color="pink" size="md" />
-                  </button>
+                  <div className="flex justify-center mt-10">
+                    <Loader type="ball-beat" active={true} />
+                  </div>
                 ) : (
                   <button
                     type="submit"

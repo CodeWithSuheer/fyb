@@ -18,21 +18,24 @@ const Contact: React.FC = () => {
   });
 
   // HANDLE SUBMIT
-  const handleSubmit = async (e:FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8000/api/contact/createContact",formdata);
-      if(response.status === 201){
+      const response = await axios.post(
+        "http://localhost:8000/api/contact/createContact",
+        formdata
+      );
+      if (response.status === 201) {
         setFormdata({
           name: "",
           email: "",
           phone: "",
           message: "",
         });
-        toast.success(response.data.msg)
+        toast.success(response.data.msg);
       }
-    } catch (error:any) {
-      throw new Error(error)
+    } catch (error: any) {
+      throw new Error(error);
     }
   };
 
@@ -61,19 +64,19 @@ const Contact: React.FC = () => {
           <div className="lg:flex gap-6 sm:gap-10">
             {/* FORMS */}
             <div className="mt-8 lg:w-1/2 lg:mx-6 ">
-              <div className="w-full px-4 sm:px-10 py-10 mx-auto overflow-hidden bg-white rounded-lg shadow-2xl lg:max-w-xl">
+              <div className="w-full px-4 sm:px-10 py-10 mx-auto overflow-hidden bg-white border border-gray-200 rounded-lg shadow-2xl lg:max-w-xl">
                 <h2 className="playfair mt-2 pb-2 text-4xl font-bold text-black">
                   Get in Touch
                 </h2>
                 <p className="mt-2 text-black">
-                  Lorem ipsum dolor sit amet consectetur. Vestibulum velit
-                  aliquet magnis dapibus dictum enim praesent.
+                  Have something to say? Drop us a message and we’ll get back to
+                  you as soon as possible.
                 </p>
                 {/* FORM */}
                 <form className="mt-6" onSubmit={handleSubmit}>
                   <div className="mb-5">
                     <input
-                      className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-[#F7F7F7] border border-gray-200 rounded-md focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                      className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-[#F7F7F7] border border-gray-300 rounded-md focus:border-pink-400 dark:focus:border-pink-400 focus:ring-pink-400 focus:outline-none focus:ring focus:ring-opacity-40"
                       placeholder="Enter Full Name"
                       type="text"
                       value={formdata.name}
@@ -86,7 +89,7 @@ const Contact: React.FC = () => {
 
                   <div className="mb-5">
                     <input
-                      className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-[#F7F7F7] border border-gray-200 rounded-md focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                      className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-[#F7F7F7] border border-gray-300 rounded-md focus:border-pink-400 dark:focus:border-pink-400 focus:ring-pink-400 focus:outline-none focus:ring focus:ring-opacity-40"
                       placeholder="Enter Your Email Address"
                       type="email"
                       value={formdata.email}
@@ -99,7 +102,7 @@ const Contact: React.FC = () => {
 
                   <div className="mb-5">
                     <input
-                      className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-[#F7F7F7] border border-gray-200 rounded-md focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                      className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-[#F7F7F7] border border-gray-300 rounded-md focus:border-pink-400 dark:focus:border-pink-400 focus:ring-pink-400 focus:outline-none focus:ring focus:ring-opacity-40"
                       placeholder="Enter Your Phone Number"
                       type="number"
                       value={formdata.phone}
@@ -112,8 +115,9 @@ const Contact: React.FC = () => {
 
                   <div className="w-full mt-6">
                     <textarea
-                      className="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-[#F7F7F7] border border-gray-200 rounded-md md:h-36  focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                      className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-[#F7F7F7] border border-gray-300 rounded-md   focus:border-pink-400 focus:ring-pink-400 focus:outline-none focus:ring focus:ring-opacity-40"
                       placeholder="Enter Your Message"
+                      rows={4}
                       value={formdata.message}
                       onChange={(e) =>
                         setFormdata({ ...formdata, message: e.target.value })
@@ -140,15 +144,16 @@ const Contact: React.FC = () => {
                 Contact Info
               </h2>
               <p className="mt-2 text-black">
-                Lorem ipsum dolor sit amet consectetur. Vestibulum velit aliquet
-                magnis dapibus dictum enim praesent.
+                Have questions or need assistance? Our team is here to help!
+                Reach out to us for any inquiries or support, and we'll get back
+                to you promptly.
               </p>
 
               <div className="mt-6 space-y-8 md:mt-8">
                 <p className="flex items-start">
                   <MdPhone className="bg-[#EC72AF] text-white size-9 rounded-full p-2" />
                   <a
-                    href="tel:+1-281-607-5120"
+                    href="tel:+92 334 4635801"
                     className="mt-1 mx-2 text-black truncate w-72 tracking-wide"
                   >
                     0334 4635801
@@ -157,15 +162,19 @@ const Contact: React.FC = () => {
 
                 <p className="flex items-start">
                   <IoMail className="bg-[#EC72AF] text-white size-9 rounded-full p-2" />
-                  <span className="mx-2 mt-1 text-black truncate w-72 text-wrap">
-                    Fyb@gmail.com
-                  </span>
+                  <a
+                    href="mailto:support@foryourbeauty.shop"
+                    target="_blank"
+                    className="mx-2 mt-1 text-black truncate w-72 text-wrap"
+                  >
+                    support@foryourbeauty.shop
+                  </a>
                 </p>
 
                 <p className="flex items-start">
                   <MdLocationPin className="bg-[#EC72AF] text-white size-9 rounded-full p-2" />
                   <span className="mx-2 mt-1 text-black truncate w-72 text-wrap">
-                    2155 Briarwood Drive Camden, NJ 08102
+                    2nd Floor, 88 G Phase 1 DHA
                   </span>
                 </p>
               </div>

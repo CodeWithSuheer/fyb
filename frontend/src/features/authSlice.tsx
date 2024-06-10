@@ -65,7 +65,7 @@ export const updateuserAsync = createAsyncThunk(
   async (formData: any) => {
     try {
       const response = await axios.post(updateUrl, formData);
-      toast.success(response.data.message);
+      // toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.error);

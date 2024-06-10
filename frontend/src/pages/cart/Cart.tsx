@@ -54,12 +54,12 @@ const Cart: React.FC = () => {
               <div className=" py-6">
                 <div className="rounded-xl">
                   {/* First Product Row */}
-                  {cart.map((product:any) => (
+                  {cart.map((product: any) => (
                     <div
                       key={product.id}
                       className="grid md:grid-cols-4 items-center gap-8 px-4 py-6 mb-4 bg-white border-b border-gray-400 rounded-xl"
                     >
-                      <div className="md:col-span-2 flex flex-wrap items-center gap-6">
+                      <div className="md:col-span-2 flex  flex-wrap items-center gap-6">
                         <div className="shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-0">
                           <img
                             className="w-28 h-22 object-contain rounded-md"
@@ -70,15 +70,19 @@ const Cart: React.FC = () => {
 
                         <div>
                           <h3 className="playfair text-lg tracking-wide font-bold text-[#333]">
-                            VelvetGlide Boots
+                            {product?.name}
                           </h3>
                           <h6 className="text-md text-gray-500 mt-2">
-                            Category: <strong className="ml-2">Skincare</strong>
+                            Category:{" "}
+                            <strong className="ml-2">
+                              {product?.category}
+                            </strong>
                           </h6>
                           <h6 className="text-md text-gray-500 mt-2 flex items-center">
                             Price:{" "}
                             <strong className="ml-2 flex items-center">
-                              { product?.sale_price !== 0 ||  product?.sale_price > 0 ? (
+                              {product?.sale_price !== 0 ||
+                              product?.sale_price > 0 ? (
                                 <>
                                   <p className="">Rs. {product?.sale_price}</p>
                                 </>
@@ -143,8 +147,6 @@ const Cart: React.FC = () => {
                 </div>
 
                 <div className="flex justify-end items-center">
-                
-
                   {/* APPLY COUPN CODE */}
                   <div className="total">
                     <div className="mt-8 space-y-1 text-right text-lg">
@@ -156,9 +158,9 @@ const Cart: React.FC = () => {
                         </span>
                       </p>
 
-                      <p className="text-sm py-1">
+                      {/* <p className="text-sm py-1">
                         Taxes and shipping calculated at checkout
-                      </p>
+                      </p> */}
                     </div>
 
                     <div className="mt-4 flex justify-end space-x-4">
@@ -174,8 +176,8 @@ const Cart: React.FC = () => {
                       {user ? (
                         <Link
                           to="/checkout"
-                            onClick={() => window.scroll(0, 0)}
-                            type="button"
+                          onClick={() => window.scroll(0, 0)}
+                          type="button"
                           className="rounded-md border px-3 py-2 text-sm tracking-wide font-semibold shadow-sm bg-[#EC72AF] border-[#EC72AF] text-white"
                         >
                           Checkout

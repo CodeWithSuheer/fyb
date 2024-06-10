@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet";
 const UserProfile = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const user = useAppSelector((state:any) => state.auth.user);
+  const user = useAppSelector((state: any) => state.auth.user);
   const userID = user?.user?.id;
 
   useEffect(() => {
@@ -38,16 +38,18 @@ const UserProfile = () => {
     }
   }, [user]);
 
-  const handleChange = (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData((prevData:any) => ({
+    setFormData((prevData: any) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
   // HANDLE SUBMIT
-  const handleSubmit = (e:FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
     const id = userID;
@@ -66,7 +68,10 @@ const UserProfile = () => {
       return;
     }
 
-    dispatch(updateuserAsync({ id, ...updatedFields })).then(() => {
+    dispatch(updateuserAsync({ id, ...updatedFields })).then((res) => {
+      if (res.payload.message === "Update Successfull") {
+        toast.success(res.payload.message);
+      }
       dispatch(userSessionAsync());
       setLoginLoading(false);
     });
@@ -78,8 +83,9 @@ const UserProfile = () => {
         <meta charSet="utf-8" />
         <title>Profile - For Your Beauty</title>
       </Helmet>
+
       <section className="w-full bg-[#FDEDF5] py-14 sm:py-12 px-2 sm:px-8 lg:px-10 xl:px-0">
-        <div className="p-6 sm:p-8 rounded-xl max-w-4xl bg-white xl:max-w-4xl mx-auto">
+        <div className="py-6 px-3 sm:p-8 rounded-xl max-w-4xl bg-white xl:max-w-4xl mx-auto">
           {/* PERSONAL INFO */}
           <div className="mb-8">
             <h2 className="mb-3 playfair text-2xl font-bold text-gray-800">

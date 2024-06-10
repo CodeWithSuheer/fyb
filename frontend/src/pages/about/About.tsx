@@ -3,7 +3,7 @@ import AboutSection from "../home/AboutSection";
 import Review from "../home/Review";
 import { Helmet } from "react-helmet";
 
-const About:React.FC = () => {
+const About: React.FC = () => {
   return (
     <>
       <Helmet>
@@ -36,15 +36,21 @@ const About:React.FC = () => {
               Our Story
             </h1>
             <p className="mb-6 leading-relaxed">
-              Lorem ipsum dolor sit amet consectetur. Vestibulum velit
-              suspendisse aliquet magnis dapibus dictum enim praesent. Sit non
-              eleifend nisl mi sit aliquam. Eget adipiscing hac nisl metus
-              malesuada vitae quam erat dui. Mattis erat habitant maecenas nisl
-              proin ac ipsum nulla. Nunc lorem tortor commodo rhoncus senectus
-              diam quam a. Rhoncus nunc dolor ultricies turpis. Viverra feugiat
-              penatibus ac quis. Semper dolor integer id ac sed integer tempus.
-              Non nullam mattis tempor scelerisque quis amet velit. Quis aliquet
-              gravida tempus turpis tellus at.
+              Welcome to For Your Beauty, where we believe that true beauty
+              begins with self-care and self-love. Our journey started with a
+              simple yet profound realization: everyone deserves to feel
+              confident and radiant in their own skin. Driven by this passion,
+              we embarked on a mission to create skincare products that are not
+              only effective but also kind to your skin and the environment.
+            </p>
+            <p className="mb-6 leading-relaxed">
+              Our story is one of dedication and innovation. From humble
+              beginnings, we have grown into a brand that values quality,
+              sustainability, and authenticity. Each product is meticulously
+              crafted using natural ingredients, ensuring that your skincare
+              routine is both luxurious and nourishing. We are committed to
+              transparency, and we strive to provide you with products that you
+              can trust and love.
             </p>
           </div>
         </div>
@@ -63,12 +69,14 @@ const About:React.FC = () => {
               Our Vision
             </h2>
             <p className="mt-3 font-light">
-              Lorem ipsum dolor sit amet consectetur. Vestibulum velit
-              suspendisse aliquet magnis dapibus dictum enim praesent. Sit non
-              eleifend nisl mi sit aliquam. Eget adipiscing hac nisl metus
-              malesuada vitae quam erat dui. Mattis erat habitant maecenas nisl
-              proin ac ipsum nulla. Nunc lorem tortor commodo rhoncus senectus
-              diam quam a.
+              At For Your Beauty, our vision is to revolutionize the skincare
+              industry by offering products that blend nature's finest
+              ingredients with cutting-edge science. We aspire to create a world
+              where everyone feels empowered to embrace their unique beauty,
+              with skincare that is as gentle on the planet as it is on the
+              skin. Our commitment to sustainability, innovation, and
+              authenticity drives us to continually push the boundaries of what
+              skincare can achieve.
             </p>
           </div>
 
@@ -83,12 +91,14 @@ const About:React.FC = () => {
               Our Mission
             </h2>
             <p className="mt-3 font-light">
-              Lorem ipsum dolor sit amet consectetur. Vestibulum velit
-              suspendisse aliquet magnis dapibus dictum enim praesent. Sit non
-              eleifend nisl mi sit aliquam. Eget adipiscing hac nisl metus
-              malesuada vitae quam erat dui. Mattis erat habitant maecenas nisl
-              proin ac ipsum nulla. Nunc lorem tortor commodo rhoncus senectus
-              diam quam a.
+              Our mission at For Your Beauty is to provide high-quality, natural
+              skincare products that enhance and celebrate the beauty of all
+              skin types. We are dedicated to fostering a community of
+              confidence and self-love, offering solutions that not only improve
+              skin health but also promote a sense of well-being. Through
+              transparency, integrity, and a relentless pursuit of excellence,
+              we aim to become your trusted partner in every step of your
+              skincare journey.
             </p>
           </div>
         </div>

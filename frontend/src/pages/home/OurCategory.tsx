@@ -1,7 +1,7 @@
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
-const OurCategory:React.FC = () => {
+const OurCategory: React.FC = () => {
   const navigate = useNavigate();
 
   const handleProducts = (categoryName: string) => {
@@ -22,7 +22,7 @@ const OurCategory:React.FC = () => {
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-4 xl:gap-6">
             <article
               onClick={() => handleProducts("Skincare")}
-              className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
+              className="group relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
             >
               <img
                 alt=""
@@ -32,22 +32,20 @@ const OurCategory:React.FC = () => {
 
               <div className="relative bg-gradient-to-t from-black/50 to-transparent pt-60 sm:pt-56 lg:pt-64">
                 <div className="p-4 sm:p-6">
-                  <a href="#">
-                    <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
-                      Skincare
-                    </h3>
+                  <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
+                    Skincare
+                  </h3>
 
-                    <p className="text-white text-sm tracking-wider flex items-center gap-1">
-                      Learn More <IoIosArrowRoundForward size={25} />
-                    </p>
-                  </a>
+                  <p className="text-white text-sm tracking-wider flex items-center gap-1">
+                    Shop Now <IoIosArrowRoundForward size={25} />
+                  </p>
                 </div>
               </div>
             </article>
 
             <article
               onClick={() => handleProducts("Body Care")}
-              className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
+              className="group relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
             >
               <img
                 alt=""
@@ -57,22 +55,20 @@ const OurCategory:React.FC = () => {
 
               <div className="relative bg-gradient-to-t from-black/50 to-transparent pt-60 sm:pt-56 lg:pt-64">
                 <div className="p-4 sm:p-6">
-                  <a href="#">
-                    <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
-                      Bodycare
-                    </h3>
+                  <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
+                    Bodycare
+                  </h3>
 
-                    <p className="text-white text-sm tracking-wider flex items-center gap-1">
-                      Learn More <IoIosArrowRoundForward size={25} />
-                    </p>
-                  </a>
+                  <p className="text-white text-sm tracking-wider flex items-center gap-1">
+                    Shop Now <IoIosArrowRoundForward size={25} />
+                  </p>
                 </div>
               </div>
             </article>
 
             <article
               onClick={() => handleProducts("Haircare")}
-              className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
+              className="group relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
             >
               <img
                 alt=""
@@ -82,40 +78,36 @@ const OurCategory:React.FC = () => {
 
               <div className="relative bg-gradient-to-t from-black/50 to-transparent pt-60 sm:pt-56 lg:pt-64">
                 <div className="p-4 sm:p-6">
-                  <a href="#">
-                    <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
-                      Haircare
-                    </h3>
+                  <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
+                    Haircare
+                  </h3>
 
-                    <p className="text-white text-sm tracking-wider flex items-center gap-1">
-                      Learn More <IoIosArrowRoundForward size={25} />
-                    </p>
-                  </a>
+                  <p className="text-white text-sm tracking-wider flex items-center gap-1">
+                    Shop Now <IoIosArrowRoundForward size={25} />
+                  </p>
                 </div>
               </div>
             </article>
 
             <article
               onClick={() => handleProducts("Cosmetics")}
-              className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg cursor-pointer"
+              className="group relative overflow-hidden rounded-lg cursor-pointer"
             >
               <img
                 alt=""
                 src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Cosmetics.jpg?v=1715290815"
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute object-cover w-full h-full"
               />
 
               <div className="relative bg-gradient-to-t from-black/50 to-transparent pt-60 sm:pt-56 lg:pt-64">
                 <div className="p-4 sm:p-6">
-                  <a href="#">
-                    <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
-                      Cosmetics
-                    </h3>
+                  <h3 className="playfair mb-2 mt-0.5 text-xl font-medium text-white">
+                    Cosmetics
+                  </h3>
 
-                    <p className="text-white text-sm tracking-wider flex items-center gap-1">
-                      Learn More <IoIosArrowRoundForward size={25} />
-                    </p>
-                  </a>
+                  <p className="text-white text-sm tracking-wider flex items-center gap-1">
+                    Shop Now <IoIosArrowRoundForward size={25} />
+                  </p>
                 </div>
               </div>
             </article>
