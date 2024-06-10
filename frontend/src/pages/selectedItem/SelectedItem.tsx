@@ -69,6 +69,12 @@ const SelectedItem: React.FC = () => {
     setIsOpen(false);
   };
 
+  const [showReviews, setShowReviews] = useState(false);
+
+  const toggleReviews = () => {
+    setShowReviews(!showReviews);
+  };
+
   // UPDATE MODAL
   const [isOpenUpdate, setIsOpenUpdate] = useState(false);
 
@@ -94,7 +100,7 @@ const SelectedItem: React.FC = () => {
 
   // filter product based on id
   const selectedItem = allproducts;
-  
+
   // filter review based on id
   const allreviews = useAppSelector((state) => state.reviews.allReviews);
   const loading = useAppSelector((state) => state.reviews.loading);
@@ -314,61 +320,67 @@ const SelectedItem: React.FC = () => {
               <>
                 <div className="mb-8 reviews max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
                   <div className="mt-10 all_reviews">
-                    <h2 className="text-2xl text-gray-800 font-semibold">
-                      ALL REVIEWS
+                    <h2
+                      onClick={toggleReviews}
+                      className="text-2xl text-gray-800 font-semibold underline underline-offset-4 cursor-pointer"
+                    >
+                      REVIEWS & RATING
                     </h2>
-
-                    {loading ? (
-                      <div className="flex justify-center mt-10">
-                        <Loader type="ball-beat" active={true} />
-                      </div>
-                    ) : (
+                    {showReviews && (
                       <>
-                        {allreviews &&
-                          allreviews.map((data, index) => (
-                            <div
-                              key={index}
-                              className="mt-3 px-6 py-4 rounded-xl border border-gray-300 bg-[#FFF3F9] all_reviews"
-                            >
-                              <div className="flex justify-between flex-wrap items-center gap-2">
-                                <div className="left flex items-center gap-2">
-                                  <h2>{data.name}</h2>{" "}
-                                  <p className="w-24">
-                                    <StarRating rating={data?.rating} />
-                                  </p>
-                                </div>
-                                <div className="right">
-                                  <p>
-                                    {new Date(
-                                      data?.createdAt
-                                    ).toLocaleDateString()}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="mt-2 flex justify-between flex-wrap items-center gap-2">
-                                <p className="my-1">{data?.review}</p>
+                        {loading ? (
+                          <div className="flex justify-center mt-10">
+                            <Loader type="ball-beat" active={true} />
+                          </div>
+                        ) : (
+                          <>
+                            {allreviews &&
+                              allreviews.map((data, index) => (
+                                <div
+                                  key={index}
+                                  className="mt-3 px-6 py-4 rounded-xl border border-gray-300 bg-[#FFF3F9] all_reviews"
+                                >
+                                  <div className="flex justify-between flex-wrap items-center gap-2">
+                                    <div className="left flex items-center gap-2">
+                                      <h2>{data.name}</h2>{" "}
+                                      <p className="w-24">
+                                        <StarRating rating={data?.rating} />
+                                      </p>
+                                    </div>
+                                    <div className="right">
+                                      <p>
+                                        {new Date(
+                                          data?.createdAt
+                                        ).toLocaleDateString()}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="mt-2 flex justify-between flex-wrap items-center gap-2">
+                                    <p className="my-1">{data?.review}</p>
 
-                                <div className="edit flex items-center  gap-3">
-                                  {userID === data.userID ? (
-                                    <>
-                                      <FiEdit
-                                        onClick={() =>
-                                          openUpdateModal(data?.id)
-                                        }
-                                        className="cursor-pointer"
-                                        size={20}
-                                      />
-                                      <IoTrashOutline
-                                        onClick={() => openModal(data?.id)}
-                                        className="cursor-pointer"
-                                        size={20}
-                                      />
-                                    </>
-                                  ) : null}
+                                    <div className="edit flex items-center  gap-3">
+                                      {userID === data.userID ? (
+                                        <>
+                                          <FiEdit
+                                            onClick={() =>
+                                              openUpdateModal(data?.id)
+                                            }
+                                            className="cursor-pointer"
+                                            size={20}
+                                          />
+                                          <IoTrashOutline
+                                            onClick={() => openModal(data?.id)}
+                                            className="cursor-pointer"
+                                            size={20}
+                                          />
+                                        </>
+                                      ) : null}
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                          ))}
+                              ))}
+                          </>
+                        )}
                       </>
                     )}
                   </div>
