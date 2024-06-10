@@ -78,12 +78,12 @@ const Cart: React.FC = () => {
                           <h6 className="text-md text-gray-500 mt-2 flex items-center">
                             Price:{" "}
                             <strong className="ml-2 flex items-center">
-                              {product.price !== product.sale_price ? (
+                              { product?.sale_price !== 0 ||  product?.sale_price > 0 ? (
                                 <>
-                                  <p className="">Rs. {product.sale_price}</p>
+                                  <p className="">Rs. {product?.sale_price}</p>
                                 </>
                               ) : (
-                                <p className="">Rs. {product.price}</p>
+                                <p className="">Rs. {product?.price}</p>
                               )}
                             </strong>
                           </h6>
@@ -143,25 +143,7 @@ const Cart: React.FC = () => {
                 </div>
 
                 <div className="flex justify-end items-center">
-                  {/* APPLY COUPN CODE */}
-                  {/* <div className="mt-3">
-                    <h3 className="text-xl font-semibold text-[#333] mb-3">
-                      Apply coupon code
-                    </h3>
-                    <div className="flex border border-[#EC72AF] overflow-hidden max-w-md rounded">
-                      <input
-                        type="text"
-                        placeholder="Coupon code"
-                        className="w-full outline-none bg-white text-gray-600 text-md px-4 py-2.5"
-                      />
-                      <button
-                        type="button"
-                        className="flex items-center justify-center bg-[#EC72AF] hover:bg-[#e47aaf] px-6 text-md text-white"
-                      >
-                        Apply
-                      </button>
-                    </div>
-                  </div> */}
+                
 
                   {/* APPLY COUPN CODE */}
                   <div className="total">
