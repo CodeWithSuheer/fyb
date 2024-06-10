@@ -192,8 +192,8 @@ const Cart: React.FC = () => {
                       {user ? (
                         <Link
                           to="/checkout"
-                          onClick={() => window.scroll(0, 0)}
-                          type="button"
+                            onClick={() => window.scroll(0, 0)}
+                            type="button"
                           className="rounded-md border px-3 py-2 text-sm tracking-wide font-semibold shadow-sm bg-[#EC72AF] border-[#EC72AF] text-white"
                         >
                           Checkout

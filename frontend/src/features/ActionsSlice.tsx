@@ -61,9 +61,9 @@ const ActionsSlice = createSlice({
         : [action.payload];
 
       itemsToAdd.forEach((item) => {
-        const { id } = item;
+        const { _id } = item;
         const existingItemIndex = state.cart.findIndex(
-          (existingItem:any) => existingItem.id === id
+          (existingItem:any) => existingItem.id === _id
         );
 
         if (existingItemIndex !== -1) {

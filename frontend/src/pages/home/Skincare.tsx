@@ -75,14 +75,14 @@ const Skincare = () => {
 
   const allproducts = useAppSelector((state) => state.products.products);
 
-    // STAR RATING
-    const StarRating = ({ rating }:{rating:number}) => {
-      const stars = [];
-      for (let i = 0; i < rating; i++) {
-        stars.push(<FaStar key={i} className="text-[#FFC209]" />);
-      }
-      return <div className="flex">{stars}</div>;
-    };
+  // STAR RATING
+  const StarRating = ({ rating }: { rating: number }) => {
+    const stars = [];
+    for (let i = 0; i < rating; i++) {
+      stars.push(<FaStar key={i} className="text-[#FFC209]" />);
+    }
+    return <div className="flex">{stars}</div>;
+  };
 
   return (
     <>
@@ -147,67 +147,69 @@ const Skincare = () => {
               {!loading ? (
                 <>
                   <Slider ref={sliderRef} {...settings}>
-                    {allproducts?.productData?.map((data:any, index:number) => (
-                      <div
-                        key={index}
-                        onClick={() => handleItemClick(String(data.id))}
-                        className="mx-0 pb-7"
-                      >
-                        <div className="group mb-3 relative group w-60 mx-auto pt-0 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
-                          <img
-                            className="object-cover w-full h-56"
-                            src={data.image.downloadURL}
-                            alt="products"
-                          />
+                    {allproducts?.productData?.map(
+                      (data: any, index: number) => (
+                        <div
+                          key={index}
+                          onClick={() => handleItemClick(String(data.id))}
+                          className="mx-0 pb-7"
+                        >
+                          <div className="group mb-3 relative group w-60 mx-auto pt-0 bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
+                            <img
+                              className="object-cover w-full h-56"
+                              src={data.image.downloadURL}
+                              alt="products"
+                            />
 
-                          <div className="py-5 text-center">
-                            <h3 className="playfair mb-2 text-lg font-semibold text-gray-800">
-                              {data.name}
-                            </h3>
+                            <div className="py-5 text-center">
+                              <h3 className="playfair mb-2 text-lg font-semibold text-gray-800">
+                                {data.name}
+                              </h3>
 
-                            {/* STARS */}
-                            <div className="mb-2 flex items-center justify-center gap-1">
-                            {data?.averageRating === 0 ? (
-                                    <FaStar className="text-white" />
-                                  ) : (
-                                    <StarRating rating={data?.averageRating} />
-                                  )}
-                            </div>
-
-                            <p className="mb-3 text-md text-gray-500">
-                              ({data.category})
-                            </p>
-
-                            {data.sale_price > 0 ? (
-                                  <div className="flex justify-center items-center gap-2">
-                                    <p className="mb-3 text-md font-semibold text-black">
-                                      Rs. {data.sale_price}
-                                    </p>
-                                    <p className="mb-3 text-md font-semibold text-gray-500 line-through">
-                                      Rs. {data.price}
-                                    </p>
-                                  </div>
+                              {/* STARS */}
+                              <div className="mb-2 flex items-center justify-center gap-1">
+                                {data?.averageRating === 0 ? (
+                                  <FaStar className="text-white" />
                                 ) : (
-                                  <>
+                                  <StarRating rating={data?.averageRating} />
+                                )}
+                              </div>
+
+                              <p className="mb-3 text-md text-gray-500">
+                                ({data.category})
+                              </p>
+
+                              {data.sale_price > 0 ? (
+                                <div className="flex justify-center items-center gap-2">
+                                  <p className="mb-3 text-md font-semibold text-black">
+                                    Rs. {data.sale_price}
+                                  </p>
+                                  <p className="mb-3 text-md font-semibold text-gray-500 line-through">
+                                    Rs. {data.price}
+                                  </p>
+                                </div>
+                              ) : (
+                                <>
                                   <p className="mb-3 text-md font-semibold text-black">
                                     Rs. {data.price}
                                   </p>
                                 </>
-                                )}
+                              )}
 
-                            <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
-                              Shop Now
-                            </button>
+                              <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
+                                Shop Now
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    )}
                   </Slider>
                 </>
               ) : (
                 <>
                   <Slider ref={sliderRef} {...settings}>
-                    {[0, 1, 2, 3, 4, 5].map((_data, index:number) => (
+                    {[0, 1, 2, 3, 4, 5].map((_data, index: number) => (
                       <li key={index} className="px-5">
                         <div className="group mb-5 relative rounded-lg w-full bg-white border border-gray-400 cursor-pointer animate-pulse">
                           <div className="bg-gray-300 h-56 w-full"></div>
