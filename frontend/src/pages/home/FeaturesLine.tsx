@@ -2,32 +2,26 @@ import Marquee from "react-fast-marquee";
 
 const data = [
   {
-    review: "We love Organic Product",
+    review: "Nourish Your Skin Naturally",
   },
   {
-    review: "Organic Product",
+    review: "We love Organic Products",
   },
   {
-    review: "We love Organic Product",
+    review: "Glow with Organic Goodness",
   },
   {
-    review: "Organic Product",
+    review: "Nourish Your Skin Naturally",
   },
   {
-    review: "We love Organic Product",
+    review: "We love Organic Products",
   },
   {
-    review: "Organic Product",
-  },
-  {
-    review: "We love Organic Product",
-  },
-  {
-    review: "Organic Product",
+    review: "Glow with Organic Goodness",
   },
 ];
 
-const FeaturesLine:React.FC= () => {
+const FeaturesLine: React.FC = () => {
   return (
     <section className="py-0 px-0 bg-[#EC72AF]">
       <Marquee direction="left" className="testimonial_marquee">

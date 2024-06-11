@@ -69,12 +69,6 @@ const SelectedItem: React.FC = () => {
     setIsOpen(false);
   };
 
-  const [showReviews, setShowReviews] = useState(false);
-
-  const toggleReviews = () => {
-    setShowReviews(!showReviews);
-  };
-
   // UPDATE MODAL
   const [isOpenUpdate, setIsOpenUpdate] = useState(false);
 
@@ -225,11 +219,11 @@ const SelectedItem: React.FC = () => {
               <span className="text-[#EB72AF]">{selectedItem?.name}</span>
             </p>
             <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-5">
-              <div className="w-full min:h-[23rem] lg:sticky top-0 sm:flex gap-2">
+              <div className="w-full overflow-hidden lg:sticky top-0 sm:flex gap-2">
                 {/* MAIN DISPLAYER IMAGE */}
                 <img
                   alt="Product"
-                  className="w-full h-full pr-0 lg:pr-10 object-contain rounded-lg"
+                  className="w-full sm:h-[23rem] pr-0 lg:pr-10 object-contain rounded-lg"
                   src={selectedItem?.image?.downloadURL}
                 />
               </div>
@@ -320,67 +314,77 @@ const SelectedItem: React.FC = () => {
               <>
                 <div className="mb-8 reviews max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
                   <div className="mt-10 all_reviews">
-                    <h2
-                      onClick={toggleReviews}
-                      className="text-2xl text-gray-800 font-semibold underline underline-offset-4 cursor-pointer"
-                    >
-                      REVIEWS & RATING
-                    </h2>
-                    {showReviews && (
-                      <>
-                        {loading ? (
-                          <div className="flex justify-center mt-10">
-                            <Loader type="ball-beat" active={true} />
-                          </div>
-                        ) : (
-                          <>
-                            {allreviews &&
-                              allreviews.map((data, index) => (
-                                <div
-                                  key={index}
-                                  className="mt-3 px-6 py-4 rounded-xl border border-gray-300 bg-[#FFF3F9] all_reviews"
-                                >
-                                  <div className="flex justify-between flex-wrap items-center gap-2">
-                                    <div className="left flex items-center gap-2">
-                                      <h2>{data.name}</h2>{" "}
-                                      <p className="w-24">
-                                        <StarRating rating={data?.rating} />
-                                      </p>
-                                    </div>
-                                    <div className="right">
-                                      <p>
-                                        {new Date(
-                                          data?.createdAt
-                                        ).toLocaleDateString()}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="mt-2 flex justify-between flex-wrap items-center gap-2">
-                                    <p className="my-1">{data?.review}</p>
+                    <div className="mb-6 reviews_headers">
+                      {allreviews.length > 0 ? (
+                        <>
+                          <h2 className="text-2xl sm:text-3xl lg:text-4xl text-gray-800 text-center font-semibold">
+                            We’re feeling the love
+                          </h2>
+                          <h2 className="mt-2 text-xl text-gray-600 text-center font-semibold">
+                            Reviews{" "}
+                            <span className="text-md">
+                              ({allreviews.length})
+                            </span>
+                          </h2>
+                        </>
+                      ) : (
+                        <h2 className="text-2xl text-gray-800 text-center font-semibold">
+                          No Reviews
+                        </h2>
+                      )}
+                    </div>
 
-                                    <div className="edit flex items-center  gap-3">
-                                      {userID === data.userID ? (
-                                        <>
-                                          <FiEdit
-                                            onClick={() =>
-                                              openUpdateModal(data?.id)
-                                            }
-                                            className="cursor-pointer"
-                                            size={20}
-                                          />
-                                          <IoTrashOutline
-                                            onClick={() => openModal(data?.id)}
-                                            className="cursor-pointer"
-                                            size={20}
-                                          />
-                                        </>
-                                      ) : null}
-                                    </div>
-                                  </div>
+                    {loading ? (
+                      <div className="flex justify-center mt-10">
+                        <Loader type="ball-beat" active={true} />
+                      </div>
+                    ) : (
+                      <>
+                        {allreviews &&
+                          allreviews.map((data, index) => (
+                            <div
+                              key={index}
+                              className="mt-3 px-6 py-4 rounded-xl border border-gray-300 bg-[#FFF3F9] all_reviews"
+                            >
+                              <div className="flex justify-between flex-wrap items-center gap-2">
+                                <div className="left flex items-center gap-2">
+                                  <h2>{data.name}</h2>{" "}
+                                  <p className="w-24">
+                                    <StarRating rating={data?.rating} />
+                                  </p>
                                 </div>
-                              ))}
-                          </>
-                        )}
+                                <div className="right">
+                                  <p>
+                                    {new Date(
+                                      data?.createdAt
+                                    ).toLocaleDateString()}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="mt-2 flex justify-between flex-wrap items-center gap-2">
+                                <p className="my-1">{data?.review}</p>
+
+                                <div className="edit flex items-center  gap-3">
+                                  {userID === data.userID ? (
+                                    <>
+                                      <FiEdit
+                                        onClick={() =>
+                                          openUpdateModal(data?.id)
+                                        }
+                                        className="cursor-pointer"
+                                        size={20}
+                                      />
+                                      <IoTrashOutline
+                                        onClick={() => openModal(data?.id)}
+                                        className="cursor-pointer"
+                                        size={20}
+                                      />
+                                    </>
+                                  ) : null}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                       </>
                     )}
                   </div>
